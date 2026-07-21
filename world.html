@@ -48,10 +48,9 @@
 
 <main id="main">
   <div class="page-header">
-    <p class="eyebrow">The Battlefield</p>
+   <!--  <p class="eyebrow">The Battlefield</p> -->
     <h1>The Battlefield of the Triarchs</h1>
-    <p>One symmetric triangular map, authored as a single sector and mirrored three ways so every empire faces identical terrain.</p>
-  </div>
+   </div>
 
   <!-- ============ MAP ============ -->
   <section class="world-section">
@@ -68,6 +67,12 @@
     <stop offset="70%" stop-color="#100e0a"/>
     <stop offset="100%" stop-color="#08070a"/>
   </radialGradient>
+  <!-- Every marker on the map below is a <use> of one of these symbols, so swapping a
+       glyph for raster art later only means editing its definition here (e.g. replace
+       the <path>/<circle> content with <image href="assets/world/glyphs/base.png"
+       width="24" height="24"/>) — no changes needed anywhere the symbol is used.
+       Note: currentColor tinting (team colours) only works for vector content; a
+       raster replacement would need pre-tinted or team-neutral art. -->
   <symbol id="glyphBase" viewBox="0 0 24 24"><path d="M4 20V10l8-6 8 6v10z" fill="currentColor" fill-opacity="0.25" stroke="currentColor" stroke-width="2"/><path d="M9 20v-6h6v6" fill="none" stroke="currentColor" stroke-width="2"/></symbol>
   <symbol id="glyphTower" viewBox="0 0 24 24"><path d="M8 21V9l4-6 4 6v12z" fill="currentColor" fill-opacity="0.3" stroke="currentColor" stroke-width="2"/><path d="M6 21h12M8 14h8" stroke="currentColor" stroke-width="2"/></symbol>
   <symbol id="glyphCapture" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="3.6" fill="currentColor"/><path d="M12 1v3M12 20v3M1 12h3M20 12h3" stroke="currentColor" stroke-width="2"/></symbol>
@@ -170,11 +175,11 @@
             <li><svg class="icon lg-swatch" style="color:#e8dcc0" aria-hidden="true"><use href="./assets/icons/icons.svg#ic-map-tower"></use></svg> Tower (outer &amp; inner)</li>
             <li><svg class="icon lg-swatch" style="color:#f0d888" aria-hidden="true"><use href="./assets/icons/icons.svg#ic-map-capture"></use></svg> Capture point altar</li>
             <li><svg class="icon lg-swatch" style="color:#8fd0c8" aria-hidden="true"><use href="./assets/icons/icons.svg#ic-map-camp"></use></svg> Creek Nest (small camp)</li>
-            <li><span class="lg-swatch" style="display:inline-block;border-radius:50%;background:#d9a55c"></span> Boar Den (medium camp)</li>
-            <li><span class="lg-swatch" style="display:inline-block;background:#e0806e;clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%)"></span> Cyclops Hollow (strong camp)</li>
-            <li><span class="lg-swatch" style="display:inline-block;background:#7fa8e0;transform:rotate(45deg)"></span> Sphinx Perch (specialist camp)</li>
+            <li><svg class="icon lg-swatch" style="color:#d9a55c" aria-hidden="true"><use href="./assets/icons/icons.svg#ic-map-camp-medium"></use></svg> Boar Den (medium camp)</li>
+            <li><svg class="icon lg-swatch" style="color:#e0806e" aria-hidden="true"><use href="./assets/icons/icons.svg#ic-map-camp-strong"></use></svg> Cyclops Hollow (strong camp)</li>
+            <li><svg class="icon lg-swatch" style="color:#7fa8e0" aria-hidden="true"><use href="./assets/icons/icons.svg#ic-map-camp-specialist"></use></svg> Sphinx Perch (specialist camp)</li>
             <li><svg class="icon lg-swatch" style="color:#e8c66a" aria-hidden="true"><use href="./assets/icons/icons.svg#ic-map-boss"></use></svg> The Labyrinth (boss ground)</li>
-            <li><span class="lg-swatch" style="display:inline-block;border:2px dashed #9ec6cf;border-radius:50%"></span> Stalking Horror territory</li>
+            <li><svg class="icon lg-swatch" style="color:#9ec6cf" aria-hidden="true"><use href="./assets/icons/icons.svg#ic-map-hunter"></use></svg> Stalking Horror territory</li>
           </ul>
         </aside>
       </div>
@@ -304,7 +309,6 @@
     </div>
     <div class="footer-bottom">
       <span>Triarchs of Olympus — created by Aluca Sol.</span>
-      <span>Unofficial promotional site.</span>
     </div>
   </div>
 </footer>
