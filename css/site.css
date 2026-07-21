@@ -4,6 +4,13 @@
    near-black stone backgrounds) and the three empire colours (Azure,
    Crimson, Verdant) defined in src/data/heroes.ts (PLAYER_COLORS).
    ========================================================================== */
+@font-face {
+  font-family: "Diogenes";
+  src: url("../assets/fonts/DIOGENES.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
 
 :root {
   /* ---- surfaces ---- */
@@ -69,7 +76,7 @@
   --gutter: clamp(1.2rem, 4vw, 3rem);
 
   /* ---- type ---- */
-  --font-display: Cambria, "Palatino Linotype", "Book Antiqua", Georgia, "Times New Roman", serif;
+   --font-display: Cambria, "Palatino Linotype", "Book Antiqua", Georgia, "Times New Roman", serif;
   --font-body: Georgia, "Iowan Old Style", "Palatino Linotype", "Book Antiqua", "Times New Roman", serif;
   --font-ui: "Trebuchet MS", "Segoe UI", Verdana, sans-serif;
 
@@ -493,7 +500,7 @@ section + section { border-top: 1px solid rgba(138, 106, 46, 0.14); }
   inset: 0;
   background: radial-gradient(ellipse 60% 40% at 50% 0%, rgba(207, 230, 255, 0.5), transparent 60%);
   opacity: 0;
-  animation: flash 05s ease-in-out infinite;
+  animation: flash 04s ease-in-out infinite;
 }
 @keyframes flash {
   0%, 92%, 100% { opacity: 0; }
@@ -574,12 +581,12 @@ section + section { border-top: 1px solid rgba(138, 106, 46, 0.14); }
 .hero-inner { position: relative; z-index: 2; max-width: 900px; margin: 0 auto; }
 
 .game-title-lockup {
-  font-family: var(--font-display);
+  font-family: "Diogenes", var(--font-display);
   font-weight: 700;
-  letter-spacing: 0.22em;
+  letter-spacing: 0.32em;
   text-transform: uppercase;
   color: var(--gold-400);
-  text-shadow: 0 0 40px var(--gold-glow), 0 3px 0 var(--bronze-700), 0 8px 20px rgba(0, 0, 0, 0.85);
+  text-shadow: 0 0 40px var(--gold-glow), 2px 2px 0 var(--bronze-700), 0 8px 20px rgba(0, 0, 0, 0.85);
   line-height: 1.05;
 }
 .game-title-lockup .of {

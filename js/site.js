@@ -59,6 +59,50 @@
     });
   }
 
+  /* ---------------- hero bust name popovers ---------------- */
+  var bustWraps = document.querySelectorAll(".bust-wrap");
+  if (bustWraps.length) {
+    var openBustWrap = null;
+
+    function closeBustPop(returnFocus) {
+      if (!openBustWrap) return;
+      var wrap = openBustWrap;
+      var trigger = wrap.querySelector(".bust-trigger");
+      var pop = wrap.querySelector(".bust-popover");
+      pop.hidden = true;
+      trigger.setAttribute("aria-expanded", "false");
+      openBustWrap = null;
+      if (returnFocus) trigger.focus();
+    }
+
+    bustWraps.forEach(function (wrap) {
+      var trigger = wrap.querySelector(".bust-trigger");
+      var pop = wrap.querySelector(".bust-popover");
+      var closeBtn = pop.querySelector(".dp-close");
+      if (!trigger || !pop) return;
+
+      trigger.addEventListener("click", function (e) {
+        e.stopPropagation();
+        var wasOpen = openBustWrap === wrap;
+        closeBustPop(false);
+        if (!wasOpen) {
+          pop.hidden = false;
+          trigger.setAttribute("aria-expanded", "true");
+          openBustWrap = wrap;
+          if (closeBtn) closeBtn.focus();
+        }
+      });
+      if (closeBtn) closeBtn.addEventListener("click", function () { closeBustPop(true); });
+    });
+
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && openBustWrap) closeBustPop(true);
+    });
+    document.addEventListener("click", function (e) {
+      if (openBustWrap && !openBustWrap.contains(e.target)) closeBustPop(false);
+    });
+  }
+
   /* ---------------- ember particles (atmosphere) ---------------- */
   if (!reduceMotion) {
     document.querySelectorAll(".atmosphere[data-embers]").forEach(function (layer) {
