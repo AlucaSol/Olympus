@@ -493,7 +493,7 @@ section + section { border-top: 1px solid rgba(138, 106, 46, 0.14); }
   inset: 0;
   background: radial-gradient(ellipse 60% 40% at 50% 0%, rgba(207, 230, 255, 0.5), transparent 60%);
   opacity: 0;
-  animation: flash 11s ease-in-out infinite;
+  animation: flash 05s ease-in-out infinite;
 }
 @keyframes flash {
   0%, 92%, 100% { opacity: 0; }

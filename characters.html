@@ -164,7 +164,7 @@
       img.getAttribute("alt") || ""
     ].join(" ").toLowerCase();
 
-    if (/ability|skill|icon|sprite|badge|emblem/.test(descriptor)) return;
+    if (/ability|skill|icon|sprite|badge|emblem|battle/.test(descriptor)) return;
 
     const applyClass = () => {
       const isLargeArtwork =

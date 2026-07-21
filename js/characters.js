@@ -8,7 +8,7 @@
   var HEROES = [
     {
       id: "alkaios", name: "Alkaios", title: "the Bronze Duellist", role: "Duellist",
-      portrait: "Alkaios-portrait.png", icon: "alkaios-icon.svg",
+      portrait: "Alkaios-portrait.png", icon: "alkaios-battle.png",
       lore: "Champion of a hundred funeral games, Alkaios swore his blade to no king — only to the next worthy opponent.",
       strengths: "Devastating single-target damage; executes wounded heroes.",
       weaknesses: "Slow; struggles against kiting and mobs.",
@@ -22,7 +22,7 @@
     },
     {
       id: "kyra", name: "Kyra", title: "Huntress of the Silver Vale", role: "Marksman",
-      portrait: "Kyra-portrait.png", icon: "kyra-icon.svg",
+      portrait: "Kyra-portrait.png", icon: "kyra-battle.png",
       lore: "Raised by the moon-priestesses, Kyra can thread an arrow through a keyhole at three hundred paces — and has, twice.",
       strengths: "Longest range in the game; punishes immobile foes.",
       weaknesses: "Fragile; helpless when cornered.",
@@ -36,7 +36,7 @@
     },
     {
       id: "skiron", name: "Skiron", title: "the Wind Thief", role: "Trickster",
-      portrait: "Skiron-portrait.png", icon: "skiron-icon.svg",
+      portrait: "Skiron-portrait.png", icon: "skiron-battle.png",
       lore: "They say Skiron stole the north wind's sandals as a boy and has been outrunning its fury ever since.",
       strengths: "Extreme mobility; picks fights and leaves them at will.",
       weaknesses: "Low health; weak when dashes are on cooldown.",
@@ -50,7 +50,7 @@
     },
     {
       id: "thalassa", name: "Thalassa", title: "Tidecaller of the Drowned Court", role: "Controller",
-      portrait: "Thalassa-portrait.png", icon: "thalassa-icon.svg",
+      portrait: "Thalassa-portrait.png", icon: "thalassa-battle.png",
       lore: "Exiled priestess of a sunken temple, Thalassa carries the sea in an amphora and grief in her wake.",
       strengths: "Superb zone control and displacement.",
       weaknesses: "Low sustained damage; needs terrain to shine.",
@@ -64,7 +64,7 @@
     },
     {
       id: "lysander", name: "Lysander", title: "Voice of the Phalanx", role: "Commander",
-      portrait: "Lysander-portrait.png", icon: "lysander-icon.svg",
+      portrait: "Lysander-portrait.png", icon: "lysander-battle.png",
       lore: "The youngest strategos ever to carry the speaking-staff, Lysander wins battles before his enemies know one has begun.",
       strengths: "Turns ordinary lane mobs into a personal army.",
       weaknesses: "Modest personal damage; weak without troops.",
@@ -78,7 +78,7 @@
     },
     {
       id: "doria", name: "Doria", title: "Shield of Ages", role: "Guardian",
-      portrait: "Doria-portrait.png", icon: "doria-icon.svg",
+      portrait: "Doria-portrait.png", icon: "doria-battle.png",
       lore: "Her tower-shield was cut from the hull of a Titan-era warship. Doria has never once taken a backward step.",
       strengths: "Immense durability; protects towers and mobs.",
       weaknesses: "Low damage; easily outpaced.",
@@ -92,7 +92,7 @@
     },
     {
       id: "iole", name: "Iole", title: "the Grove Mender", role: "Support",
-      portrait: "Iole-portrait.png", icon: "iole-icon.svg",
+      portrait: "Iole-portrait.png", icon: "iole-battle.png",
       lore: "Where armies salt the earth, Iole follows, and the olives grow back twisted, thorned, and loyal.",
       strengths: "Sustains herself and her mob waves far beyond their span.",
       weaknesses: "Poor burst; vulnerable while healing.",
@@ -106,7 +106,7 @@
     },
     {
       id: "pyrrhos", name: "Pyrrhos", title: "Ember of the Titans", role: "Titan Caster",
-      portrait: "Pyrrhos-portrait.png", icon: "pyrrhos-icon.svg",
+      portrait: "Pyrrhos-portrait.png", icon: "pyrrhos-battle.png",
       lore: "Pyrrhos drank from a cracked crucible of Titan fire. It is burning him alive, and he considers it a fair price.",
       strengths: "Terrifying area damage that scales with the risks he takes.",
       weaknesses: "His own magic costs him health.",
@@ -149,12 +149,11 @@
     card.id = "hero-" + hero.id;
 
     var art = el("div", "char-art");
-    art.innerHTML = '<img src="assets/characters/' + hero.portrait + '" alt="Promotional illustration of ' + hero.name + ', ' + hero.title + '" loading="lazy" width="1023" height="1537">';
-
-    var iconBlock = el("div", "char-icon-block");
-    iconBlock.innerHTML =
-      '<div class="char-icon-frame"><img src="assets/characters/' + hero.icon + '" alt="" loading="lazy" width="64" height="64"></div>' +
-      '<span class="char-icon-label">Battlefield Appearance</span>';
+    art.innerHTML =
+      '<img src="assets/characters/' + hero.portrait + '" alt="Promotional illustration of ' + hero.name + ', ' + hero.title + '" loading="lazy" width="1023" height="1537">' +
+      '<div class="char-icon-block">' +
+        '<div class="char-icon-frame"><img src="assets/characters/' + hero.icon + '" alt="" loading="lazy" width="64" height="64"></div>' +
+      '</div>';
 
     var body = el("div", "char-body");
     var abilitiesHtml = hero.abilities.map(function (a) {
@@ -177,7 +176,6 @@
 
     card.appendChild(art);
     card.appendChild(body);
-    card.appendChild(iconBlock);
     return card;
   }
 

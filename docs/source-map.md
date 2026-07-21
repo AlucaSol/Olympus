@@ -15,12 +15,12 @@ building this site — everything below was read-only research.
 
 | Fact used on site | Source |
 |---|---|
-| "Three-player free-for-all MOBA", "symmetric triangular battlefield", "last standing acropolis wins", multiplayer model (1 human + 2 AI / 2 humans + 1 AI / 3 humans, PeerJS, no accounts/backend), "8 unique heroes with 5-ability kits that unlock at levels 0/5/10/15/20", jungle/towers/capture points/rare bosses, "everything resets every match" | `README.md` |
+| "Three-player free-for-all MOBA", "symmetric triangular battlefield", "last standing acropolis wins", multiplayer model (1 human + 2 AI / 2 humans + 1 AI / 3 humans, PeerJS, no accounts/backend), "8 unique heroes with 5-ability kits that unlock at levels 0/5/10/15/20", labyrinth/towers/capture points/rare bosses, "everything resets every match" | `README.md` |
 | Empire names **Azure**, **Crimson**, **Verdant** and their hex colours | `src/data/heroes.ts` → `PLAYER_COLORS` |
 | "\<Winner\> rules Olympus!" victory line (basis for "The War for Olympus" framing) | `src/game/game.ts` line ~625 |
 | "The war for Olympus begins!" match-start announcement | `src/main.ts` line ~458 |
 | Tower counts, tiers (outer/inner) and shop/upgrade names ("Agora of the Empire", "Temple of Ascension") | `index.html` (root dev shell), `src/ui/menus.ts` |
-| Central balance philosophy (single tuning file, hand-authored jungle) | `src/data/balance.ts` header comment, `src/game/map.ts` header comment |
+| Central balance philosophy (single tuning file, hand-authored labyrinth) | `src/data/balance.ts` header comment, `src/game/map.ts` header comment |
 
 No overarching pantheon myth beyond "three empires fighting for Olympus, last
 acropolis standing wins" was found anywhere in the project. No file states
@@ -170,7 +170,7 @@ page therefore does not invent any personal history — its "Why Triarchs of
 Olympus Exists" and "Design Philosophy" sections instead draw only on
 verifiable project facts (the README's stated multiplayer model, and the
 structural evidence of a single central balance file and hand-authored
-jungle in `balance.ts` / `map.ts`).
+labyrinth in `balance.ts` / `map.ts`).
 
 The About page portrait (`SITE/assets/decorative/about-portrait.svg`) is
 wholly original illustration created for this site per the brief's request

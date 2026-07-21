@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="t">
-<title id="t">Simplified battlefield icon of Alkaios</title>
-<circle cx="32" cy="32" r="30" fill="#1c160c"/>
-<circle cx="32" cy="20" r="10" fill="#c9822f"/>
-<path d="M18 52c1-12 6-18 14-18s13 6 14 18Z" fill="#a8672a"/>
-<path d="M12 30l40 20M52 30L12 50" stroke="#e8e0d0" stroke-width="3" stroke-linecap="round"/>
-<circle cx="32" cy="32" r="30" fill="none" stroke="#c9822f" stroke-width="2.5"/>
-</svg>
