@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Triarchs of Olympus — The World</title>
+<meta name="description" content="Explore the Battlefield of the Triarchs: capture points, towers, jungle camps, the wandering hunter and the timed bosses of Triarchs of Olympus.">
+<meta name="theme-color" content="#0d0e14">
+<meta property="og:title" content="The World — Triarchs of Olympus">
+<meta property="og:description" content="Explore the Battlefield of the Triarchs: capture points, towers, jungle camps, the wandering hunter and the timed bosses.">
+<meta property="og:type" content="website">
+<link rel="icon" href="./assets/decorative/emblem.svg" type="image/svg+xml">
+<link rel="stylesheet" href="./css/site.css">
+<link rel="stylesheet" href="./css/responsive.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to main content</a>
+
+<header class="site-header">
+  <nav class="nav-bar" aria-label="Primary">
+    <a href="home.html" class="brand">
+      <img src="./assets/decorative/emblem.svg" alt="" class="brand-mark">
+      TRIARCHS<small>OF OLYMPUS</small>
+    </a>
+    <button class="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-links">
+      <svg class="icon" aria-hidden="true"><use href="./assets/icons/icons.svg#ic-menu"></use></svg>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="home.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="characters.html">Characters</a>
+      <a href="world.html" aria-current="page">World</a>
+      <a href="https://triarchsofolympus.jj-games.org" class="nav-cta">Play Now</a>
+      <div class="download-wrap">
+        <button class="nav-link" id="download-trigger" type="button" aria-haspopup="dialog" aria-expanded="false">
+          <svg class="icon" aria-hidden="true"><use href="./assets/icons/icons.svg#ic-download"></use></svg> Download
+        </button>
+        <div class="download-popover" id="download-popover" role="dialog" aria-label="Download status" hidden>
+          <button class="dp-close" type="button" aria-label="Close">
+            <svg class="icon" aria-hidden="true"><use href="./assets/icons/icons.svg#ic-close"></use></svg>
+          </button>
+          Downloadable client coming soon
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<main id="main">
+  <div class="page-header">
+    <p class="eyebrow">The Battlefield</p>
+    <h1>The Battlefield of the Triarchs</h1>
+    <p>One symmetric triangular map, authored as a single sector and mirrored three ways so every empire faces identical terrain.</p>
+  </div>
+
+  <!-- ============ MAP ============ -->
+  <section class="world-section">
+    <div class="wrap">
+      <div class="map-shell">
+        <div class="map-frame reveal" tabindex="0" aria-label="Interactive map of the Battlefield of the Triarchs. Hover or focus a marker to see its name.">
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 960" role="img" aria-labelledby="mapTitle mapDesc" id="battlefield-map">
+<title id="mapTitle">Map of the Battlefield of the Triarchs</title>
+<desc id="mapDesc">A symmetric triangular battlefield with three empire acropolises at the corners, joined by three lanes, each guarded by two towers per approach, with a jungle between the lanes containing neutral camps, three capture-point altars, and a central labyrinth where the boss dwells.</desc>
+<defs>
+  <radialGradient id="terrainGlow" cx="50%" cy="50%" r="60%">
+    <stop offset="0%" stop-color="#1c1810"/>
+    <stop offset="70%" stop-color="#100e0a"/>
+    <stop offset="100%" stop-color="#08070a"/>
+  </radialGradient>
+  <symbol id="glyphBase" viewBox="0 0 24 24"><path d="M4 20V10l8-6 8 6v10z" fill="currentColor" fill-opacity="0.25" stroke="currentColor" stroke-width="2"/><path d="M9 20v-6h6v6" fill="none" stroke="currentColor" stroke-width="2"/></symbol>
+  <symbol id="glyphTower" viewBox="0 0 24 24"><path d="M8 21V9l4-6 4 6v12z" fill="currentColor" fill-opacity="0.3" stroke="currentColor" stroke-width="2"/><path d="M6 21h12M8 14h8" stroke="currentColor" stroke-width="2"/></symbol>
+  <symbol id="glyphCapture" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="3.6" fill="currentColor"/><path d="M12 1v3M12 20v3M1 12h3M20 12h3" stroke="currentColor" stroke-width="2"/></symbol>
+  <symbol id="glyphSmall" viewBox="0 0 24 24"><path d="M12 2l9 6-3 10-6 4-6-4-3-10z" fill="currentColor" fill-opacity="0.3" stroke="currentColor" stroke-width="2"/></symbol>
+  <symbol id="glyphMedium" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="currentColor" fill-opacity="0.3" stroke="currentColor" stroke-width="2"/></symbol>
+  <symbol id="glyphStrong" viewBox="0 0 24 24"><path d="M12 2l8.5 5v10L12 22l-8.5-5V7z" fill="currentColor" fill-opacity="0.3" stroke="currentColor" stroke-width="2"/></symbol>
+  <symbol id="glyphSpecialist" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2" transform="rotate(45 12 12)" fill="currentColor" fill-opacity="0.3" stroke="currentColor" stroke-width="2"/></symbol>
+  <symbol id="glyphBoss" viewBox="0 0 24 24"><path d="M13 2L4 14h6l-1 8 10-13h-6l1-7z" fill="currentColor"/></symbol>
+</defs>
+
+<rect width="960" height="960" fill="url(#terrainGlow)"/>
+<circle cx="480" cy="480" r="462" fill="none" stroke="#2a2a20" stroke-width="2" stroke-dasharray="3 6" opacity="0.6"/>
+
+<g fill="none" stroke="#3a3428" stroke-width="26" stroke-linecap="round" stroke-linejoin="round" opacity="0.55">
+  <path d="M480,70 534,121 584,174 630,229 672,287 710,348 743,410 772,475 797,543 818,613 835,685"/>
+  <path d="M835,685 764,707 693,723 622,735 551,743 480,745 409,743 338,735 267,723 196,707 125,685"/>
+  <path d="M125,685 142,613 163,543 188,475 217,410 251,348 288,287 330,229 376,174 426,121 480,70"/>
+</g>
+<g fill="none" stroke="#5a4f38" stroke-width="2" stroke-dasharray="1 10" stroke-linecap="round" opacity="0.6">
+  <path d="M480,70 534,121 584,174 630,229 672,287 710,348 743,410 772,475 797,543 818,613 835,685"/>
+  <path d="M835,685 764,707 693,723 622,735 551,743 480,745 409,743 338,735 267,723 196,707 125,685"/>
+  <path d="M125,685 142,613 163,543 188,475 217,410 251,348 288,287 330,229 376,174 426,121 480,70"/>
+</g>
+
+<path class="map-marker" tabindex="0" role="img" fill="none" stroke="#9ec6cf" stroke-width="3" stroke-dasharray="6 7" opacity="0.75"
+  d="M431,417 420,332 540,332 529,417 559,469 638,502 579,606 510,554 450,554 382,606 322,502 401,469 Z">
+  <title>The Stalking Horror's territory — a wandering jungle hunter that ambushes isolated heroes</title>
+</path>
+
+<circle cx="480" cy="480" r="62" fill="#241a08" stroke="#c9a44c" stroke-width="2" opacity="0.9"/>
+<circle cx="480" cy="480" r="46" fill="none" stroke="#8a6a2e" stroke-width="1.4" opacity="0.8"/>
+<g class="map-marker" tabindex="0" role="img" color="#e8c66a">
+  <title>The Labyrinth — spawn ground of the timed boss, Talandros the Bronze Colossus or Chthonia, Maw of the Deep</title>
+  <use href="#glyphBoss" x="466" y="466" width="28" height="28"/>
+</g>
+
+<g color="#8fd0c8">
+  <g class="map-marker" tabindex="0" role="img"><title>Creek Nest — small camp, home to the Cave Grub</title><use href="#glyphSmall" x="386" y="363" width="22" height="22"/></g>
+  <g class="map-marker" tabindex="0" role="img"><title>Creek Nest — small camp, home to the Cave Grub</title><use href="#glyphSmall" x="603" y="450" width="22" height="22"/></g>
+  <g class="map-marker" tabindex="0" role="img"><title>Creek Nest — small camp, home to the Cave Grub</title><use href="#glyphSmall" x="283" y="594" width="22" height="22"/></g>
+</g>
+<g color="#d9a55c">
+  <g class="map-marker" tabindex="0" role="img"><title>Boar Den — medium camp, home to the Bristleback Boar</title><use href="#glyphMedium" x="516" y="280" width="22" height="22"/></g>
+  <g class="map-marker" tabindex="0" role="img"><title>Boar Den — medium camp, home to the Bristleback Boar</title><use href="#glyphMedium" x="609" y="605" width="22" height="22"/></g>
+  <g class="map-marker" tabindex="0" role="img"><title>Boar Den — medium camp, home to the Bristleback Boar</title><use href="#glyphMedium" x="182" y="526" width="22" height="22"/></g>
+</g>
+<g color="#e0806e">
+  <g class="map-marker" tabindex="0" role="img"><title>Cyclops Hollow — strong camp, home to the Cyclops. Grants +15% attack, +8 armor for 90s</title><use href="#glyphStrong" x="607" y="353" width="22" height="22"/></g>
+  <g class="map-marker" tabindex="0" role="img"><title>Cyclops Hollow — strong camp, home to the Cyclops. Grants +15% attack, +8 armor for 90s</title><use href="#glyphStrong" x="502" y="562" width="22" height="22"/></g>
+  <g class="map-marker" tabindex="0" role="img"><title>Cyclops Hollow — strong camp, home to the Cyclops. Grants +15% attack, +8 armor for 90s</title><use href="#glyphStrong" x="300" y="408" width="22" height="22"/></g>
+</g>
+<g color="#7fa8e0">
+  <g class="map-marker" tabindex="0" role="img"><title>Sphinx Perch — specialist camp, home to the Sphinx. Grants +12% speed, +10% power for 75s</title><use href="#glyphSpecialist" x="440" y="263" width="22" height="22"/></g>
+  <g class="map-marker" tabindex="0" role="img"><title>Sphinx Perch — specialist camp, home to the Sphinx. Grants +12% speed, +10% power for 75s</title><use href="#glyphSpecialist" x="662" y="547" width="22" height="22"/></g>
+  <g class="map-marker" tabindex="0" role="img"><title>Sphinx Perch — specialist camp, home to the Sphinx. Grants +12% speed, +10% power for 75s</title><use href="#glyphSpecialist" x="305" y="597" width="22" height="22"/></g>
+</g>
+
+<g color="#f0d888">
+  <g class="map-marker" tabindex="0" role="img"><title>Altar of War — capture point. Held empire's mobs deal +12% damage</title><use href="#glyphCapture" x="619" y="380" width="26" height="26"/></g>
+  <g class="map-marker" tabindex="0" role="img"><title>Altar of Stone — capture point. Held empire's mobs gain +18% max HP</title><use href="#glyphCapture" x="467" y="642" width="26" height="26"/></g>
+  <g class="map-marker" tabindex="0" role="img"><title>Altar of Wind — capture point. Held empire's mobs gain +15% speed</title><use href="#glyphCapture" x="315" y="380" width="26" height="26"/></g>
+</g>
+
+<g color="#7fb0ff">
+  <g class="map-marker" tabindex="0" role="img"><title>Azure outer tower</title><use href="#glyphTower" x="601" y="197" width="20" height="20"/></g>
+  <g class="map-marker" tabindex="0" role="img"><title>Azure inner tower</title><use href="#glyphTower" x="540" y="127" width="20" height="20"/></g>
+  <g class="map-marker" tabindex="0" role="img"><title>Azure outer tower</title><use href="#glyphTower" x="338" y="197" width="20" height="20"/></g>
+  <g class="map-marker" tabindex="0" role="img"><title>Azure inner tower</title><use href="#glyphTower" x="401" y="127" width="20" height="20"/></g>
+</g>
+<g color="#ff9b85">
+  <g class="map-marker" tabindex="0" role="img"><title>Crimson outer tower</title><use href="#glyphTower" x="640" y="721" width="20" height="20"/></g>
+  <g class="map-marker" tabindex="0" role="img"><title>Crimson inner tower</title><use href="#glyphTower" x="733" y="702" width="20" height="20"/></g>
+  <g class="map-marker" tabindex="0" role="img"><title>Crimson outer tower</title><use href="#glyphTower" x="773" y="492" width="20" height="20"/></g>
+  <g class="map-marker" tabindex="0" role="img"><title>Crimson inner tower</title><use href="#glyphTower" x="802" y="582" width="20" height="20"/></g>
+</g>
+<g color="#96e587">
+  <g class="map-marker" tabindex="0" role="img"><title>Verdant outer tower</title><use href="#glyphTower" x="167" y="492" width="20" height="20"/></g>
+  <g class="map-marker" tabindex="0" role="img"><title>Verdant inner tower</title><use href="#glyphTower" x="138" y="582" width="20" height="20"/></g>
+  <g class="map-marker" tabindex="0" role="img"><title>Verdant outer tower</title><use href="#glyphTower" x="300" y="721" width="20" height="20"/></g>
+  <g class="map-marker" tabindex="0" role="img"><title>Verdant inner tower</title><use href="#glyphTower" x="207" y="702" width="20" height="20"/></g>
+</g>
+
+<g color="#7fb0ff">
+  <g class="map-marker" tabindex="0" role="img"><title>Azure Empire Acropolis — Azure's home base</title><use href="#glyphBase" x="462" y="42" width="36" height="36"/></g>
+</g>
+<g color="#ff9b85">
+  <g class="map-marker" tabindex="0" role="img"><title>Crimson Empire Acropolis — Crimson's home base</title><use href="#glyphBase" x="817" y="657" width="36" height="36"/></g>
+</g>
+<g color="#96e587">
+  <g class="map-marker" tabindex="0" role="img"><title>Verdant Empire Acropolis — Verdant's home base</title><use href="#glyphBase" x="107" y="657" width="36" height="36"/></g>
+</g>
+</svg>
+
+        </div>
+
+        <aside class="legend panel ornate-frame reveal" aria-label="Map legend">
+          <h3>Legend</h3>
+          <ul>
+            <li><svg class="icon lg-swatch" style="color:#e8dcc0" aria-hidden="true"><use href="./assets/icons/icons.svg#ic-map-base"></use></svg> Empire Acropolis (base)</li>
+            <li><svg class="icon lg-swatch" style="color:#e8dcc0" aria-hidden="true"><use href="./assets/icons/icons.svg#ic-map-tower"></use></svg> Tower (outer &amp; inner)</li>
+            <li><svg class="icon lg-swatch" style="color:#f0d888" aria-hidden="true"><use href="./assets/icons/icons.svg#ic-map-capture"></use></svg> Capture point altar</li>
+            <li><svg class="icon lg-swatch" style="color:#8fd0c8" aria-hidden="true"><use href="./assets/icons/icons.svg#ic-map-camp"></use></svg> Creek Nest (small camp)</li>
+            <li><span class="lg-swatch" style="display:inline-block;border-radius:50%;background:#d9a55c"></span> Boar Den (medium camp)</li>
+            <li><span class="lg-swatch" style="display:inline-block;background:#e0806e;clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%)"></span> Cyclops Hollow (strong camp)</li>
+            <li><span class="lg-swatch" style="display:inline-block;background:#7fa8e0;transform:rotate(45deg)"></span> Sphinx Perch (specialist camp)</li>
+            <li><svg class="icon lg-swatch" style="color:#e8c66a" aria-hidden="true"><use href="./assets/icons/icons.svg#ic-map-boss"></use></svg> The Labyrinth (boss ground)</li>
+            <li><span class="lg-swatch" style="display:inline-block;border:2px dashed #9ec6cf;border-radius:50%"></span> Stalking Horror territory</li>
+          </ul>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ LOCATIONS ============ -->
+  <section class="world-section">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">Strategic Ground</p>
+        <h2>Key Locations</h2>
+      </div>
+      <div class="location-grid">
+        <div class="location-card reveal">
+          <h3>The Three Acropolises</h3>
+          <p>Each empire's home base and win condition. Heroes are fully healed inside their own base's zone, and a base takes zero damage from enemy heroes — only lane mobs and authorised summons can bring one down.</p>
+        </div>
+        <div class="location-card reveal">
+          <h3>Capture Point Altars</h3>
+          <p>Three walled sanctums — the Altar of War, Altar of Stone and Altar of Wind — sit off-lane, each defended by three Altar Guardians. Standing uncontested for 8 seconds captures the altar for your empire; progress decays if you abandon the attempt.</p>
+        </div>
+        <div class="location-card reveal">
+          <h3>The Labyrinth</h3>
+          <p>The walled arena at the exact centre of the map. From the ten-minute mark, a great presence stirs here roughly every ten minutes, spawning one of the two bosses.</p>
+        </div>
+        <div class="location-card reveal">
+          <h3>The Jungle Maze</h3>
+          <p>A hand-authored web of corridors, chokepoints and long grass connecting the lanes, home to four kinds of neutral camp and the wandering hunter.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ WORLD MOBS ============ -->
+  <section class="world-section">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">Creatures of the Battlefield</p>
+        <h2>Mobs, Camps &amp; Bosses</h2>
+        <p>Standard lane forces, neutral jungle camps, the wandering hunter, and the two timed bosses — with the real buffs and rewards each grants.</p>
+      </div>
+
+      <div class="mob-tier-block reveal">
+        <h3>Lane Mobs</h3>
+        <p class="tier-desc">Waves of these march down each lane every 25 seconds after the first spawn at 0:05, growing stronger as the match goes on.</p>
+        <div class="mob-grid">
+          <div class="mob-card"><span class="mob-icon"><svg class="icon" aria-hidden="true"><use href="./assets/icons/icons.svg#ic-hoplite"></use></svg></span>
+            <div><h4>Hoplite</h4><p>The standard melee wave mob, marching in numbers behind its shield.</p></div></div>
+          <div class="mob-card"><span class="mob-icon"><svg class="icon" aria-hidden="true"><use href="./assets/icons/icons.svg#ic-slinger"></use></svg></span>
+            <div><h4>Slinger</h4><p>Ranged wave support that pelts foes from behind the Hoplites.</p></div></div>
+          <div class="mob-card"><span class="mob-icon"><svg class="icon" aria-hidden="true"><use href="./assets/icons/icons.svg#ic-champion"></use></svg></span>
+            <div><h4>Champion</h4><p>A far stronger mob that reinforces every third wave.</p></div></div>
+          <div class="mob-card"><span class="mob-icon"><svg class="icon" aria-hidden="true"><use href="./assets/icons/icons.svg#ic-raider"></use></svg></span>
+            <div><h4>Raider</h4><p>A fast, aggressive mob that joins the waves from the fourteen-minute mark onward.</p></div></div>
+        </div>
+      </div>
+
+      <div class="mob-tier-block reveal">
+        <h3>Neutral Camps</h3>
+        <p class="tier-desc">Four distinct camps live in the jungle, one of each kind per empire's territory. Cyclops Hollow and Sphinx Perch grant a temporary empire buff on top of gold and experience; Creek Nest and Boar Den grant gold and experience alone.</p>
+        <div class="mob-grid">
+          <div class="mob-card"><span class="mob-icon"><svg class="icon" aria-hidden="true"><use href="./assets/icons/icons.svg#ic-cavegrub"></use></svg></span>
+            <div><h4>Cave Grub — Creek Nest</h4><p>Small camp; respawns 3 minutes after being cleared.</p></div></div>
+          <div class="mob-card"><span class="mob-icon"><svg class="icon" aria-hidden="true"><use href="./assets/icons/icons.svg#ic-boar"></use></svg></span>
+            <div><h4>Bristleback Boar — Boar Den</h4><p>Medium camp; respawns 4 minutes after being cleared.</p></div></div>
+          <div class="mob-card rare"><span class="mob-icon"><svg class="icon" aria-hidden="true"><use href="./assets/icons/icons.svg#ic-cyclops"></use></svg></span>
+            <div><h4>Cyclops — Cyclops Hollow</h4><p>Strong camp; respawns 5 minutes after being cleared.</p><p class="buff-line">Buff: +15% attack, +8 armor for 90s</p></div></div>
+          <div class="mob-card rare"><span class="mob-icon"><svg class="icon" aria-hidden="true"><use href="./assets/icons/icons.svg#ic-sphinx"></use></svg></span>
+            <div><h4>Sphinx — Sphinx Perch</h4><p>Specialist camp; respawns 5 minutes after being cleared.</p><p class="buff-line">Buff: +12% speed, +10% ability power for 75s</p></div></div>
+          <div class="mob-card"><span class="mob-icon"><svg class="icon" aria-hidden="true"><use href="./assets/icons/icons.svg#ic-guardian"></use></svg></span>
+            <div><h4>Altar Guardian</h4><p>Three guard each capture point and must be cleared before it can be captured. Respawn just over 2 minutes after all three fall.</p></div></div>
+        </div>
+      </div>
+
+      <div class="mob-tier-block reveal">
+        <h3>The Wandering Hunter</h3>
+        <p class="tier-desc">A single, singular threat that roams a loop through the inner and mid jungle.</p>
+        <div class="mob-grid">
+          <div class="mob-card rare"><span class="mob-icon"><svg class="icon" aria-hidden="true"><use href="./assets/icons/icons.svg#ic-hunterbeast"></use></svg></span>
+            <div><h4>The Stalking Horror</h4><p>A powerful beast that ambushes isolated heroes for bonus damage when it strikes from unseen, but flees to recover once badly wounded. It returns 3 minutes 20 seconds after being slain.</p></div></div>
+        </div>
+      </div>
+
+      <div class="mob-tier-block reveal">
+        <h3>Bosses</h3>
+        <p class="tier-desc">From the ten-minute mark, one of two bosses rises in the Labyrinth at the map's centre, alternating between spawns, with a warning thirty seconds before it appears. Whichever empire lands the killing blow gains a powerful, empire-wide buff.</p>
+        <div class="mob-grid">
+          <div class="mob-card boss"><span class="mob-icon"><svg class="icon" aria-hidden="true"><use href="./assets/icons/icons.svg#ic-colossus"></use></svg></span>
+            <div><h4>Talandros, the Bronze Colossus</h4><p>A slow, devastating boss that periodically slams the ground around itself for heavy area damage.</p></div></div>
+          <div class="mob-card boss"><span class="mob-icon"><svg class="icon" aria-hidden="true"><use href="./assets/icons/icons.svg#ic-maw"></use></svg></span>
+            <div><h4>Chthonia, Maw of the Deep</h4><p>A long-ranged boss that periodically unleashes a devastating breath attack down a corridor.</p></div></div>
+        </div>
+        <p class="tier-desc" style="margin-top: var(--space-3);"><strong class="gold-text">Boss buff:</strong> for 90 seconds, the killer's empire deals +25% damage to enemies with their lane mobs, and those mobs take 50% less damage from enemy towers.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="home.html" class="brand">
+          <img src="./assets/decorative/emblem.svg" alt="" class="brand-mark">
+          TRIARCHS<small>OF OLYMPUS</small>
+        </a>
+        <p>A three-player free-for-all MOBA set in an original Ancient-Greece-inspired world. Three empires. One survivor.</p>
+      </div>
+      <nav class="footer-nav" aria-label="Footer">
+        <div>
+          <h4>Explore</h4>
+          <ul>
+            <li><a href="index.html">Splash Page</a></li>
+            <li><a href="home.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="characters.html">Characters</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Play</h4>
+          <ul>
+            <li><a href="https://triarchsofolympus.jj-games.org">Play Now</a></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+    <div class="footer-bottom">
+      <span>Triarchs of Olympus — created by Aluca Sol.</span>
+      <span>Unofficial promotional site.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="./js/site.js"></script>
+</body>
+</html>

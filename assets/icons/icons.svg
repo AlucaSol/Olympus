@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+<defs>
+<style>
+  .ic-l { fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+  .ic-f { fill: currentColor; stroke: none; }
+</style>
+</defs>
+
+<!-- ============ UI ICONS ============ -->
+<symbol id="ic-menu" viewBox="0 0 24 24"><path class="ic-l" d="M3 6h18M3 12h18M3 18h18"/></symbol>
+<symbol id="ic-close" viewBox="0 0 24 24"><path class="ic-l" d="M5 5l14 14M19 5L5 19"/></symbol>
+<symbol id="ic-download" viewBox="0 0 24 24"><path class="ic-l" d="M12 3v12m0 0l-5-5m5 5l5-5M4 20h16"/></symbol>
+<symbol id="ic-play" viewBox="0 0 24 24"><path class="ic-l" d="M6 4l14 8-14 8V4z"/></symbol>
+<symbol id="ic-laurel" viewBox="0 0 24 24">
+  <path class="ic-l" d="M12 3c0 8-3 13-7 16"/><path class="ic-l" d="M12 3c0 8 3 13 7 16"/>
+  <path class="ic-l" d="M8 6l-3 1M7 9l-3.2.6M6.6 12.4L3.2 13.4M6.7 15.6L3.6 17"/>
+  <path class="ic-l" d="M16 6l3 1M17 9l3.2.6M17.4 12.4l3.4 1M17.3 15.6l3.1 1.4"/>
+</symbol>
+<symbol id="ic-lightning" viewBox="0 0 24 24"><path class="ic-f" d="M13 2L4 14h6l-1 8 10-13h-6l1-7z"/></symbol>
+<symbol id="ic-scroll" viewBox="0 0 24 24"><path class="ic-l" d="M6 4h11a2 2 0 012 2v13a2 2 0 01-2 2H8a2 2 0 01-2-2V4a2 2 0 00-2-2 2 2 0 00-2 2v1"/><path class="ic-l" d="M9 9h7M9 13h7M9 17h4"/></symbol>
+<symbol id="ic-compass" viewBox="0 0 24 24"><circle class="ic-l" cx="12" cy="12" r="9"/><path class="ic-f" d="M15 9l-2 5-5 2 2-5z"/></symbol>
+
+<!-- ============ ABILITY ICONS ============ -->
+<symbol id="ic-sword" viewBox="0 0 24 24"><path class="ic-l" d="M4 20L15 9M13 5l6 6-2 2-6-6zM9 15l-2 2M7 17l2 2-3 1z"/></symbol>
+<symbol id="ic-horn" viewBox="0 0 24 24"><path class="ic-l" d="M4 6c6 0 12 3 16 8-4-1-8-1-12 1 2-3 1-6-4-9z"/><circle class="ic-l" cx="5.5" cy="6.5" r="1.4"/></symbol>
+<symbol id="ic-blade" viewBox="0 0 24 24"><path class="ic-l" d="M3 12l14-7-3 7 3 7z"/><path class="ic-l" d="M14 12h7"/></symbol>
+<symbol id="ic-shield" viewBox="0 0 24 24"><path class="ic-l" d="M12 3l7 3v6c0 5-3 8-7 9-4-1-7-4-7-9V6z"/></symbol>
+<symbol id="ic-skull" viewBox="0 0 24 24"><path class="ic-l" d="M12 3a7 7 0 00-7 7c0 3 1.5 4.7 2.5 6h9c1-1.3 2.5-3 2.5-6a7 7 0 00-7-7z"/><circle class="ic-f" cx="9.5" cy="10" r="1.4"/><circle class="ic-f" cx="14.5" cy="10" r="1.4"/><path class="ic-l" d="M10 19v2M14 19v2"/></symbol>
+<symbol id="ic-arrow" viewBox="0 0 24 24"><path class="ic-l" d="M3 21L18 6M13 4h7v7M9 15l-3 3"/></symbol>
+<symbol id="ic-boots" viewBox="0 0 24 24"><path class="ic-l" d="M8 3v9l-5 4v2h10v-4h4c1 0 2-1 2-2 0-2-2-3-4-3h-2V3z"/></symbol>
+<symbol id="ic-volley" viewBox="0 0 24 24"><path class="ic-l" d="M4 20L12 4M9 6h5v5M12 20l8-16M17 6h5v5"/></symbol>
+<symbol id="ic-trap" viewBox="0 0 24 24"><circle class="ic-l" cx="12" cy="12" r="8"/><path class="ic-l" d="M6 8l3 3M18 8l-3 3M6 16l3-3M18 16l-3-3"/></symbol>
+<symbol id="ic-star" viewBox="0 0 24 24"><path class="ic-l" d="M12 2l2.7 6.5L22 9l-5.4 4.8L18 21l-6-3.9L6 21l1.4-7.2L2 9l7.3-.5z"/></symbol>
+<symbol id="ic-wind" viewBox="0 0 24 24"><path class="ic-l" d="M3 8h11a2.5 2.5 0 100-5M3 13h15a2.5 2.5 0 110 5M3 18h9"/></symbol>
+<symbol id="ic-mist" viewBox="0 0 24 24"><path class="ic-l" d="M4 9h16M6 13h12M4 17h16" opacity=".85"/></symbol>
+<symbol id="ic-slash" viewBox="0 0 24 24"><path class="ic-l" d="M4 18L18 4M9 4l11 11"/></symbol>
+<symbol id="ic-spiral" viewBox="0 0 24 24"><path class="ic-l" d="M12 12a2 2 0 11-2-2 4 4 0 114 4 6 6 0 11-6-6 8 8 0 118 8"/></symbol>
+<symbol id="ic-tempest" viewBox="0 0 24 24"><circle class="ic-l" cx="12" cy="12" r="8"/><path class="ic-l" d="M12 4a8 8 0 018 8M8 8a4 4 0 014 4"/></symbol>
+<symbol id="ic-drop" viewBox="0 0 24 24"><path class="ic-l" d="M12 3s6 7 6 11.5A6 6 0 016 14.5C6 10 12 3 12 3z"/></symbol>
+<symbol id="ic-pool" viewBox="0 0 24 24"><ellipse class="ic-l" cx="12" cy="12" rx="9" ry="5"/><path class="ic-l" d="M5 12c1 1.5 3 2 7 2s6-.5 7-2"/></symbol>
+<symbol id="ic-wave" viewBox="0 0 24 24"><path class="ic-l" d="M2 9c2-2 4-2 6 0s4 2 6 0 4-2 6 0M2 15c2-2 4-2 6 0s4 2 6 0 4-2 6 0"/></symbol>
+<symbol id="ic-pull" viewBox="0 0 24 24"><circle class="ic-l" cx="12" cy="12" r="3"/><path class="ic-l" d="M12 2v4M12 18v4M2 12h4M18 12h4M5 5l3 3M16 16l3 3M19 5l-3 3M8 16l-3 3"/></symbol>
+<symbol id="ic-tsunami" viewBox="0 0 24 24"><path class="ic-l" d="M2 18c2.5-6 5-9 7-9 1.5 0 2 1.5 3.5 1.5S15 8 17 8c2 0 3.5 2 5 4"/><path class="ic-l" d="M2 20h20"/></symbol>
+<symbol id="ic-banner" viewBox="0 0 24 24"><path class="ic-l" d="M6 3v18M6 4h11l-3 4 3 4H6"/></symbol>
+<symbol id="ic-spears" viewBox="0 0 24 24"><path class="ic-l" d="M6 21L18 3M18 3l-3 1 2 2zM18 21L6 3M6 3l3 1-2 2z"/></symbol>
+<symbol id="ic-charge" viewBox="0 0 24 24"><path class="ic-l" d="M4 12h13M12 6l6 6-6 6"/></symbol>
+<symbol id="ic-helm" viewBox="0 0 24 24"><path class="ic-l" d="M5 13a7 7 0 0114 0v3H5z"/><path class="ic-l" d="M12 2v5M9 21h6M10 16v3M14 16v3"/></symbol>
+<symbol id="ic-muster" viewBox="0 0 24 24"><circle class="ic-l" cx="8" cy="9" r="2.4"/><circle class="ic-l" cx="16" cy="9" r="2.4"/><path class="ic-l" d="M3 19c0-3 2.2-5 5-5s5 2 5 5M11 19c0-3 2.2-5 5-5s5 2 5 5"/></symbol>
+<symbol id="ic-bash" viewBox="0 0 24 24"><path class="ic-l" d="M4 20l7-7M13 5l6 6-4 4-6-6z"/><path class="ic-l" d="M3 9l2-2M19 3l2 2M6 15l-2 2"/></symbol>
+<symbol id="ic-taunt" viewBox="0 0 24 24"><circle class="ic-l" cx="12" cy="12" r="9"/><circle class="ic-l" cx="12" cy="12" r="4.2"/><circle class="ic-f" cx="12" cy="12" r="1.4"/></symbol>
+<symbol id="ic-quake" viewBox="0 0 24 24"><path class="ic-l" d="M2 15l4-4 3 3 4-6 3 4 6-6M2 19h20"/></symbol>
+<symbol id="ic-aegis" viewBox="0 0 24 24"><path class="ic-l" d="M12 3l7 3v6c0 5-3 8-7 9-4-1-7-4-7-9V6z"/><path class="ic-l" d="M9 12l2 2 4-4"/></symbol>
+<symbol id="ic-heart" viewBox="0 0 24 24"><path class="ic-l" d="M12 20S3 14 3 8.5A4.5 4.5 0 0112 6a4.5 4.5 0 019 2.5C21 14 12 20 12 20z"/></symbol>
+<symbol id="ic-thorn" viewBox="0 0 24 24"><path class="ic-l" d="M3 19C9 15 15 9 21 4M8 12l-3-1 1-3M15 6l-1-3 3 1"/></symbol>
+<symbol id="ic-leaf" viewBox="0 0 24 24"><path class="ic-l" d="M20 4C10 4 4 10 4 18c8 0 14-6 14-14z"/><path class="ic-l" d="M5 19L17 7"/></symbol>
+<symbol id="ic-sprout" viewBox="0 0 24 24"><path class="ic-l" d="M12 21V11"/><path class="ic-l" d="M12 11C12 6 8 5 5 5c0 4 2 6 7 6zM12 13c0-4 4-5 7-5 0 4-2 6-7 6z"/></symbol>
+<symbol id="ic-bloom" viewBox="0 0 24 24"><circle class="ic-l" cx="12" cy="12" r="2.4"/><circle class="ic-l" cx="12" cy="6" r="2.4"/><circle class="ic-l" cx="12" cy="18" r="2.4"/><circle class="ic-l" cx="6.5" cy="9" r="2.4"/><circle class="ic-l" cx="17.5" cy="9" r="2.4"/><circle class="ic-l" cx="6.5" cy="15" r="2.4"/><circle class="ic-l" cx="17.5" cy="15" r="2.4"/></symbol>
+<symbol id="ic-flame" viewBox="0 0 24 24"><path class="ic-l" d="M12 2c1 4-3 5-3 9a3 3 0 006 0c0-1-1-2-1-3 2 1 3 3 3 5a5 5 0 01-10 0c0-5 4-6 5-11z"/></symbol>
+<symbol id="ic-cinder" viewBox="0 0 24 24"><path class="ic-l" d="M12 4c1 3-2 4-2 7a2 2 0 004 0c0-.7-.6-1.3-.6-2 1.3.8 1.9 2 1.9 3.3A3.3 3.3 0 019 12.3C9 8.6 11.3 7 12 4z"/><path class="ic-l" d="M6 20l4-4M10 20l4-4M14 20l4-4"/></symbol>
+<symbol id="ic-ring" viewBox="0 0 24 24"><circle class="ic-l" cx="12" cy="12" r="8"/><circle class="ic-l" cx="12" cy="12" r="1.6"/></symbol>
+<symbol id="ic-pyre" viewBox="0 0 24 24"><path class="ic-l" d="M4 20h16M6 20l2-6h8l2 6"/><path class="ic-l" d="M12 3c1.4 3-1.6 3.6-1.6 6.4a1.6 1.6 0 003.2 0c0-.6-.5-1-.5-1.6 1 .7 1.5 1.7 1.5 2.8A2.6 2.6 0 019 10.6C9 7.2 11 6 12 3z"/></symbol>
+<symbol id="ic-meteor" viewBox="0 0 24 24"><circle class="ic-l" cx="14" cy="14" r="5"/><path class="ic-l" d="M14 4c-1 2-3 3-5 3M19 6c-.5 1.6-2 2.5-3.5 3"/></symbol>
+
+<!-- ============ WORLD & MOB ICONS ============ -->
+<symbol id="ic-hoplite" viewBox="0 0 24 24"><ellipse class="ic-l" cx="9" cy="12" rx="4" ry="5.5"/><path class="ic-l" d="M13 5L21 19"/><circle class="ic-l" cx="9" cy="12" r="1.4"/></symbol>
+<symbol id="ic-slinger" viewBox="0 0 24 24"><circle class="ic-l" cx="9" cy="10" r="5"/><path class="ic-l" d="M9 18v3M16 4l4 4-8 3z"/></symbol>
+<symbol id="ic-champion" viewBox="0 0 24 24"><path class="ic-l" d="M7 4h10l1 6c0 4-3 7-6 8-3-1-6-4-6-8z"/><path class="ic-l" d="M4 6l3-1M20 6l-3-1"/></symbol>
+<symbol id="ic-raider" viewBox="0 0 24 24"><path class="ic-l" d="M3 12l8-3 10 3-10 3z"/><path class="ic-l" d="M11 9v9"/></symbol>
+<symbol id="ic-conscript" viewBox="0 0 24 24"><circle class="ic-l" cx="12" cy="8" r="3"/><path class="ic-l" d="M6 21c0-4 3-7 6-7s6 3 6 7"/><path class="ic-l" d="M12 3v1"/></symbol>
+<symbol id="ic-cavegrub" viewBox="0 0 24 24"><ellipse class="ic-l" cx="10" cy="13" rx="7" ry="5"/><circle class="ic-f" cx="14" cy="11" r="1.2"/><path class="ic-l" d="M4 10l-2-2M4 16l-2 2M17 9l2-2"/></symbol>
+<symbol id="ic-boar" viewBox="0 0 24 24"><ellipse class="ic-l" cx="10" cy="13" rx="8" ry="5.5"/><path class="ic-l" d="M17 12l4-2-2 4z"/><path class="ic-l" d="M4 9l1.5-3M8 8l1-3.2M12 8l.6-3.2"/></symbol>
+<symbol id="ic-cyclops" viewBox="0 0 24 24"><path class="ic-l" d="M4 20c0-7 3-13 8-13s8 6 8 13z"/><circle class="ic-l" cx="12" cy="11" r="2.3"/></symbol>
+<symbol id="ic-sphinx" viewBox="0 0 24 24"><path class="ic-l" d="M3 19c2-7 5-11 9-11s7 4 9 11"/><rect class="ic-l" x="9" y="4" width="6" height="6" rx="1"/></symbol>
+<symbol id="ic-guardian" viewBox="0 0 24 24"><path class="ic-l" d="M12 3l7 3v6c0 5-3 8-7 9-4-1-7-4-7-9V6z"/><path class="ic-l" d="M12 8v8M9 12h6"/></symbol>
+<symbol id="ic-hunterbeast" viewBox="0 0 24 24"><path class="ic-l" d="M4 18c0-6 3-11 8-11s8 5 8 11"/><path class="ic-f" d="M8 8l-2-4 3 2zM16 8l2-4-3 2z"/><circle class="ic-f" cx="9.5" cy="12" r="1"/><circle class="ic-f" cx="14.5" cy="12" r="1"/></symbol>
+<symbol id="ic-colossus" viewBox="0 0 24 24"><rect class="ic-l" x="7" y="3" width="10" height="8" rx="1"/><path class="ic-l" d="M6 11h12l-2 10H8z"/><path class="ic-l" d="M4 15h3M17 15h3"/></symbol>
+<symbol id="ic-maw" viewBox="0 0 24 24"><path class="ic-l" d="M2 10c4-4 16-4 20 0-4 6-16 6-20 0z"/><path class="ic-l" d="M6 10l1.5 2M11 10l0 2.5M16.5 10L15 12"/></symbol>
+
+<!-- ============ MAP LANDMARK ICONS ============ -->
+<symbol id="ic-map-base" viewBox="0 0 24 24"><path class="ic-l" d="M4 20V10l8-6 8 6v10z"/><path class="ic-l" d="M9 20v-6h6v6"/></symbol>
+<symbol id="ic-map-tower" viewBox="0 0 24 24"><path class="ic-l" d="M8 21V9l4-6 4 6v12z"/><path class="ic-l" d="M6 21h12M8 14h8"/></symbol>
+<symbol id="ic-map-capture" viewBox="0 0 24 24"><circle class="ic-l" cx="12" cy="12" r="8"/><circle class="ic-l" cx="12" cy="12" r="3.4"/><path class="ic-l" d="M12 2v3M12 19v3M2 12h3M19 12h3"/></symbol>
+<symbol id="ic-map-camp" viewBox="0 0 24 24"><path class="ic-l" d="M4 20l4-9 4 5 3-4 5 8z"/></symbol>
+<symbol id="ic-map-boss" viewBox="0 0 24 24"><path class="ic-f" d="M13 2L4 14h6l-1 8 10-13h-6l1-7z"/></symbol>
+<symbol id="ic-map-hunter" viewBox="0 0 24 24"><path class="ic-l" d="M4 18c0-6 3-11 8-11s8 5 8 11" stroke-dasharray="2.5 2.5"/></symbol>
+
+</svg>

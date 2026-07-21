@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Triarchs of Olympus — Champions</title>
+<meta name="description" content="Meet the eight playable champions of Triarchs of Olympus — Alkaios, Kyra, Skiron, Thalassa, Lysander, Doria, Iole and Pyrrhos — with their abilities, play styles and motivations.">
+<meta name="theme-color" content="#0d0e14">
+<meta property="og:title" content="Champions — Triarchs of Olympus">
+<meta property="og:description" content="Meet the eight playable champions of Triarchs of Olympus.">
+<meta property="og:type" content="website">
+<link rel="icon" href="./assets/decorative/emblem.svg" type="image/svg+xml">
+<link rel="stylesheet" href="./css/site.css">
+<link rel="stylesheet" href="./css/responsive.css">
+<style>
+/*
+  Keep full-size champion artwork at its intrinsic aspect ratio.
+  The image may shrink in either dimension, but it will never be stretched
+  to fill the portrait column or force an unnecessarily tall card.
+*/
+#char-list img.aspect-fit-profile,
+#char-list img[data-profile-image],
+#char-list img[data-character-art],
+#char-list .profile-image,
+#char-list .character-profile,
+#char-list .character-portrait,
+#char-list .char-portrait,
+#char-list .character-art,
+#char-list .char-art {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: auto !important;
+  max-height: clamp(26rem, 68vh, 48rem);
+  object-fit: contain;
+  object-position: center bottom;
+  justify-self: center;
+  align-self: start;
+}
+
+/* Do not let a grid or flex portrait column force the artwork to stretch. */
+#char-list .profile-image-wrap,
+#char-list .character-profile-wrap,
+#char-list .character-portrait-wrap,
+#char-list .char-portrait-wrap,
+#char-list .character-art-wrap,
+#char-list .char-art-wrap {
+  min-width: 0;
+  align-self: start;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+</style>
+
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to main content</a>
+
+<header class="site-header">
+  <nav class="nav-bar" aria-label="Primary">
+    <a href="home.html" class="brand">
+      <img src="./assets/decorative/emblem.svg" alt="" class="brand-mark">
+      TRIARCHS<small>OF OLYMPUS</small>
+    </a>
+    <button class="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-links">
+      <svg class="icon" aria-hidden="true"><use href="./assets/icons/icons.svg#ic-menu"></use></svg>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="home.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="characters.html" aria-current="page">Characters</a>
+      <a href="world.html">World</a>
+      <a href="https://triarchsofolympus.jj-games.org" class="nav-cta">Play Now</a>
+      <div class="download-wrap">
+        <button class="nav-link" id="download-trigger" type="button" aria-haspopup="dialog" aria-expanded="false">
+          <svg class="icon" aria-hidden="true"><use href="./assets/icons/icons.svg#ic-download"></use></svg> Download
+        </button>
+        <div class="download-popover" id="download-popover" role="dialog" aria-label="Download status" hidden>
+          <button class="dp-close" type="button" aria-label="Close">
+            <svg class="icon" aria-hidden="true"><use href="./assets/icons/icons.svg#ic-close"></use></svg>
+          </button>
+          Downloadable client coming soon
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<main id="main">
+  <div class="page-header">
+    <p class="eyebrow">The Roster</p>
+    <h1>Champions of the Three Empires</h1>
+    <p>Eight original heroes, each with a five-ability kit that unlocks at levels 0, 5, 10, 15 and 20.</p>
+  </div>
+
+  <section>
+    <div class="wrap">
+      <noscript>
+        <p class="char-noscript-note" style="display:block;">
+          Champion cards render dynamically. Without JavaScript, here is the full roster:
+          Alkaios the Bronze Duellist, Kyra Huntress of the Silver Vale, Skiron the Wind Thief,
+          Thalassa Tidecaller of the Drowned Court, Lysander Voice of the Phalanx, Doria Shield of Ages,
+          Iole the Grove Mender, and Pyrrhos Ember of the Titans. See
+          <a href="./docs/source-map.md">docs/source-map.md</a> or the game itself at
+          <a href="https://triarchsofolympus.jj-games.org">triarchsofolympus.jj-games.org</a> for full details.
+        </p>
+      </noscript>
+      <div id="char-list" class="char-list" aria-live="polite"></div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="home.html" class="brand">
+          <img src="./assets/decorative/emblem.svg" alt="" class="brand-mark">
+          TRIARCHS<small>OF OLYMPUS</small>
+        </a>
+        <p>A three-player free-for-all MOBA set in an original Ancient-Greece-inspired world. Three empires. One survivor.</p>
+      </div>
+      <nav class="footer-nav" aria-label="Footer">
+        <div>
+          <h4>Explore</h4>
+          <ul>
+            <li><a href="index.html">Splash Page</a></li>
+            <li><a href="home.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="world.html">World</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Play</h4>
+          <ul>
+            <li><a href="https://triarchsofolympus.jj-games.org">Play Now</a></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+    <div class="footer-bottom">
+      <span>Triarchs of Olympus — created by Aluca Sol.</span>
+      <span>Unofficial promotional site.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="./js/site.js"></script>
+<script src="./js/characters.js"></script>
+<script>
+/*
+  characters.js creates the cards dynamically. This identifies the large
+  promotional artwork after it loads, while leaving ability icons and
+  battlefield icons at their existing sizes.
+*/
+(() => {
+  const list = document.getElementById("char-list");
+  if (!list) return;
+
+  const classifyImage = (img) => {
+    const descriptor = [
+      img.className,
+      img.getAttribute("src") || "",
+      img.getAttribute("alt") || ""
+    ].join(" ").toLowerCase();
+
+    if (/ability|skill|icon|sprite|badge|emblem/.test(descriptor)) return;
+
+    const applyClass = () => {
+      const isLargeArtwork =
+        Math.max(img.naturalWidth, img.naturalHeight) >= 700;
+
+      const isNamedArtwork =
+        /profile|portrait|character.?art|champion.?art/.test(descriptor);
+
+      if (isLargeArtwork || isNamedArtwork) {
+        img.classList.add("aspect-fit-profile");
+      }
+    };
+
+    if (img.complete) {
+      applyClass();
+    } else {
+      img.addEventListener("load", applyClass, { once: true });
+    }
+  };
+
+  const scan = (root = list) => {
+    if (root.matches?.("img")) classifyImage(root);
+    root.querySelectorAll?.("img").forEach(classifyImage);
+  };
+
+  scan();
+
+  new MutationObserver((mutations) => {
+    for (const mutation of mutations) {
+      mutation.addedNodes.forEach((node) => {
+        if (node.nodeType === Node.ELEMENT_NODE) scan(node);
+      });
+    }
+  }).observe(list, { childList: true, subtree: true });
+})();
+</script>
+
+</body>
+</html>

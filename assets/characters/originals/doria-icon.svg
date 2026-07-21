@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="t">
+<title id="t">Simplified battlefield icon of Doria</title>
+<circle cx="32" cy="32" r="30" fill="#1a1c20"/>
+<path d="M16 52c1-12 7-18 16-18s15 6 16 18Z" fill="#5a6470"/>
+<circle cx="32" cy="20" r="10" fill="#8a94a0"/>
+<path d="M46 24l10 5-2 16-8 5-8-5-2-16z" fill="#aab3c0" stroke="#e8dcc0" stroke-width="1.6"/>
+<circle cx="32" cy="32" r="30" fill="none" stroke="#8a94a0" stroke-width="2.5"/>
+</svg>

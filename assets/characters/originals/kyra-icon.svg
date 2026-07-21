@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="t">
+<title id="t">Simplified battlefield icon of Kyra</title>
+<circle cx="32" cy="32" r="30" fill="#1c1f24"/>
+<circle cx="32" cy="20" r="10" fill="#d8c9a0"/>
+<path d="M18 52c1-12 6-18 14-18s13 6 14 18Z" fill="#5c7186"/>
+<path d="M46 16a16 16 0 010 32" fill="none" stroke="#e8ecf4" stroke-width="3" stroke-linecap="round"/>
+<path d="M20 32h26" stroke="#a06a3a" stroke-width="2.4"/>
+<circle cx="32" cy="32" r="30" fill="none" stroke="#b8c4d9" stroke-width="2.5"/>
+</svg>
