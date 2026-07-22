@@ -247,6 +247,7 @@
     radial-gradient(ellipse 1000px 500px at 50% 0%, rgba(232,198,106,0.12), transparent 65%);
 }
 .final-cta h2 { margin-bottom: var(--space-2); }
+.final-cta .lede { max-width: 640px; margin: 0 auto; }
 .final-cta .cta-row { justify-content: center; margin-top: var(--space-3); }
 
 /* ------------------------------------------------------------------------
