@@ -23,11 +23,23 @@
       <svg class="icon" aria-hidden="true"><use href="./assets/icons/icons.svg#ic-menu"></use></svg>
     </button>
     <div class="nav-links" id="nav-links">
-      <a href="home.html">Home</a>
-      <a href="about.html">About</a>
+      <a href="home.html" aria-current="page">Home</a>
       <a href="characters.html">Characters</a>
       <a href="world.html">World</a>
-      <a href="https://triarchsofolympus.jj-games.org" class="nav-cta">Play Now</a>
+      <a href="about.html">About</a>
+
+      <div class="download-wrap">
+        <button class="nav-link" id="download-trigger" type="button" aria-haspopup="dialog" aria-expanded="false">
+          <svg class="icon" aria-hidden="true"><use href="./assets/icons/icons.svg#ic-download"></use></svg> Download
+        </button>
+        <div class="download-popover" id="download-popover" role="dialog" aria-label="Download status" hidden>
+          <button class="dp-close" type="button" aria-label="Close">
+            <svg class="icon" aria-hidden="true"><use href="./assets/icons/icons.svg#ic-close"></use></svg>
+          </button>
+          Downloadable client coming soon
+        </div>	  
+      </div>
+	  <a href="https://triarchsofolympus.jj-games.org" class="nav-cta">Play Now</a>
     </div>
   </nav>
 </header>
@@ -38,10 +50,9 @@
       <p class="eyebrow">The Path Is Lost</p>
       <div class="error-code" aria-hidden="true">404</div>
       <h1>This Road Doesn't Lead to Olympus</h1>
-      <p class="lede" style="margin: 0 auto var(--space-4);">The page you're looking for doesn't exist, traveller. I hope the below links help you find you way once more.</p>
+<br>
       <div class="cta-row" style="justify-content: center;">
-        <a class="btn btn-ghost href="home.html">Homepage</a>
-        <a class="btn btn-primary"  href="https://triarchsofolympus.jj-games.org">Play Now</a>
+        <a class="btn btn-primary"  href="https://triarchsofolympus.jj-games.org">Trying to play?</a>
       </div>
     </div>
   </div>
