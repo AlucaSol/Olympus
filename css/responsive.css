@@ -122,19 +122,49 @@
 .home-hero .lede { max-width: 640px; margin: 0 auto var(--space-4); }
 .home-hero .cta-row { justify-content: center; margin-top: var(--space-3); }
 
+.hero-carousel {
+  width: 100%;
+  max-width: 1200px;
+  margin: var(--space-4) auto 0;
+  padding-left: var(--gutter);
+  position: relative;
+}
+.hero-band-track {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+}
+.hero-carousel.is-ready .hero-band-track {
+  animation: hero-icon-marquee 90s linear infinite;
+}
+.hero-carousel:hover .hero-band-track,
+.hero-carousel:focus-within .hero-band-track {
+  animation-play-state: paused;
+}
 .hero-band-art {
   display: flex;
-  justify-content: center;
+  flex: 0 0 auto;
+  justify-content: flex-start;
   gap: var(--space-2);
-  margin: var(--space-4) auto 0;
-  max-width: 900px;
+  width: max-content;
+  max-width: none;
+  padding: 0 var(--space-1);
+}
+@keyframes hero-icon-marquee {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-50%, 0, 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-carousel.is-ready .hero-band-track { animation: none; }
 }
 .hero-band-art .bust {
   width: 90px;
+  flex: 0 0 90px;
   opacity: 0.9;
   filter: drop-shadow(0 8px 18px rgba(0,0,0,0.6));
   transition: transform var(--t-med);
 }
+.hero-band-art[aria-hidden="true"] .bust-trigger { pointer-events: none; }
 .hero-band-art .bust:hover { transform: translateY(-6px); }
 
 .bust-wrap { position: relative; }

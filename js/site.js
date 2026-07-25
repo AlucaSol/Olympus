@@ -7,6 +7,30 @@
 
   var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+  /* ---------------- hero champion carousel ---------------- */
+  var heroCarousel = document.querySelector(".hero-carousel");
+  if (heroCarousel && !reduceMotion) {
+    var heroTrack = heroCarousel.querySelector(".hero-band-track");
+    var heroBand = heroTrack && heroTrack.querySelector(".hero-band-art");
+    if (heroTrack && heroBand) {
+      // A matching second set makes the CSS marquee loop without a visible
+      // jump when the first set has completely crossed the viewport.
+      var duplicateBand = heroBand.cloneNode(true);
+      duplicateBand.setAttribute("aria-hidden", "true");
+      duplicateBand.querySelectorAll(".bust-popover").forEach(function (popover) {
+        popover.remove();
+      });
+      duplicateBand.querySelectorAll(".bust-trigger").forEach(function (trigger) {
+        trigger.setAttribute("tabindex", "-1");
+        trigger.removeAttribute("aria-controls");
+        trigger.removeAttribute("aria-haspopup");
+        trigger.removeAttribute("aria-expanded");
+      });
+      heroTrack.appendChild(duplicateBand);
+      heroCarousel.classList.add("is-ready");
+    }
+  }
+
   /* ---------------- mobile nav toggle ---------------- */
   var toggle = document.querySelector(".nav-toggle");
   var links = document.querySelector(".nav-links");
@@ -78,7 +102,7 @@
     bustWraps.forEach(function (wrap) {
       var trigger = wrap.querySelector(".bust-trigger");
       var pop = wrap.querySelector(".bust-popover");
-      var closeBtn = pop.querySelector(".dp-close");
+      var closeBtn = pop ? pop.querySelector(".dp-close") : null;
       if (!trigger || !pop) return;
 
       trigger.addEventListener("click", function (e) {
