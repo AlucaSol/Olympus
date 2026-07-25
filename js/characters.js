@@ -117,6 +117,62 @@
         { name: "Sacrificial Pyre", unlock: 15, icon: "pyre", desc: "Burn 20% of his current HP to detonate a great blast around him and gain a shield equal to double the health paid." },
         { name: "Wrath of Kronos", unlock: 20, icon: "meteor", desc: "Call down a Titan meteor. After 1.4s it lands for devastating damage and a 1s stun." }
       ]
+    },
+    {
+      id: "eurydice", name: "Eurydice", title: "Oracle of Delphi", role: "Oracle",
+      portrait: "eurydice-portrait.png", icon: "eurydice-icon.png", battle: "eurydice-battle.png",
+      lore: "Apollo's temple taught her to withstand visions no mortal mind should hold. Eurydice learned something better: how to edit them.",
+      strengths: "Unmatched vision control; punishes enemies for where they stand.",
+      weaknesses: "Frail and low-damage; her power is knowing, not killing.",
+      abilities: [
+        { name: "Echo of Prophecy", unlock: 0, icon: "echo", desc: "Inscribe a hidden sigil. The first enemy hero to disturb it triggers a delayed blast that damages and slows all enemies caught by 30% for 2s. Lasts 40s." },
+        { name: "Veil of Omens", unlock: 5, icon: "veil", desc: "Prophetic fog follows you for 6s: your empire sees everything within it, while enemies inside are half-blinded." },
+        { name: "Threads of Fate", unlock: 10, icon: "threads", desc: "Bind an enemy hero to the nearest other enemy hero for 6s: 35% of the damage either suffers is echoed to the other, and slows are partially shared." },
+        { name: "Rewrite Destiny", unlock: 15, icon: "destiny", desc: "Weave a ward over your ally for 6s. If they would die, destiny is rewritten: they return to where the ward was cast with the health they had then." },
+        { name: "The Final Prophecy", unlock: 20, icon: "prophecy", desc: "Reveal a vast region for 8s: all fog, thickets and hidden enemies within are laid bare to your whole empire, and stealth is stripped away." }
+      ]
+    },
+    {
+      id: "harmonia", name: "Harmonia", title: "Daughter of Concord", role: "Peacemaker",
+      portrait: "harmonia-portrait.png", icon: "harmonia-icon.png", battle: "harmonia-battle.png",
+      lore: "Born of Ares and Aphrodite, Harmonia is the impossible truce between war and love — and she holds battlefields to it.",
+      strengths: "Bends the flow of battle itself; armies march to her decree.",
+      weaknesses: "Almost no damage of her own; helpless once her word runs out.",
+      abilities: [
+        { name: "Truce", unlock: 0, icon: "dove", desc: "Impose peace between yourself and an enemy hero for 5s: neither of you can harm the other, though both may fight everyone else." },
+        { name: "Rally Banner", unlock: 5, icon: "rallybanner", desc: "Plant a divine banner: friendly mobs around it surge forward with +30% speed and +25% damage for 8s, massing into one assault wave." },
+        { name: "Shared Courage", unlock: 10, icon: "linkhearts", desc: "Bind your fate to your ally for 8s: 30% of the damage they take is borne by you instead." },
+        { name: "Divine Accord", unlock: 15, icon: "accord", desc: "Consecrate ground for 5s: enemy mobs within refuse to raise arms, while your own mobs fight on. Towers pay the accord no heed." },
+        { name: "Harmony's Decree", unlock: 20, icon: "decree", desc: "For 10s every enemy empire's mob forgets its quarrels and marches only on towers and bases, flooding every lane with pressure." }
+      ]
+    },
+    {
+      id: "lykaon", name: "Lykaon", title: "the Moon-Cursed", role: "Predator",
+      portrait: "lykaon-portrait.png", icon: "lykaon-icon.png", battle: "lykaon-battle.png",
+      lore: "King Lykaon mocked Zeus and was made the first werewolf for it. Under Artemis' patient moonlight, the punishment became a weapon.",
+      strengths: "Runs down isolated heroes; patience makes his first strike terrible.",
+      weaknesses: "Melee only; brawls poorly once the ambush is spent.",
+      abilities: [
+        { name: "Predator's Mark", unlock: 0, icon: "paw", desc: "Mark an enemy hero: they are tracked anywhere for 20s. Your first strike on them hits harder the longer you stalk before it lands (up to +160)." },
+        { name: "Silent Pounce", unlock: 5, icon: "pounce", desc: "Leap over any terrain. Striking from a thicket or unseen dazes enemies at your landing for 0.6s and slows them 35% for 2s." },
+        { name: "Blood Scent", unlock: 10, icon: "scent", desc: "Taste the air for 8s: every recently wounded enemy hero leaves a trail your empire can follow anywhere." },
+        { name: "Full Moon", unlock: 15, icon: "moon", desc: "The curse takes over for 7s: +25% speed and +15% damage, your claws cleave nearby foes, and slows cannot touch you." },
+        { name: "Apex Predator", unlock: 20, icon: "apex", desc: "For 12s every enemy hero is hunted: all are revealed, you gain +25% speed, and your first strike on each hero deals +180 damage and terrifies nearby enemy mobs." }
+      ]
+    },
+    {
+      id: "brontes", name: "Brontes", title: "Smith of Thunder", role: "Siege Engineer",
+      portrait: "brontes-portrait.png", icon: "brontes-icon.png", battle: "brontes-battle.png",
+      lore: "One of the immortal Cyclopes who hammered out Zeus' first thunderbolt. Now he walks the battlefield, reforging it to his liking.",
+      strengths: "Reshapes ground with forges and walls; sieges like an army.",
+      weaknesses: "Ponderous; easily kited once his works are down.",
+      abilities: [
+        { name: "Thunder Forge", unlock: 0, icon: "anvil", desc: "Raise an enchanted forge for 6s: allies within its glow heal each second and friendly mobs strike 20% harder." },
+        { name: "Living Wall", unlock: 5, icon: "wallstone", desc: "Raise a rampart of enchanted stone across the ground for 8s. Its three blocks shoulder aside movement and swallow enemy projectiles until broken." },
+        { name: "Lightning Chain", unlock: 10, icon: "chainbolt", desc: "Hurl an electrified hammer that leaps between up to 5 enemies, striking 25% harder with every bounce." },
+        { name: "Siege Bellows", unlock: 15, icon: "bellows", desc: "Work the bellows: nearby friendly mobs gain +25% speed, +30% attack rate and 30% resistance to tower fire for 8s." },
+        { name: "Forge of Olympus", unlock: 20, icon: "celestforge", desc: "Summon a celestial forge for 10s: allies gain a 180 HP shield, friendly mobs are reforged into elites (+35% damage, regeneration, +40% tower damage), and enemy projectiles entering its light are melted." }
+      ]
     }
   ];
 
@@ -143,6 +199,23 @@
     return '<svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#ic-' + icon + '"></use></svg>';
   }
 
+  function addImageFallback(image, fallbackSrc) {
+    if (!image || !fallbackSrc || image.getAttribute("src") === fallbackSrc) return;
+
+    image.addEventListener("error", function () {
+      if (image.dataset.fallbackApplied === "true") {
+        // Keep the reserved frame, but remove the broken-image indicator if
+        // neither the preferred art nor its fallback is available.
+        image.removeAttribute("src");
+        image.style.display = "none";
+        return;
+      }
+
+      image.dataset.fallbackApplied = "true";
+      image.src = fallbackSrc;
+    });
+  }
+
   function buildCard(hero, index) {
     var flip = index % 2 === 1;
     var card = el("article", "char-card panel ornate-frame reveal" + (flip ? " flip" : ""));
@@ -152,8 +225,10 @@
     art.innerHTML =
       '<img src="assets/characters/' + hero.portrait + '" alt="Promotional illustration of ' + hero.name + ', ' + hero.title + '" loading="lazy" width="1023" height="1537">' +
       '<div class="char-icon-block">' +
-        '<div class="char-icon-frame"><img src="assets/characters/' + hero.icon + '" alt="" loading="lazy" width="64" height="64"></div>' +
+        '<div class="char-icon-frame"><img class="char-battle-image" src="assets/characters/' + (hero.battle || hero.icon) + '" alt="" loading="lazy" width="64" height="64"></div>' +
       '</div>';
+
+    addImageFallback(art.querySelector(".char-battle-image"), hero.battle ? "assets/characters/" + hero.icon : "");
 
     var body = el("div", "char-body");
     var abilitiesHtml = hero.abilities.map(function (a) {

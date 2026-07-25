@@ -262,6 +262,52 @@
 .page-header .eyebrow { display: block; }
 .page-header p { margin: 0 auto; max-width: 620px; }
 
+/* NEWS PAGE */
+.news-header {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 1100px 620px at 50% -12%, rgba(232, 198, 106, 0.10), transparent 60%),
+    linear-gradient(180deg, #0d0e14, #07070a 80%);
+}
+.news-header-inner { position: relative; z-index: 2; }
+.news-header h1 { margin: 0; }
+.news-content { padding-top: var(--space-4); padding-bottom: var(--space-6); }
+.news-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+.news-table th,
+.news-table td {
+  padding: var(--space-2) var(--space-3);
+  vertical-align: top;
+}
+.news-table th {
+  color: var(--marble-500);
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.news-table td:first-child,
+.news-table th:first-child {
+  width: 190px;
+  white-space: nowrap;
+}
+.news-table td:first-child {
+  color: var(--gold-400);
+  font-family: var(--font-ui);
+  font-size: 0.9rem;
+}
+
+@media (max-width: 600px) {
+  .news-table th,
+  .news-table td { padding: var(--space-2) 0.4rem; }
+  .news-table td:first-child,
+  .news-table th:first-child { width: 120px; }
+}
+
 /* ------------------------------------------------------------------------
    ABOUT PAGE
    ------------------------------------------------------------------------ */
