@@ -171,7 +171,7 @@
 .bust-trigger { display: block; padding: 0; }
 .bust-trigger:hover .bust, .bust-trigger:focus-visible .bust { transform: translateY(-6px); }
 
-/* Character-name popover — same look as the header download popover */
+/* Character-name popover */
 .bust-popover {
   position: absolute;
   top: calc(100% + 10px);
@@ -624,9 +624,6 @@
   .nav-links a, .nav-links button.nav-link { padding: 0.9em 0.4em; font-size: 1rem; border-bottom: 1px solid rgba(138,106,46,0.15); border-radius: 0; }
   .nav-links a.nav-cta { border-radius: var(--radius-sm); text-align: center; margin-top: 0.6em; }
   .nav-toggle { display: flex; }
-  .download-wrap { width: 100%; }
-  .download-popover { position: static; margin-top: 0.6em; width: 100%; }
-  .download-popover::before { display: none; }
 
   .char-card {
     grid-template-columns: 1fr;

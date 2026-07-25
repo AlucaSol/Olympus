@@ -1,4 +1,4 @@
-// Triarchs of Olympus — shared site behaviour (nav, download popover, atmosphere, reveal-on-scroll)
+// Triarchs of Olympus — shared site behaviour (nav, atmosphere, reveal-on-scroll)
 (function () {
   "use strict";
 
@@ -51,35 +51,6 @@
         toggle.setAttribute("aria-expanded", "false");
         toggle.focus();
       }
-    });
-  }
-
-  /* ---------------- download placeholder popover ---------------- */
-  var dlBtn = document.getElementById("download-trigger");
-  var dlPop = document.getElementById("download-popover");
-  if (dlBtn && dlPop) {
-    var closeBtn = dlPop.querySelector(".dp-close");
-
-    function openPop() {
-      dlPop.hidden = false;
-      dlBtn.setAttribute("aria-expanded", "true");
-      if (closeBtn) closeBtn.focus();
-    }
-    function closePop(returnFocus) {
-      dlPop.hidden = true;
-      dlBtn.setAttribute("aria-expanded", "false");
-      if (returnFocus) dlBtn.focus();
-    }
-    dlBtn.addEventListener("click", function (e) {
-      e.stopPropagation();
-      if (dlPop.hidden) openPop(); else closePop(false);
-    });
-    if (closeBtn) closeBtn.addEventListener("click", function () { closePop(true); });
-    document.addEventListener("keydown", function (e) {
-      if (e.key === "Escape" && !dlPop.hidden) closePop(true);
-    });
-    document.addEventListener("click", function (e) {
-      if (!dlPop.hidden && !dlPop.contains(e.target) && e.target !== dlBtn) closePop(false);
     });
   }
 

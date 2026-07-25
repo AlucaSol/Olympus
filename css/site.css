@@ -378,51 +378,6 @@ section + section { border-top: 1px solid rgba(138, 106, 46, 0.14); }
   color: var(--gold-400);
 }
 
-/* Download placeholder popover */
-.download-wrap { position: relative; }
-.download-popover {
-  position: absolute;
-  top: calc(100% + 10px);
-  right: 0;
-  min-width: 240px;
-  background: var(--bg-panel-2);
-  border: var(--border-bronze);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-lift);
-  padding: var(--space-3);
-  z-index: 50;
-  color: var(--marble-200);
-  font-family: var(--font-ui);
-  font-size: 0.85rem;
-  text-transform: none;
-  letter-spacing: normal;
-}
-.download-popover::before {
-  content: "";
-  position: absolute;
-  top: -7px;
-  right: 22px;
-  width: 12px;
-  height: 12px;
-  background: var(--bg-panel-2);
-  border-left: var(--border-bronze);
-  border-top: var(--border-bronze);
-  transform: rotate(45deg);
-}
-.download-popover[hidden] { display: none; }
-.download-popover .dp-close {
-  position: absolute;
-  top: 6px;
-  right: 8px;
-  width: 22px;
-  height: 22px;
-  line-height: 20px;
-  text-align: center;
-  color: var(--marble-500);
-  border-radius: 50%;
-}
-.download-popover .dp-close:hover { color: var(--gold-300); }
-
 /* ========================================================================
    SITE FOOTER
    ======================================================================== */
