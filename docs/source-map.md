@@ -15,7 +15,7 @@ building this site — everything below was read-only research.
 
 | Fact used on site | Source |
 |---|---|
-| "Three-player free-for-all MOBA", "symmetric triangular battlefield", "last standing acropolis wins", multiplayer model (1 human + 2 AI / 2 humans + 1 AI / 3 humans, PeerJS, no accounts/backend), "8 unique heroes with 5-ability kits that unlock at levels 0/5/10/15/20", labyrinth/towers/capture points/rare bosses, "everything resets every match" | `README.md` |
+| "Six-player free-for-all MOBA", "symmetric triangular battlefield", "last standing acropolis wins", multiplayer model (1 human + 2 AI / 2 humans + 1 AI / 3 humans, PeerJS, no accounts/backend), "8 unique heroes with 5-ability kits that unlock at levels 0/5/10/15/20", labyrinth/towers/capture points/rare bosses, "everything resets every match" | `README.md` |
 | Empire names **Azure**, **Crimson**, **Verdant** and their hex colours | `src/data/heroes.ts` → `PLAYER_COLORS` |
 | "\<Winner\> rules Olympus!" victory line (basis for "The War for Olympus" framing) | `src/game/game.ts` line ~625 |
 | "The war for Olympus begins!" match-start announcement | `src/main.ts` line ~458 |
