@@ -6,8 +6,12 @@ test/*.png
 .env
 .env.local
 .env.*.local
-migrations/
-tests/
+
+# migrations/ and tests/ are deliberately NOT ignored. The database's safety
+# comes from RLS and revoked privileges, not from the schema being secret — a
+# stranger holding only the publishable key can already tell which tables
+# exist, and still cannot read a balance, mint Favour, or see a single
+# privileged function. What must never be committed is below.
 
 # Credentials for the backend setup. Never commit.
 secrets.local

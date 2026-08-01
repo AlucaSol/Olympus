@@ -680,8 +680,7 @@
       var wrap = el("div", "detail-signin");
       if (item.kind === "bundle") {
         wrap.appendChild(el("p", "detail-signin-text",
-          "Buying Favour needs an account. Sign in — or create one — and this bundle " +
-          "can be bought straight from this page."));
+          "Buying Favour needs an account. Sign in — or create one — below"));
       } else {
         wrap.appendChild(el("p", "detail-signin-text", "Sign in to Purchase"));
       }
