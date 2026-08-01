@@ -1,0 +1,8 @@
+node_modules/
+dist/
+dist-portable/
+dist-release/
+test/*.png
+.env
+.env.local
+.env.*.local
