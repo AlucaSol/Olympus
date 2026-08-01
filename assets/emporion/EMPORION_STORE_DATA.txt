@@ -1,0 +1,637 @@
+================================================================================
+EMPORION OF OLYMPUS — STORE DATA HANDOFF
+Triarchs of Olympus (game project)  ->  website project
+Extracted 2026-08-01. Everything below is the complete, current catalogue.
+================================================================================
+
+WHAT THIS IS
+------------
+The game has an in-client storefront called the "Emporion of Olympus", where
+players spend a soft currency called Favour on permanent account unlocks. This
+file contains every item currently for sale, the metadata each item needs to be
+displayed, and the display rules the game's own store front follows, so the
+website can mirror it.
+
+IMPORTANT SCOPE NOTE: the game has 12 champions but only 2 are for sale. Only
+those 2 appear here. Ten other champions exist and are free to every player —
+they must NOT appear in the website store. Likewise, do not invent stock: the
+categories "Items" and "Cosmetics" exist in the schema but currently have
+nothing for sale, and should render as empty (or be hidden — your call).
+
+
+================================================================================
+SECTION 0 — SOURCE FILES (point future updates at these)
+================================================================================
+
+THE AUTHORITY for what is on sale, at what price, with what text and icon:
+
+  supabase/migrations/003_boons.sql        -> the 6 Boons (category 'boons')
+  supabase/migrations/006_hero_store.sql   -> the 2 sellable champions ('heroes')
+  supabase/migrations/007_ability_store.sql-> the 10 ultimate unlocks ('abilities')
+  supabase/migrations/009_map_store.sql    -> the 1 sellable battlefield ('maps')
+
+  Each of those files is a plain `insert into public.shop_items (item_id,
+  category, name, description, icon_path, cost, sort_order) values (...)`.
+  Reading just those four files gives you the entire catalogue verbatim. They
+  are the ONLY files that need to be re-read when stock changes.
+
+SCHEMA / SHAPE of a store item, and the store's rules:
+
+  supabase/migrations/002_shop.sql   -> shop_items table, categories enum,
+                                        purchase rules, is_active / sort_order
+  src/types/shop.ts                  -> the TypeScript ShopItem interface, the
+                                        category list and the category display
+                                        labels + category icon paths
+  src/services/shopService.ts        -> how the catalogue is queried and sorted
+                                        (filter is_active, order by category then
+                                        sort_order) and the fallback icon path
+
+RICHER PER-ITEM METADATA (lore, colours, effects — beyond what the store row
+carries). Use these if you want product pages fuller than the in-game panel:
+
+  src/data/boons.ts    -> BOONS registry: deity, signature colour, tribute cost,
+                          targeting mode, range, radius, lore, bullet effects
+  src/data/heroes.ts   -> HEROES registry. CAUTION: contains all 12 champions.
+                          Only `brontes` and `lykaon` are sellable — see
+                          HERO_SHOP_PRICES in that file, which lists exactly the
+                          sellable ones. Also holds ULTIMATE_PRICE,
+                          ultimateItemId() and heroForUltimateItem(), and each
+                          hero's `color` (used for the ultimate's tile border).
+  src/game/map.ts      -> MAPS registry: name, shortName, blurb, shopItemId,
+                          cost. A map with shopItemId: null is free stock.
+
+STORE FRONT BEHAVIOUR AND LOOK (if you want to match the in-game panel):
+
+  src/ui/shopUI.ts     -> all rendering, filtering, selection and purchase logic
+  index.html           -> the store markup, around the `store-modal` div (~L147)
+  src/style.css        -> the store styling, "FAVOUR STORE (launcher)" section
+                          (~L766-L849)
+
+DO NOT USE:
+  supabase/seed/shop_placeholder_items.sql — dev-only placeholder rows
+  ("Vale of Echoes", "Nameless Champion", "Unforged Relic", "Bronze Laurel"
+  etc). These are not real stock and must never appear on the website.
+
+
+================================================================================
+SECTION 1 — DATA MODEL
+================================================================================
+
+Every purchasable thing, of every kind, is one row with the same shape:
+
+  item_id      text, primary key. Pattern: ^[a-z0-9_]{3,48}$
+                  This string IS the identity of the item everywhere — ownership
+                  is keyed on it. Do not rename these.
+  category     one of: 'maps' | 'heroes' | 'items' | 'abilities' | 'boons'
+                  | 'cosmetics'
+  name         1-64 chars, display name
+  description  <= 500 chars, display blurb
+  icon_path    path relative to the game's public/ dir, e.g.
+                  'assets/boons/hades-recall.svg'
+                  Default when unset: 'assets/ui/shop-item-placeholder.png'
+  cost         integer >= 0, in Favour
+  is_active    boolean; false = withdrawn, hide it
+  sort_order   integer; display order WITHIN a category (ascending)
+
+Currency: "Favour" (also written "God's Favour"). Displayed as a plain
+en-US thousands-separated integer, e.g. "1,250". Icon in game:
+public/assets/ui/favour-placeholder.png
+
+Category display labels and their filter-card icons (from src/types/shop.ts),
+in the order they are shown:
+
+  maps       "Maps"       assets/ui/shop-cat-maps.png
+  heroes     "Heroes"     assets/ui/shop-cat-heroes.png
+  items      "Items"      assets/ui/shop-cat-items.png
+  abilities  "Abilities"  assets/ui/shop-cat-abilities.png
+  boons      "Boons"      assets/ui/shop-cat-boons.svg
+  cosmetics  "Cosmetics"  assets/ui/shop-cat-cosmetics.png
+
+Catalogue ordering used in game: ORDER BY category ASC, sort_order ASC.
+
+
+================================================================================
+SECTION 2 — THE FULL CATALOGUE (19 items)
+================================================================================
+
+Counts: 6 boons + 2 heroes + 10 ability unlocks + 1 map = 19 live items.
+'items' and 'cosmetics' categories are currently EMPTY.
+
+--------------------------------------------------------------------------------
+2.1  BOONS — category 'boons' — 100 Favour each — 6 items
+     Source: supabase/migrations/003_boons.sql
+--------------------------------------------------------------------------------
+
+Boons are account-level divine interventions, chosen in the lobby alongside a
+champion and invoked in-match at the cost of Tribute (an in-match resource, NOT
+part of the store price — mentioned in the description text only).
+
+[1] item_id:    boon_dionysus_revelry
+    name:       Dionysus' Revelry
+    cost:       100
+    sort_order: 10
+    icon_path:  assets/boons/dionysus-revelry.svg
+    description:
+      Hurl a divine wine casket. The stain maddens every enemy it touches for 8
+      seconds: weaker blows, narrowed sight, staggering steps, and abilities
+      loosed at nothing. Costs 260 Tribute.
+
+[2] item_id:    boon_demeter_harvest
+    name:       Demeter's Harvest
+    cost:       100
+    sort_order: 20
+    icon_path:  assets/boons/demeter-harvest.svg
+    description:
+      Raise a Sacred Grove around yourself for 10 seconds. Allies inside heal
+      and cool their abilities faster, enemies are slowed, and labyrinth
+      monsters strike softly. Costs 290 Tribute.
+
+[3] item_id:    boon_hephaestus_forge
+    name:       Hephaestus' Forge
+    cost:       100
+    sort_order: 30
+    icon_path:  assets/boons/hephaestus-forge.svg
+    description:
+      Reforge one of your standing towers for 20 seconds: repaired, briefly
+      overbuilt past its maximum, faster firing, and every bolt detonating.
+      Costs 320 Tribute.
+
+[4] item_id:    boon_hades_recall
+    name:       Hades' Recall
+    cost:       100
+    sort_order: 40
+    icon_path:  assets/boons/hades-recall.svg
+    description:
+      Passive. The blow that would kill you instead binds you in an underworld
+      circle — invulnerable, rooted and still swinging — before drawing you back
+      to your healing well at 1 health. Spends 380 Tribute only when it saves
+      you.
+
+[5] item_id:    boon_hermes_passage
+    name:       Hermes' Passage
+    cost:       100
+    sort_order: 50
+    icon_path:  assets/boons/hermes-passage.svg
+    description:
+      Travel unhindered for 5 seconds: faster, farther-sighted, and straight
+      through Labyrinth walls. You cannot attack while it lasts. Costs 230
+      Tribute.
+
+[6] item_id:    boon_persephone_bloom
+    name:       Persephone's Bloom
+    cost:       100
+    sort_order: 60
+    icon_path:  assets/boons/persephone-bloom.svg
+    description:
+      Plant a seed that waits 30 seconds. The first enemy champion to stray near
+      makes it blossom, rooting them for 1.5 seconds and slowing them by half
+      for 3 more.
+
+--- EXTRA BOON METADATA (from src/data/boons.ts) — optional, for richer pages ---
+
+boon_dionysus_revelry
+  deity: Dionysus   colour: #a855c8   tribute: 1560   target: ground
+  range: 1250       radius: 300
+  lore: "A cask of the god's own vintage, hurled from the heights of Olympus.
+         What it soaks, it maddens."
+  effects:
+    - Lob a divine wine casket to any visible ground; it arcs slowly, like a
+      catapult stone.
+    - The splash stains the earth for 8s. Enemies caught in it turn Drunk.
+    - Drunk: -15% damage, badly narrowed vision, staggering steps, and hands
+      that lose their target.
+    - Drunk champions sometimes loose their Q at nothing at all.
+
+boon_demeter_harvest
+  deity: Demeter    colour: #7fc25e   tribute: 1740   target: self
+  range: 0          radius: 520
+  lore: "Where the Lady of the Grain sets her hand, the battlefield remembers it
+         was once a meadow."
+  effects:
+    - A Sacred Grove erupts around you for 10s — tendrils, grass and flowers in
+      seconds.
+    - Allies inside regenerate health and cool their abilities faster.
+    - Enemies inside are slowed by 20%.
+    - Labyrinth monsters inside strike far more weakly.
+
+boon_hephaestus_forge
+  deity: Hephaestus colour: #ff8a3c   tribute: 1920   target: tower
+  range: 800        radius: 150
+  lore: "The Smith stokes a tower like a blade on the anvil — molten, rune-cut
+         and rebuilt mid-battle."
+  effects:
+    - Target one of your standing towers. It is reforged for 20s.
+    - Repairs up to 35% of its health, and may hold 10% above its maximum.
+    - Fires markedly faster, and every bolt detonates for splash damage.
+    - A fallen tower cannot be reforged.
+
+boon_hades_recall
+  deity: Hades      colour: #8f6ce0   tribute: 2280   target: passive
+  range: 0          radius: 165
+  lore: "The Unseen One is owed every death. Once, he may choose to defer the
+         debt."
+  effects:
+    - Passive. Triggers by itself the instant a blow would kill you.
+    - You survive inside an underworld circle: invulnerable and rooted for 1s,
+      but still able to strike.
+    - Your Q answers almost instantly while the circle holds.
+    - You are then drawn back to your healing well at 1 health, and your Q
+      returns to normal.
+    - Tribute is spent only when it actually saves you.
+
+boon_hermes_passage
+  deity: Hermes     colour: #6fd4e8   tribute: 1380   target: self
+  range: 0          radius: 120
+  lore: "The Guide of Roads knows the shortest one, and it rarely troubles
+         itself with walls."
+  effects:
+    - A traveller's aura wreathes you for 5s.
+    - +20% movement speed and +40% sight.
+    - You walk clean through Labyrinth walls.
+    - You cannot attack while it lasts, and are set safely on solid ground when
+      it fades.
+
+boon_persephone_bloom
+  deity: Persephone colour: #e070b0   tribute: 1560   target: ground
+  range: 800        radius: 140
+  lore: "Half a year below, half above. What she plants remembers both, and
+         holds fast to whatever walks near."
+  effects:
+    - Plant a dormant seed. It waits 30s, then withers away unclaimed.
+    - The first enemy champion to stray within makes it blossom instantly.
+    - That champion is rooted for 1.5s, then slowed by 50% for 3s.
+    - One champion only — the flower that remains is nothing but a memory.
+
+NOTE ON `tribute` vs `cost`: `cost` (100) is the Favour store price. `tribute`
+(e.g. 1560) is an in-match resource cost paid every time the Boon is invoked.
+Do not display `tribute` as a price. The store description text already states
+the Tribute figure in words, and those word-figures are the current tuned
+values shown to players — where the two disagree, the description wins for
+display purposes.
+
+
+--------------------------------------------------------------------------------
+2.2  CHAMPIONS — category 'heroes' — 200 Favour each — 2 items
+     Source: supabase/migrations/006_hero_store.sql
+--------------------------------------------------------------------------------
+
+ONLY THESE TWO CHAMPIONS ARE FOR SALE. The other ten are free to all players
+and must not be listed in the store.
+
+[1] item_id:    brontes
+    name:       Brontes
+    cost:       200
+    sort_order: 10
+    icon_path:  assets/characters/brontes-icon.png
+    description:
+      Smith of Thunder. One of the immortal Cyclopes who hammered out Zeus'
+      first thunderbolt — a Siege Engineer who reshapes the ground with forges
+      and walls.
+
+[2] item_id:    lykaon
+    name:       Lykaon
+    cost:       200
+    sort_order: 20
+    icon_path:  assets/characters/lykaon-icon.png
+    description:
+      The Moon-Cursed. King Lykaon mocked Zeus and was made the first werewolf
+      for it — a Predator who runs down isolated heroes under Artemis' patient
+      moonlight.
+
+--- EXTRA CHAMPION METADATA (from src/data/heroes.ts) — optional -----------------
+
+BRONTES
+  title: Smith of Thunder
+  role: Siege Engineer
+  signature colour: #f0c04a
+  lore: "One of the immortal Cyclopes who hammered out Zeus' first thunderbolt.
+         Now he walks the battlefield, reforging it to his liking."
+  strengths: "Reshapes ground with forges and walls; sieges like an army."
+  weaknesses: "Ponderous; easily kited once his works are down."
+  base stats: hp 980 | attack 62 | attack range 95 | attack interval 1.3s |
+              speed 285 | armor 18 | radius 21 | hp regen 2.2 | melee
+  abilities (unlock level -> name -> description):
+    L0  Thunder Forge — Raise an enchanted forge for 6s: allies within its glow
+        heal each second and friendly mobs strike 20% harder.
+    L5  Living Wall — Raise a rampart of enchanted stone across the ground for
+        8s. Its three blocks shoulder aside movement and swallow enemy
+        projectiles until broken.
+    L10 Lightning Chain — Hurl an electrified hammer that leaps between up to 5
+        enemies, striking 25% harder with every bounce.
+    L15 Siege Bellows — Work the bellows: nearby friendly mobs gain +25% speed,
+        +30% attack rate and 30% resistance to tower fire for 8s.
+    L20 Forge of Olympus — Summon a celestial forge for 10s: allies gain a 180
+        HP shield, friendly mobs are reforged into elites (+35% damage,
+        regeneration, +40% tower damage), and enemy projectiles entering its
+        light are melted.
+
+LYKAON
+  title: the Moon-Cursed
+  role: Predator
+  signature colour: #c9435c
+  lore: "King Lykaon mocked Zeus and was made the first werewolf for it. Under
+         Artemis' patient moonlight, the punishment became a weapon."
+  strengths: "Runs down isolated heroes; patience makes his first strike
+              terrible."
+  weaknesses: "Melee only; brawls poorly once the ambush is spent."
+  base stats: hp 720 | attack 70 | attack range 60 | attack interval 0.9s |
+              speed 340 | armor 10 | radius 18 | hp regen 1.8 | melee
+  abilities (unlock level -> name -> description):
+    L0  Predator's Mark — Mark an enemy hero: they are tracked anywhere for 20s.
+        Your first strike on them hits harder the longer you stalk before it
+        lands (up to +160).
+    L5  Silent Pounce — Leap over any terrain. Striking from a thicket or unseen
+        dazes enemies at your landing for 0.6s and slows them 35% for 2s.
+    L10 Blood Scent — Taste the air for 8s: every recently wounded enemy hero
+        leaves a trail your empire can follow anywhere.
+    L15 Full Moon — The curse takes over for 7s: +25% speed and +15% damage,
+        your claws cleave nearby foes, and slows cannot touch you.
+    L20 Apex Predator — For 12s every enemy hero is hunted: all are revealed,
+        you gain +25% speed, and your first strike on each hero deals +180
+        damage and terrifies nearby enemy mobs.
+
+SELLING POINT WORTH STATING ON THE WEBSITE: Brontes and Lykaon each ship with
+their level-20 ability already unlocked, included in the 200 Favour price. That
+is why neither appears in the Abilities category below — every other champion
+must buy their level-20 ability separately for 50 Favour.
+
+
+--------------------------------------------------------------------------------
+2.3  LEVEL-20 ABILITY UNLOCKS — category 'abilities' — 50 Favour each — 10 items
+     Source: supabase/migrations/007_ability_store.sql
+--------------------------------------------------------------------------------
+
+Every champion's fifth ability unlocks at level 20 during a match; OWNING it is
+a separate purchase from reaching that level. These ten rows are the ten
+free champions' ultimates. (Brontes and Lykaon have no row here — see above.)
+
+item_id pattern: <heroId>_ultimate
+All: cost 50.
+
+[1]  item_id: alkaios_ultimate     sort_order: 10
+     name: Alkaios — Rite of the Fallen
+     description: Executioner strike: heavy damage, doubled below 35% HP.
+                  Cooldown resets on kill.
+
+[2]  item_id: kyra_ultimate        sort_order: 20
+     name: Kyra — Heartseeker
+     description: After a breath, fire an arrow across the battlefield. Damage
+                  grows with distance travelled (up to +100%).
+
+[3]  item_id: skiron_ultimate      sort_order: 30
+     name: Skiron — Tempest Heart
+     description: Become the storm: a whirlwind around you deals damage 4 times
+                  over 2.5 seconds and hurls enemies back.
+
+[4]  item_id: thalassa_ultimate    sort_order: 40
+     name: Thalassa — Deluge of the Drowned
+     description: Summon a towering wave that sweeps a long line, dealing
+                  massive damage, knocking enemies aside and stunning them for
+                  1.2 seconds.
+
+[5]  item_id: lysander_ultimate    sort_order: 50
+     name: Lysander — Grand Muster
+     description: A vast rally: up to 10 friendly mobs in a wide radius follow
+                  you for 18 seconds with +25% damage.
+
+[6]  item_id: doria_ultimate       sort_order: 60
+     name: Doria — Aegis of Ages
+     description: Grant nearby friendly mobs a 200 HP shield and become
+                  invulnerable yourself for 2.5 seconds.
+
+[7]  item_id: iole_ultimate        sort_order: 70
+     name: Iole — Gaia's Embrace
+     description: A great bloom: massively heal yourself and friendly mobs,
+                  granting all +25% speed and damage for 6 seconds.
+
+[8]  item_id: pyrrhos_ultimate     sort_order: 80
+     name: Pyrrhos — Wrath of Kronos
+     description: Call down a Titan meteor. After 1.4 seconds it lands for
+                  devastating damage and a 1 second stun.
+
+[9]  item_id: eurydice_ultimate    sort_order: 90
+     name: Eurydice — The Final Prophecy
+     description: Reveal a vast region for 8 seconds: all fog, thickets and
+                  hidden enemies within are laid bare to your whole empire, and
+                  stealth is stripped away.
+
+[10] item_id: harmonia_ultimate    sort_order: 100
+     name: Harmonia — Harmony's Decree
+     description: For 10 seconds every enemy empire's mob forgets its quarrels
+                  and marches only on towers and bases, flooding every lane with
+                  pressure.
+
+--- OWNING CHAMPION'S SIGNATURE COLOUR (from src/data/heroes.ts) ----------------
+These rows carry NO icon_path (they fall back to the placeholder). In game the
+store draws the real ability icon procedurally and outlines it in the owning
+champion's colour. On the website, use the colour as an accent/border:
+
+  alkaios_ultimate   Alkaios   #c9944c
+  kyra_ultimate      Kyra      #a3c94c
+  skiron_ultimate    Skiron    #7fe0e8
+  thalassa_ultimate  Thalassa  #4a90d9
+  lysander_ultimate  Lysander  #8fa8c9
+  doria_ultimate     Doria     #b09868
+  iole_ultimate      Iole      #5cbf6e
+  pyrrhos_ultimate   Pyrrhos   #e85c3c
+  eurydice_ultimate  Eurydice  #a86ce0
+  harmonia_ultimate  Harmonia  #e0a0c8
+
+In game, the detail pane prefixes the description with a coloured line:
+  "<Hero>'s level 20 ability."   (rendered in that hero's colour)
+
+
+--------------------------------------------------------------------------------
+2.4  BATTLEFIELDS — category 'maps' — 1 item
+     Source: supabase/migrations/009_map_store.sql, src/game/map.ts
+--------------------------------------------------------------------------------
+
+The game ships with one free battlefield, The Labyrinth, available to everyone
+including guests. It is NOT in the store and must not be listed.
+
+[1] item_id:    map_thalassia
+    name:       Thalassia, the Sunlit Harbour
+    short name: Thalassia
+    cost:       350
+    sort_order: 10
+    icon_path:  (none — placeholder; see icon notes below)
+    description:
+      A bright Aegean island town, ringed by open sea. Three walled harbour
+      districts look inward over a crowded suburb of plastered houses — long
+      avenues, alley cut-throughs, and courtyards you can fight your way
+      through. Colonnaded halls shelter the monster yards, and the great temple
+      at the agora stands over the Titan's ground itself. Own it to host matches
+      on it.
+    shorter blurb (from src/game/map.ts, for tighter layouts):
+      A sunlit island town walled by the open sea: harbour districts, a crowded
+      suburb of alleys and courtyards, and a great temple over the Titan's
+      ground.
+
+    IMPORTANT SELLING RULE — only the HOST needs to own a battlefield. The host
+    picks the map in the lobby and every peer plays on it, so a player can join
+    matches on Thalassia without buying it. In game the detail pane prefixes the
+    description with this line, in gold (#d8a24c):
+      "Own it to host matches on this battlefield."
+    The website should say the same thing, so nobody buys it expecting it to be
+    required to play.
+
+
+================================================================================
+SECTION 3 — ICONS & ASSETS
+================================================================================
+
+Paths below are relative to the game's public/ directory. Copy these files into
+the website project.
+
+REAL IMAGE FILES THAT EXIST (8 store items + 6 category icons + currency):
+
+  assets/boons/dionysus-revelry.svg
+  assets/boons/demeter-harvest.svg
+  assets/boons/hephaestus-forge.svg
+  assets/boons/hades-recall.svg
+  assets/boons/hermes-passage.svg
+  assets/boons/persephone-bloom.svg
+  assets/characters/brontes-icon.png
+  assets/characters/lykaon-icon.png
+
+  assets/ui/shop-cat-maps.png
+  assets/ui/shop-cat-heroes.png
+  assets/ui/shop-cat-items.png
+  assets/ui/shop-cat-abilities.png
+  assets/ui/shop-cat-boons.svg
+  assets/ui/shop-cat-cosmetics.png
+  assets/ui/shop-item-placeholder.png   (fallback for any missing icon)
+  assets/ui/favour-placeholder.png      (the Favour currency icon)
+
+  NOTE: public/assets/characters/ contains icons for all 12 champions. Only
+  brontes-icon.png and lykaon-icon.png belong in the store.
+
+ITEMS WITH NO IMAGE FILE — these two kinds are drawn at runtime in the game and
+cannot simply be copied:
+
+  1. The 10 ability unlocks. Their icons are drawn procedurally onto a canvas
+     (see ICON_ART in src/render/art.ts) and read back as data URLs. There is no
+     file. Website options, best first:
+       a) Export a PNG of each from the game and add it to the website assets.
+          The relevant art keys per hero are:
+            alkaios=skull, kyra=star, skiron=tempest, thalassa=tsunami,
+            lysander=muster, doria=aegis, iole=bloom, pyrrhos=meteor,
+            eurydice=prophecy, harmonia=decree
+       b) Use the owning champion's portrait from assets/characters/ with the
+          hero colour as a border.
+       c) Use assets/ui/shop-item-placeholder.png with the hero colour border.
+
+  2. The battlefield Thalassia. In game the store renders a live top-down
+     thumbnail from the actual map data (src/render/mapThumb.ts) so the picture
+     can never drift from the map. The website has no such renderer. Export a
+     screenshot/thumbnail of Thalassia and ship it as a static image.
+
+
+================================================================================
+SECTION 4 — STORE BEHAVIOUR (to mirror the in-game panel)
+================================================================================
+
+Title of the panel: "Emporion of Olympus"
+
+Layout: three columns — category filters (left, ~168px) | item shelf (centre,
+flexible) | detail pane (right, ~250px). The shelf alone scrolls.
+
+CATEGORY FILTERS
+  - Six square cards, two per row, icon above a small label.
+  - MULTI-SELECT and toggleable. Selecting none means NO filter — every category
+    shows. (It does not mean an empty shelf.)
+  - Changing the filter so the selected item is hidden clears the selection.
+
+ITEM SHELF
+  - A grid of square-ish tiles, auto-fill, min tile width ~112px.
+  - Each tile: icon (52x52), name, cost in Favour.
+  - Ordering: by category, then sort_order ascending.
+  - Owned items STAY on the shelf, greyed out (grayscale + ~42% opacity), their
+    price hidden, with the word "OWNED" across the bottom in green (#8fc07a).
+    They remain clickable so their details can still be read.
+  - Ability-unlock tiles are the only stock with a coloured border: a 2px border
+    in the owning champion's colour.
+  - Empty states:
+      filtered to nothing -> "No offerings in the chosen categories."
+      nothing at all      -> "The Emporion has no offerings yet. New stock will
+                              appear here."
+
+DETAIL PANE (right)
+  - Nothing selected -> "Select an offering to inspect it." (italic, muted)
+  - Selected -> large icon (84x84), name, category label in small-caps, the
+    description, then "<cost> Favour", then "Already yours" if owned.
+  - Prefix lines by category, as described in 2.3 and 2.4 above.
+
+PURCHASE
+  - Purchase button is enabled only when an unowned, affordable item is
+    selected. Tooltips: "Select an offering first" / "You already own this
+    offering" / "Not enough Favour" / "Purchase <name>".
+  - Confirmation dialog text:
+      "Are you sure you wish to purchase <name> for <cost> favour?"
+    with the number in gold. Buttons "Purchase" / "Cancel".
+  - Success message: "<name> is yours."
+  - Every item is a one-time permanent unlock. Nothing is consumable, nothing
+    is stackable, nothing expires.
+
+If the website is browse-only (no logged-in purchasing), drop the purchase
+button, the owned-greying and the confirm dialog; everything else still applies.
+
+
+================================================================================
+SECTION 5 — VISUAL STYLE REFERENCE
+================================================================================
+
+Bronze-and-parchment on near-black, from src/style.css (~L766-L849).
+
+  panel background   linear-gradient(180deg, rgba(32,26,15,0.98),
+                                             rgba(18,14,8,0.98))
+  panel border       #7a6230
+  divider / inner    #3a301a
+  tile border        #55482c
+  tile bg            rgba(0,0,0,0.30)
+  tile hover border  #c9a84c   (bg rgba(60,48,24,0.5))
+  tile selected      border #e8c66a, bg rgba(70,56,26,0.6),
+                     glow 0 0 12px rgba(232,198,106,0.4)
+  heading gold       #e8c66a   (letter-spacing 2px)
+  player name        #ffe9a8
+  body text          #b0a480
+  item name          #e8dcc0
+  muted / caption    #776a4d, and #9a8a64
+  Favour / price     #ffd769   (tabular-nums)
+  owned green        #8fc07a
+  maps accent gold   #d8a24c
+  radius             4px on tiles/panes, 6px on the panel
+
+Costs are formatted with Intl.NumberFormat('en-US') — thousands separators, no
+decimals.
+
+
+================================================================================
+SECTION 6 — QUICK MACHINE-READABLE DUMP
+================================================================================
+
+item_id | category | name | cost | sort_order | icon_path
+
+boon_dionysus_revelry | boons | Dionysus' Revelry | 100 | 10 | assets/boons/dionysus-revelry.svg
+boon_demeter_harvest | boons | Demeter's Harvest | 100 | 20 | assets/boons/demeter-harvest.svg
+boon_hephaestus_forge | boons | Hephaestus' Forge | 100 | 30 | assets/boons/hephaestus-forge.svg
+boon_hades_recall | boons | Hades' Recall | 100 | 40 | assets/boons/hades-recall.svg
+boon_hermes_passage | boons | Hermes' Passage | 100 | 50 | assets/boons/hermes-passage.svg
+boon_persephone_bloom | boons | Persephone's Bloom | 100 | 60 | assets/boons/persephone-bloom.svg
+brontes | heroes | Brontes | 200 | 10 | assets/characters/brontes-icon.png
+lykaon | heroes | Lykaon | 200 | 20 | assets/characters/lykaon-icon.png
+alkaios_ultimate | abilities | Alkaios — Rite of the Fallen | 50 | 10 | (none)
+kyra_ultimate | abilities | Kyra — Heartseeker | 50 | 20 | (none)
+skiron_ultimate | abilities | Skiron — Tempest Heart | 50 | 30 | (none)
+thalassa_ultimate | abilities | Thalassa — Deluge of the Drowned | 50 | 40 | (none)
+lysander_ultimate | abilities | Lysander — Grand Muster | 50 | 50 | (none)
+doria_ultimate | abilities | Doria — Aegis of Ages | 50 | 60 | (none)
+iole_ultimate | abilities | Iole — Gaia's Embrace | 50 | 70 | (none)
+pyrrhos_ultimate | abilities | Pyrrhos — Wrath of Kronos | 50 | 80 | (none)
+eurydice_ultimate | abilities | Eurydice — The Final Prophecy | 50 | 90 | (none)
+harmonia_ultimate | abilities | Harmonia — Harmony's Decree | 50 | 100 | (none)
+map_thalassia | maps | Thalassia, the Sunlit Harbour | 350 | 10 | (none)
+
+================================================================================
+END OF FILE
+================================================================================

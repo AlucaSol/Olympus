@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Boons">
+  <!-- Emporion category card for Boons. Sized to match the other shop-cat-*
+       artwork; a laurel-framed hand of Olympus offering its gift. -->
+  <defs>
+    <radialGradient id="cb-glow" cx="0.5" cy="0.42" r="0.55">
+      <stop offset="0" stop-color="#ffe9a8" stop-opacity="0.85"/>
+      <stop offset="0.55" stop-color="#e8c66a" stop-opacity="0.35"/>
+      <stop offset="1" stop-color="#e8c66a" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="cb-plate" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3a2f1a"/><stop offset="1" stop-color="#1c160c"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" fill="url(#cb-plate)"/>
+  <circle cx="32" cy="27" r="24" fill="url(#cb-glow)"/>
+  <!-- rays of intervention -->
+  <g stroke="#ffe9a8" stroke-width="2" stroke-linecap="round" opacity="0.75">
+    <path d="M32 4v7"/><path d="M15 10l4 6"/><path d="M49 10l-4 6"/>
+    <path d="M6 26h7"/><path d="M58 26h-7"/>
+  </g>
+  <!-- open hand, palm up -->
+  <path d="M20 46q-3-9 0-16 2-4 4 0v-8q1-4 3 0l1 8 1-11q1-4 3 0l1 11 2-9q1-4 3 0l-1 11 3-6q2-3 3 1l-3 18q-2 7-10 7t-10-6z"
+        fill="#c9a84c" stroke="#6b5320" stroke-width="1.4" stroke-linejoin="round"/>
+  <!-- the boon itself, resting above the palm -->
+  <circle cx="32" cy="24" r="6" fill="#ffe9a8"/>
+  <circle cx="32" cy="24" r="3" fill="#e8c66a"/>
+  <!-- laurel -->
+  <g fill="#7fc25e" opacity="0.9">
+    <path d="M9 54q6-2 9-8-7-1-9 8z"/><path d="M55 54q-6-2-9-8 7-1 9 8z"/>
+    <path d="M14 46q6-1 9-6-7-2-9 6z"/><path d="M50 46q-6-1-9-6 7-2 9 6z"/>
+  </g>
+</svg>

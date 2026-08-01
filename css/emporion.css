@@ -1,0 +1,384 @@
+/* ==========================================================================
+   EMPORION OF OLYMPUS — the storefront page
+   Bronze-and-parchment on near-black, mirroring the in-game store panel
+   (see assets/emporion/EMPORION_STORE_DATA.txt, section 5) while staying
+   inside the site's own design tokens.
+   ========================================================================== */
+
+.emporion-page {
+  /* store-panel palette, lifted from the game's own store styling */
+  --shop-panel-bg: linear-gradient(180deg, rgba(32, 26, 15, 0.98), rgba(18, 14, 8, 0.98));
+  --shop-border: #7a6230;
+  --shop-divider: #3a301a;
+  --shop-tile-border: #55482c;
+  --shop-tile-bg: rgba(0, 0, 0, 0.3);
+  --shop-tile-hover-border: #c9a84c;
+  --shop-tile-hover-bg: rgba(60, 48, 24, 0.5);
+  --shop-tile-sel-border: #e8c66a;
+  --shop-tile-sel-bg: rgba(70, 56, 26, 0.6);
+  --shop-heading: #e8c66a;
+  --shop-body: #b0a480;
+  --shop-item-name: #e8dcc0;
+  --shop-muted: #9a8a64;
+  --shop-muted-dim: #776a4d;
+  --shop-favour: #ffd769;
+  --shop-maps-accent: #d8a24c;
+}
+
+/* ---------- intro blurb above the storefront ---------- */
+.emporion-intro {
+  max-width: 760px;
+  margin: 0 auto;
+  text-align: center;
+}
+.emporion-intro p { margin: 0 auto 1em; }
+.emporion-intro p:last-child { margin-bottom: 0; }
+
+/* ---------- the panel ---------- */
+.emporion-section { padding-top: var(--space-4); }
+
+.emporion-shell {
+  background: var(--shop-panel-bg);
+  border: 1px solid var(--shop-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-deep);
+  overflow: hidden;
+}
+
+.emporion-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-3);
+  border-bottom: 1px solid var(--shop-divider);
+}
+.emporion-bar h2 {
+  margin: 0;
+  font-size: 1.35rem;
+  letter-spacing: 0.1em;
+  color: var(--shop-heading);
+}
+.emporion-balance {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55em;
+  font-family: var(--font-ui);
+  font-size: 0.76rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--shop-muted);
+}
+.emporion-balance img { width: 20px; height: 20px; opacity: 0.75; }
+
+.emporion-body {
+  display: grid;
+  grid-template-columns: 196px minmax(0, 1fr) 306px;
+  align-items: start;
+  gap: 0;
+}
+.emporion-body > * { padding: var(--space-3); min-width: 0; }
+.shop-filters { border-right: 1px solid var(--shop-divider); }
+.shop-detail { border-left: 1px solid var(--shop-divider); }
+
+/* ---------- column headings ---------- */
+.shop-col-title {
+  font-family: var(--font-ui);
+  font-size: 0.68rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--shop-muted-dim);
+  margin-bottom: var(--space-2);
+}
+
+/* ---------- left: category filter cards ---------- */
+.filter-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+.filter-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4em;
+  padding: 0.7em 0.3em;
+  background: var(--shop-tile-bg);
+  border: 1px solid var(--shop-tile-border);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  color: var(--shop-body);
+  transition: border-color var(--t-fast), background var(--t-fast), color var(--t-fast), box-shadow var(--t-fast);
+}
+.filter-card img { width: 34px; height: 34px; }
+.filter-card:hover {
+  border-color: var(--shop-tile-hover-border);
+  background: var(--shop-tile-hover-bg);
+  color: var(--gold-300);
+}
+.filter-card[aria-pressed="true"] {
+  border-color: var(--shop-tile-sel-border);
+  background: var(--shop-tile-sel-bg);
+  color: var(--gold-300);
+  box-shadow: 0 0 12px rgba(232, 198, 106, 0.4);
+}
+.filter-card.is-empty img { opacity: 0.45; }
+.filter-card.is-empty { color: var(--shop-muted-dim); }
+
+.filter-hint {
+  margin: var(--space-2) 0 0;
+  font-family: var(--font-ui);
+  font-size: 0.7rem;
+  line-height: 1.5;
+  color: var(--shop-muted-dim);
+  max-width: none;
+}
+.filter-clear {
+  margin-top: var(--space-2);
+  width: 100%;
+  padding: 0.5em;
+  font-family: var(--font-ui);
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--shop-muted);
+  border: 1px solid var(--shop-tile-border);
+  border-radius: var(--radius-sm);
+  transition: color var(--t-fast), border-color var(--t-fast);
+}
+.filter-clear:hover { color: var(--gold-300); border-color: var(--shop-tile-hover-border); }
+.filter-clear[hidden] { display: none; }
+
+/* ---------- centre: the shelf ---------- */
+.shop-shelf { max-height: 720px; overflow-y: auto; }
+.shelf-group + .shelf-group { margin-top: var(--space-3); }
+.shelf-group-title {
+  display: flex;
+  align-items: center;
+  gap: 0.7em;
+  font-family: var(--font-ui);
+  font-size: 0.68rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--shop-muted-dim);
+  margin-bottom: 0.7em;
+}
+.shelf-group-title::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--shop-divider);
+}
+.shelf-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(124px, 1fr));
+  gap: 0.6rem;
+}
+.shop-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5em;
+  padding: 0.8em 0.5em;
+  text-align: center;
+  background: var(--shop-tile-bg);
+  border: 1px solid var(--shop-tile-border);
+  border-top-color: var(--tile-accent, var(--shop-tile-border));
+  border-radius: var(--radius-sm);
+  transition: border-color var(--t-fast), background var(--t-fast), transform var(--t-fast), box-shadow var(--t-fast);
+}
+/* Ability unlocks are the only stock ringed entirely in the owning champion's
+   signature colour; everything else just wears its accent as a top edge. */
+.shop-tile.has-accent { border-color: var(--tile-accent); }
+
+.shop-tile:hover,
+.shop-tile.has-accent:hover {
+  border-color: var(--shop-tile-hover-border);
+  background: var(--shop-tile-hover-bg);
+  transform: translateY(-2px);
+}
+.shop-tile[aria-pressed="true"],
+.shop-tile.has-accent[aria-pressed="true"] {
+  border-color: var(--shop-tile-sel-border);
+  background: var(--shop-tile-sel-bg);
+  box-shadow: 0 0 12px rgba(232, 198, 106, 0.4);
+}
+.shop-tile img {
+  width: 52px;
+  height: 52px;
+  object-fit: contain;
+  border-radius: var(--radius-sm);
+}
+.shop-tile .tile-name {
+  font-family: var(--font-ui);
+  font-size: 0.76rem;
+  line-height: 1.35;
+  color: var(--shop-item-name);
+}
+.shop-tile .tile-cost {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+  margin-top: auto;
+  font-family: var(--font-ui);
+  font-size: 0.78rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--shop-favour);
+}
+.shop-tile .tile-cost img { width: 14px; height: 14px; border-radius: 0; }
+
+.shelf-empty {
+  padding: var(--space-4) var(--space-2);
+  text-align: center;
+  font-style: italic;
+  color: var(--shop-muted-dim);
+  max-width: none;
+}
+
+/* ---------- right: detail pane ---------- */
+.shop-detail { position: sticky; top: 96px; }
+.detail-empty {
+  font-style: italic;
+  color: var(--shop-muted-dim);
+  max-width: none;
+  padding: var(--space-4) 0;
+  text-align: center;
+}
+.detail-card { display: flex; flex-direction: column; gap: 0.7em; }
+.detail-icon {
+  width: 84px;
+  height: 84px;
+  object-fit: contain;
+  align-self: center;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--detail-accent, var(--shop-tile-border));
+  background: rgba(0, 0, 0, 0.35);
+  padding: 4px;
+}
+.detail-cat {
+  font-family: var(--font-ui);
+  font-size: 0.66rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--shop-muted-dim);
+}
+.detail-name {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  line-height: 1.25;
+  color: var(--shop-item-name);
+}
+.detail-prefix {
+  font-family: var(--font-ui);
+  font-size: 0.78rem;
+  line-height: 1.5;
+  color: var(--detail-accent, var(--shop-maps-accent));
+  max-width: none;
+}
+.detail-desc {
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: var(--shop-body);
+  max-width: none;
+}
+.detail-sub {
+  font-family: var(--font-ui);
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--shop-muted-dim);
+  margin-top: 0.3em;
+}
+.detail-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45em;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--shop-body);
+}
+.detail-list li { padding-left: 0.9em; position: relative; }
+.detail-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.62em;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--detail-accent, var(--shop-maps-accent));
+}
+.detail-lore {
+  font-style: italic;
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: var(--shop-muted);
+  border-left: 2px solid var(--detail-accent, var(--shop-divider));
+  padding-left: 0.8em;
+  max-width: none;
+}
+.detail-price {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45em;
+  padding-top: 0.7em;
+  border-top: 1px solid var(--shop-divider);
+  font-family: var(--font-ui);
+  font-size: 1rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--shop-favour);
+}
+.detail-price img { width: 18px; height: 18px; }
+
+.detail-buy {
+  margin-top: 0.2em;
+  padding: 0.75em 1em;
+  text-align: center;
+  font-family: var(--font-ui);
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--shop-muted-dim);
+  border: 1px dashed var(--shop-tile-border);
+  border-radius: var(--radius-sm);
+}
+
+/* ---------- footnote under the panel ---------- */
+.emporion-note {
+  margin: var(--space-3) auto 0;
+  text-align: center;
+  font-size: 0.86rem;
+  color: var(--marble-500);
+}
+
+/* ---------- noscript catalogue fallback ---------- */
+.emporion-noscript { padding: var(--space-3) 0; }
+.emporion-noscript h3 { margin-top: var(--space-3); }
+.emporion-noscript ul { list-style: disc; padding-left: 1.2em; color: var(--marble-300); }
+
+/* ---------- breakpoints ---------- */
+@media (max-width: 1080px) {
+  .emporion-body { grid-template-columns: 176px minmax(0, 1fr); }
+  .shop-detail {
+    position: static;
+    grid-column: 1 / -1;
+    border-left: none;
+    border-top: 1px solid var(--shop-divider);
+  }
+  .detail-card { max-width: 640px; margin: 0 auto; }
+}
+
+@media (max-width: 720px) {
+  .emporion-body { grid-template-columns: 1fr; }
+  .shop-filters {
+    border-right: none;
+    border-bottom: 1px solid var(--shop-divider);
+  }
+  .filter-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .shop-shelf { max-height: none; }
+  .shelf-grid { grid-template-columns: repeat(auto-fill, minmax(108px, 1fr)); }
+}

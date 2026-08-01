@@ -598,7 +598,16 @@
   .legend { position: static; }
 }
 
-@media (max-width: 860px) {
+/* Nine nav items (Emporion and Login included) no longer fit a single line at
+   the full item spacing, so the bar tightens up before it collapses. */
+@media (max-width: 1240px) {
+  .nav-links { gap: 0.2rem; }
+  .nav-links a, .nav-links button.nav-link { padding: 0.6em 0.45em; font-size: 0.8rem; }
+}
+
+/* The primary nav collapses to the hamburger earlier than the rest of the
+   layout, for the same reason. */
+@media (max-width: 1040px) {
   .nav-links {
     position: fixed;
     inset: 64px 0 0 0;
@@ -623,8 +632,18 @@
   }
   .nav-links a, .nav-links button.nav-link { padding: 0.9em 0.4em; font-size: 1rem; border-bottom: 1px solid rgba(138,106,46,0.15); border-radius: 0; }
   .nav-links a.nav-cta { border-radius: var(--radius-sm); text-align: center; margin-top: 0.6em; }
+  .nav-login { display: block; }
+  .nav-links .nav-login-btn { width: 100%; text-align: left; }
+  /* Left-hang the popunder in the stacked menu instead of centring it over
+     the Play Now button below. */
+  .nav-popunder { left: 0.4em; transform: translate(0, -4px); }
+  .nav-popunder::before { left: 20px; }
+  .nav-login:hover .nav-popunder,
+  .nav-login:focus-within .nav-popunder { transform: translate(0, 0); }
   .nav-toggle { display: flex; }
+}
 
+@media (max-width: 860px) {
   .char-card {
     grid-template-columns: 1fr;
     padding: var(--space-4) var(--space-3);

@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48" role="img" aria-label="Dionysus' Revelry">
+  <!-- Boon icon. Same bronze plate + bold central glyph as the procedural
+       ability icons in src/render/art.ts, so a Boon tile reads as part of the
+       same set. Deity colour: wine purple. -->
+  <defs>
+    <linearGradient id="dr-plate" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3a2f1a"/><stop offset="1" stop-color="#1c160c"/>
+    </linearGradient>
+    <radialGradient id="dr-glow" cx="0.5" cy="0.62" r="0.55">
+      <stop offset="0" stop-color="#a855c8" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#a855c8" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="48" height="48" fill="url(#dr-plate)"/>
+  <ellipse cx="24" cy="32" rx="19" ry="12" fill="url(#dr-glow)"/>
+  <!-- spilled wine pool -->
+  <path d="M6 35q5-5 10-3t8 1 8-3 10 4-11 7H16z" fill="#5e1638"/>
+  <path d="M9 35q5-4 9-2t7 0 7-2 8 3-9 5H17z" fill="#8c2456"/>
+  <!-- cask, banded -->
+  <path d="M15 12q9-4 18 0l3 12q-12 5-24 0z" fill="#7a4a22" stroke="#c9a84c" stroke-width="1.4" stroke-linejoin="round"/>
+  <path d="M14.2 17h19.6M15.6 21.6h17" stroke="#e8c66a" stroke-width="1.6" stroke-linecap="round"/>
+  <ellipse cx="24" cy="12.4" rx="9" ry="3" fill="#a855c8" stroke="#e8c66a" stroke-width="1.2"/>
+  <!-- grapes tumbling out -->
+  <circle cx="20.5" cy="10" r="2.4" fill="#7d3aa8"/>
+  <circle cx="25.5" cy="9.2" r="2.1" fill="#a855c8"/>
+  <circle cx="23" cy="6.4" r="1.9" fill="#8f46bd"/>
+  <path d="M28 7.5q3-3 6-2" stroke="#8fc07a" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+  <!-- splashes -->
+  <circle cx="10" cy="29" r="1.7" fill="#c04a80"/>
+  <circle cx="39" cy="30" r="1.4" fill="#c04a80"/>
+  <circle cx="34" cy="27" r="1" fill="#e07ab0"/>
+</svg>

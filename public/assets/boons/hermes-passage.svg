@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48" role="img" aria-label="Hermes' Passage">
+  <!-- Boon icon — see dionysus-revelry.svg for the shared plate convention.
+       Deity colour: traveller's cyan. -->
+  <defs>
+    <linearGradient id="hp-plate" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3a2f1a"/><stop offset="1" stop-color="#1c160c"/>
+    </linearGradient>
+    <radialGradient id="hp-glow" cx="0.5" cy="0.5" r="0.55">
+      <stop offset="0" stop-color="#6fd4e8" stop-opacity="0.5"/>
+      <stop offset="1" stop-color="#6fd4e8" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="48" height="48" fill="url(#hp-plate)"/>
+  <circle cx="24" cy="24" r="20" fill="url(#hp-glow)"/>
+  <!-- the wall he walks through, parted -->
+  <g fill="#4a4436" opacity="0.85">
+    <rect x="2" y="8" width="11" height="7" rx="1"/><rect x="2" y="17" width="11" height="7" rx="1"/>
+    <rect x="2" y="26" width="11" height="7" rx="1"/><rect x="2" y="35" width="11" height="7" rx="1"/>
+    <rect x="35" y="8" width="11" height="7" rx="1"/><rect x="35" y="17" width="11" height="7" rx="1"/>
+    <rect x="35" y="26" width="11" height="7" rx="1"/><rect x="35" y="35" width="11" height="7" rx="1"/>
+  </g>
+  <!-- winged sandal -->
+  <path d="M17 34q0-4 3-6t7-2l7 1-2 5-6 2-4 3z" fill="#c9a84c" stroke="#6b5320" stroke-width="1" stroke-linejoin="round"/>
+  <path d="M18 36h16" stroke="#8a6a20" stroke-width="2" stroke-linecap="round"/>
+  <g fill="#a8e8f4" stroke="#6fd4e8" stroke-width="1" stroke-linejoin="round">
+    <path d="M20 25q-6-6-14-5 5 6 14 5z"/>
+    <path d="M22 21q-4-7-12-8 3 7 12 8z"/>
+    <path d="M31 26q7-4 14-1-6 5-14 1z"/>
+  </g>
+  <!-- speed lines -->
+  <g stroke="#e8fbff" stroke-width="1.5" stroke-linecap="round" opacity="0.85">
+    <path d="M28 12h8"/><path d="M31 8h6"/>
+  </g>
+</svg>
