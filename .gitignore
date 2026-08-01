@@ -6,6 +6,7 @@ test/*.png
 .env
 .env.local
 .env.*.local
+read_key.txt
 
 # migrations/ and tests/ are deliberately NOT ignored. The database's safety
 # comes from RLS and revoked privileges, not from the schema being secret — a
