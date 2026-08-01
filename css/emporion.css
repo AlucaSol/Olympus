@@ -70,7 +70,46 @@
   text-transform: uppercase;
   color: var(--shop-muted);
 }
-.emporion-balance img { width: 20px; height: 20px; opacity: 0.75; }
+.emporion-balance img { width: 20px; height: 20px; opacity: 0.9; }
+.emporion-balance-value {
+  font-size: 1.05rem;
+  letter-spacing: 0.04em;
+  font-variant-numeric: tabular-nums;
+  color: var(--shop-favour);
+}
+.emporion-balance-refresh {
+  padding: 0.35em 0.7em;
+  font-family: var(--font-ui);
+  font-size: 0.64rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--shop-muted);
+  border: 1px solid var(--shop-tile-border);
+  border-radius: var(--radius-sm);
+  transition: color var(--t-fast), border-color var(--t-fast);
+}
+.emporion-balance-refresh:hover:not(:disabled) {
+  color: var(--gold-300);
+  border-color: var(--shop-tile-hover-border);
+}
+.emporion-balance-refresh:disabled { opacity: 0.5; cursor: progress; }
+.emporion-balance-refresh[hidden] { display: none; }
+
+/* Purchase outcomes, payment returns, and anything else the shelf needs to
+   say. Sits directly under the title bar so it is impossible to miss. */
+.emporion-notice {
+  margin: 0;
+  padding: 0.75em var(--space-3);
+  font-family: var(--font-ui);
+  font-size: 0.85rem;
+  line-height: 1.5;
+  max-width: none;
+  border-bottom: 1px solid var(--shop-divider);
+}
+.emporion-notice[hidden] { display: none; }
+.emporion-notice.is-info { color: var(--gold-300); background: rgba(201, 164, 76, 0.08); }
+.emporion-notice.is-success { color: #8fc07a; background: rgba(99, 181, 86, 0.09); }
+.emporion-notice.is-error { color: var(--crimson-bright); background: rgba(217, 112, 92, 0.1); }
 
 .emporion-body {
   display: grid;
@@ -334,18 +373,71 @@
 }
 .detail-price img { width: 18px; height: 18px; }
 
-.detail-buy {
+/* ---------- the action area of the detail pane ----------
+   The only part of the pane that changes with who is looking. The offering's
+   own description above it is identical signed in or out. */
+
+.detail-action { margin-top: 0.2em; }
+
+.btn.btn-block { width: 100%; justify-content: center; }
+.btn.btn-block:disabled { opacity: 0.5; cursor: not-allowed; box-shadow: none; }
+
+.detail-signin {
+  margin-top: 0.2em;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7em;
+  padding: 0.9em;
+  border: 1px dashed var(--shop-tile-border);
+  border-radius: var(--radius-sm);
+}
+.detail-signin-text {
+  margin: 0;
+  max-width: none;
+  font-family: var(--font-ui);
+  font-size: 0.8rem;
+  line-height: 1.5;
+  text-align: center;
+  color: var(--shop-muted);
+}
+
+.detail-owned {
   margin-top: 0.2em;
   padding: 0.75em 1em;
   text-align: center;
   font-family: var(--font-ui);
-  font-size: 0.7rem;
-  letter-spacing: 0.14em;
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--shop-muted-dim);
-  border: 1px dashed var(--shop-tile-border);
+  color: #8fc07a;
+  border: 1px solid rgba(143, 192, 122, 0.4);
   border-radius: var(--radius-sm);
+  background: rgba(143, 192, 122, 0.07);
 }
+
+/* ---------- owned stock on the shelf ----------
+   Greyed and priceless but still clickable, so its details can be read —
+   the same behaviour as the in-game panel. */
+.shop-tile.is-owned {
+  filter: grayscale(1);
+  opacity: 0.42;
+}
+.shop-tile.is-owned:hover,
+.shop-tile.is-owned[aria-pressed="true"] {
+  filter: grayscale(0.4);
+  opacity: 0.85;
+}
+.tile-owned {
+  margin-top: auto;
+  font-family: var(--font-ui);
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  color: #8fc07a;
+}
+
+/* Favour bundles read as money, not Favour, so their price is set in the
+   marble text rather than the gold used for a Favour figure. */
+.shop-tile.is-bundle .tile-cost { color: var(--marble-100); }
 
 /* ---------- footnote under the panel ---------- */
 .emporion-note {

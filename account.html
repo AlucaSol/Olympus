@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Triarchs of Olympus — Your Account</title>
+<meta name="description" content="Your Triarchs of Olympus account.">
+<meta name="theme-color" content="#0d0e14">
+<meta name="robots" content="noindex">
+<link rel="icon" href="./assets/decorative/emblem.png" type="image/svg+xml">
+<link rel="stylesheet" href="./css/site.css">
+<link rel="stylesheet" href="./css/responsive.css">
+<link rel="stylesheet" href="./css/account.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to main content</a>
+
+<header class="site-header">
+  <nav class="nav-bar" aria-label="Primary">
+    <a href="home.html" class="brand">
+      <img src="./assets/decorative/emblem.png" alt="" class="brand-mark">
+      TRIARCHS<small>OF OLYMPUS</small>
+    </a>
+    <button class="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-links">
+      <svg class="icon" aria-hidden="true"><use href="./assets/icons/icons.svg#ic-menu"></use></svg>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="home.html">Home</a>
+      <a href="characters.html">Characters</a>
+      <a href="world.html">World</a>
+      <a href="emporion.html">Emporion</a>
+      <a href="about.html">About</a>
+      <a href="news.html">Patch Notes</a>
+
+      <a class="nav-link" href="https://github.com/AlucaSol/triarchs-of-olympus/releases/latest/download/Triarchs-of-Olympus-setup.exe">
+          <svg class="icon" aria-hidden="true"><use href="./assets/icons/icons.svg#ic-download"></use></svg> Download
+      </a>
+      <a href="account.html" class="nav-link nav-account" data-nav-account aria-current="page">Account</a>
+      <a href="https://triarchsofolympus.jj-games.org" class="nav-cta">Play Now</a>
+    </div>
+  </nav>
+</header>
+
+<main id="main">
+  <div class="page-header">
+    <p class="eyebrow">Your account</p>
+    <h1>Account</h1>
+  </div>
+
+  <div class="auth-shell">
+    <div class="auth-card" id="account-card" hidden>
+      <h2>Signed in</h2>
+
+      <div class="field">
+        <label id="account-email-label">Email address</label>
+        <p class="field-static" id="account-email" aria-labelledby="account-email-label">—</p>
+        <p class="field-hint">Your email address cannot be changed here.</p>
+      </div>
+
+      <div class="account-meta">
+        <div class="account-stat">
+          <span class="label">Username</span>
+          <span class="value is-plain" id="account-username">—</span>
+        </div>
+        <div class="account-stat">
+          <span class="label">Favour</span>
+          <span class="value" id="account-favour">
+            <img src="./assets/emporion/ui/favour-placeholder.png" alt="">
+            <span id="account-favour-value">—</span>
+          </span>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <h2>Change password</h2>
+
+      <p id="password-status" class="auth-message is-info" role="status" hidden></p>
+
+      <form class="auth-form" id="password-form" novalidate autocomplete="off">
+        <div class="field">
+          <label for="new-password">New password</label>
+          <input type="password" id="new-password" name="newPassword"
+                 autocomplete="new-password" required minlength="8">
+          <p class="field-hint">At least 8 characters.</p>
+        </div>
+
+        <div class="field">
+          <label for="new-password-confirm">Confirm new password</label>
+          <input type="password" id="new-password-confirm" name="newPasswordConfirm"
+                 autocomplete="new-password" required minlength="8">
+        </div>
+
+        <div class="field" id="reauth-field" hidden>
+          <label for="reauth-code">Verification code</label>
+          <input type="text" id="reauth-code" name="reauthCode"
+                 inputmode="numeric" autocomplete="one-time-code"
+                 maxlength="10" spellcheck="false">
+          <p class="field-hint">For your security, changing a password on an older session needs a code. Check your email.</p>
+        </div>
+
+        <button type="submit" class="btn btn-primary" id="password-submit">Change password</button>
+      </form>
+
+      <div class="account-actions">
+        <a class="btn btn-ghost" href="emporion.html">Go to the Emporion</a>
+        <button type="button" class="btn" id="logout-button">Log out</button>
+      </div>
+    </div>
+
+    <div class="auth-card" id="account-loading">
+      <p id="account-loading-text">Checking your session…</p>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-bottom">
+      <span>Triarchs of Olympus — created by Aluca Sol.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="./js/config.js"></script>
+<script src="./js/vendor/supabase-js-2.111.0.umd.js"></script>
+<script src="./js/auth.js"></script>
+<script src="./js/site.js"></script>
+<script src="./js/account.js"></script>
+</body>
+</html>

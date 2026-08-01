@@ -6,3 +6,9 @@ test/*.png
 .env
 .env.local
 .env.*.local
+migrations/
+tests/
+
+# Credentials for the backend setup. Never commit.
+secrets.local
+env

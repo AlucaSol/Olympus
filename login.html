@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Triarchs of Olympus — Sign In</title>
+<meta name="description" content="Sign in to your Triarchs of Olympus account to buy and spend Favour in the Emporion.">
+<meta name="theme-color" content="#0d0e14">
+<meta name="robots" content="noindex">
+<link rel="icon" href="./assets/decorative/emblem.png" type="image/svg+xml">
+<link rel="stylesheet" href="./css/site.css">
+<link rel="stylesheet" href="./css/responsive.css">
+<link rel="stylesheet" href="./css/account.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to main content</a>
+
+<header class="site-header">
+  <nav class="nav-bar" aria-label="Primary">
+    <a href="home.html" class="brand">
+      <img src="./assets/decorative/emblem.png" alt="" class="brand-mark">
+      TRIARCHS<small>OF OLYMPUS</small>
+    </a>
+    <button class="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-links">
+      <svg class="icon" aria-hidden="true"><use href="./assets/icons/icons.svg#ic-menu"></use></svg>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="home.html">Home</a>
+      <a href="characters.html">Characters</a>
+      <a href="world.html">World</a>
+      <a href="emporion.html">Emporion</a>
+      <a href="about.html">About</a>
+      <a href="news.html">Patch Notes</a>
+
+      <a class="nav-link" href="https://github.com/AlucaSol/triarchs-of-olympus/releases/latest/download/Triarchs-of-Olympus-setup.exe">
+          <svg class="icon" aria-hidden="true"><use href="./assets/icons/icons.svg#ic-download"></use></svg> Download
+      </a>
+      <a href="login.html" class="nav-link nav-account" data-nav-account aria-current="page">Account</a>
+      <a href="https://triarchsofolympus.jj-games.org" class="nav-cta">Play Now</a>
+    </div>
+  </nav>
+</header>
+
+<main id="main">
+  <div class="page-header">
+    <p class="eyebrow">Your account</p>
+    <h1>Sign In</h1>
+    <p>Sign in here, or scroll down to create an account.</p>
+  </div>
+
+  <div class="auth-shell">
+    <div class="auth-card">
+      <h2>Sign in</h2>
+
+      <p id="login-status" class="auth-message is-info" role="status" hidden></p>
+
+      <form class="auth-form" id="login-form" novalidate>
+        <div class="field">
+          <label for="login-email">Email</label>
+          <input type="email" id="login-email" name="email"
+                 autocomplete="email" required autocapitalize="none" spellcheck="false">
+        </div>
+
+        <div class="field">
+          <label for="login-password">Password</label>
+          <input type="password" id="login-password" name="password"
+                 autocomplete="current-password" required>
+        </div>
+
+        <div class="turnstile-holder" id="login-turnstile"></div>
+
+        <button type="submit" class="btn btn-primary" id="login-submit">Login</button>
+      </form>
+
+      <div class="auth-alt">
+        <p>No account?</p>
+        <a class="btn btn-ghost" href="signup.html">Sign up</a>
+      </div>
+
+      <p class="auth-guest">
+        You do not need an account to play.
+        <a href="https://triarchsofolympus.jj-games.org">Play as a guest</a>.
+      </p>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-bottom">
+      <span>Triarchs of Olympus — created by Aluca Sol.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="./js/config.js"></script>
+<script src="./js/vendor/supabase-js-2.111.0.umd.js"></script>
+<script src="./js/auth.js"></script>
+<script src="./js/site.js"></script>
+<script src="./js/turnstile.js"></script>
+<script src="./js/login.js"></script>
+</body>
+</html>

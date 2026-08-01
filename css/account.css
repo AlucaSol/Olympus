@@ -1,0 +1,193 @@
+/* ==========================================================================
+   TRIARCHS OF OLYMPUS — account pages (login, signup, profile, confirmation)
+   Same bronze-on-near-black system as the rest of the site; nothing new is
+   invented here beyond a narrow centred form card.
+   ========================================================================== */
+
+/* The `hidden` attribute is only `display: none` in the user-agent stylesheet,
+   which any author rule setting `display` beats. Several blocks below are flex
+   containers that JavaScript hides by setting `hidden`, so they need saying
+   again at author specificity — otherwise "hidden" fields (the invitation
+   code, the reauthentication code, a withdrawn signup form) stay on screen. */
+.auth-card[hidden],
+.auth-form[hidden],
+.field[hidden],
+.account-actions[hidden],
+.account-meta[hidden] { display: none; }
+
+.auth-shell {
+  max-width: 520px;
+  margin: 0 auto;
+  padding: var(--space-5) var(--gutter) var(--space-6);
+}
+
+.auth-card {
+  padding: var(--space-4);
+  background: linear-gradient(180deg, rgba(32, 26, 15, 0.98), rgba(18, 14, 8, 0.98));
+  border: 1px solid #7a6230;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-deep);
+}
+
+.auth-card h2 {
+  margin-bottom: var(--space-2);
+  font-size: 1.35rem;
+  letter-spacing: 0.08em;
+}
+
+.auth-card > p {
+  font-size: 0.95rem;
+  color: var(--marble-300);
+  max-width: none;
+}
+
+.auth-form { display: flex; flex-direction: column; gap: var(--space-3); margin-top: var(--space-3); }
+
+.field { display: flex; flex-direction: column; gap: 0.4em; }
+.field label {
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--marble-500);
+}
+.field input {
+  width: 100%;
+  padding: 0.75em 0.9em;
+  font-family: var(--font-ui);
+  font-size: 0.95rem;
+  color: var(--marble-100);
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid #55482c;
+  border-radius: var(--radius-sm);
+  transition: border-color var(--t-fast), box-shadow var(--t-fast);
+}
+.field input:hover { border-color: #7a6230; }
+.field input:focus {
+  outline: none;
+  border-color: var(--gold-400);
+  box-shadow: 0 0 0 1px rgba(232, 198, 106, 0.35);
+}
+.field input:disabled { opacity: 0.55; cursor: not-allowed; }
+.field input[aria-invalid="true"] { border-color: var(--crimson); }
+
+.field-hint {
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  line-height: 1.5;
+  color: var(--marble-700);
+  max-width: none;
+}
+
+.field-static {
+  padding: 0.75em 0.9em;
+  font-family: var(--font-ui);
+  font-size: 0.95rem;
+  color: var(--marble-200);
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px dashed #55482c;
+  border-radius: var(--radius-sm);
+  word-break: break-all;
+}
+
+.auth-form .btn { justify-content: center; width: 100%; }
+.auth-form .btn:disabled { opacity: 0.55; cursor: progress; box-shadow: none; }
+.auth-form .btn:disabled:hover { background: linear-gradient(180deg, #453619, #241c0e 55%, #1a1408); }
+.auth-form .btn-primary:disabled:hover { background: linear-gradient(180deg, var(--gold-400), #a3822f 65%, #6b5320); }
+
+/* ---------- messages ---------- */
+.auth-message {
+  padding: 0.8em 1em;
+  font-family: var(--font-ui);
+  font-size: 0.85rem;
+  line-height: 1.55;
+  border-radius: var(--radius-sm);
+  border: 1px solid;
+}
+.auth-message[hidden] { display: none; }
+.auth-message.is-error {
+  color: var(--crimson-bright);
+  border-color: rgba(217, 112, 92, 0.45);
+  background: rgba(217, 112, 92, 0.08);
+}
+.auth-message.is-success {
+  color: var(--verdant-bright);
+  border-color: rgba(99, 181, 86, 0.45);
+  background: rgba(99, 181, 86, 0.08);
+}
+.auth-message.is-info {
+  color: var(--gold-300);
+  border-color: rgba(201, 164, 76, 0.4);
+  background: rgba(201, 164, 76, 0.07);
+}
+
+/* ---------- divider + secondary action ---------- */
+.auth-alt {
+  margin-top: var(--space-4);
+  padding-top: var(--space-3);
+  border-top: 1px solid #3a301a;
+  text-align: center;
+}
+.auth-alt p {
+  margin: 0 auto var(--space-2);
+  font-size: 0.92rem;
+  color: var(--marble-300);
+}
+.auth-alt .btn { display: inline-flex; }
+
+.auth-guest {
+  margin-top: var(--space-3);
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--marble-500);
+}
+.auth-guest a { color: var(--gold-400); text-decoration: underline; text-underline-offset: 2px; }
+
+/* ---------- Turnstile ---------- */
+.turnstile-holder { min-height: 65px; display: flex; justify-content: center; }
+.turnstile-holder:empty { min-height: 0; }
+
+/* ---------- profile extras ---------- */
+.account-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-3);
+  padding-top: var(--space-3);
+  border-top: 1px solid #3a301a;
+}
+.account-stat { flex: 1 1 140px; }
+.account-stat .label {
+  display: block;
+  font-family: var(--font-ui);
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--marble-700);
+}
+.account-stat .value {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  font-family: var(--font-ui);
+  font-size: 1.1rem;
+  font-variant-numeric: tabular-nums;
+  color: #ffd769;
+}
+.account-stat .value img { width: 18px; height: 18px; }
+.account-stat .value.is-plain { color: var(--marble-200); }
+
+.account-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-4);
+  padding-top: var(--space-3);
+  border-top: 1px solid #3a301a;
+}
+.account-actions .btn { width: auto; flex: 1 1 auto; }
+
+@media (max-width: 600px) {
+  .auth-card { padding: var(--space-3); }
+  .account-actions .btn { flex-basis: 100%; }
+}

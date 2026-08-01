@@ -37,10 +37,7 @@
       <a class="nav-link" href="https://github.com/AlucaSol/triarchs-of-olympus/releases/latest/download/Triarchs-of-Olympus-setup.exe">
           <svg class="icon" aria-hidden="true"><use href="./assets/icons/icons.svg#ic-download"></use></svg> Download
       </a>
-      <span class="nav-login">
-        <button type="button" class="nav-link nav-login-btn" aria-describedby="nav-login-note">Login</button>
-        <span class="nav-popunder" id="nav-login-note" role="tooltip">Coming soon</span>
-      </span>
+      <a href="login.html" class="nav-link nav-account" data-nav-account>Account</a>
       <a href="https://triarchsofolympus.jj-games.org" class="nav-cta">Play Now</a>
     </div>
   </nav>
@@ -60,7 +57,7 @@
            ================================================================ -->
       <div class="emporion-intro reveal">
         <p>Everything currently for sale in the Emporion is laid out below — browse it freely, filter it by category, and click any offering to read exactly what it does before you spend a thing.</p>
-        <p><strong>Purchases require an account.</strong> Accounts are coming soon; until then this page is a shop window, and every unlock listed here is bought inside the game itself with Favour.</p>
+        <p><strong>Purchases require an account.</strong> <a href="login.html">Sign in</a> to buy Favour or spend it here; the game itself stays free to play as a guest.</p>
       </div>
     </div>
   </section>
@@ -71,11 +68,19 @@
 
         <div class="emporion-bar">
           <h2>Emporion of Olympus</h2>
-          <span class="emporion-balance">
-             Your Favour
+          <div class="emporion-balance">
+            <span class="emporion-balance-label">Your Favour</span>
             <img src="./assets/emporion/ui/favour-placeholder.png" alt="">
-          </span>
+            <!-- Logged out this stays at 0. Logged in it is loaded from
+                 player_accounts under RLS, never from anything the browser
+                 could have been told to believe. -->
+            <span class="emporion-balance-value" id="emporion-balance-value">0</span>
+            <button type="button" class="emporion-balance-refresh"
+                    id="emporion-balance-refresh" hidden>Refresh</button>
+          </div>
         </div>
+
+        <p class="emporion-notice" id="emporion-notice" role="status" hidden></p>
 
         <div class="emporion-body">
 
@@ -176,6 +181,9 @@
   </div>
 </footer>
 
+<script src="./js/config.js"></script>
+<script src="./js/vendor/supabase-js-2.111.0.umd.js"></script>
+<script src="./js/auth.js"></script>
 <script src="./js/site.js"></script>
 <script src="./js/emporion.js"></script>
 </body>

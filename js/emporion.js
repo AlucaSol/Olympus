@@ -1,8 +1,26 @@
 /* ==========================================================================
    EMPORION OF OLYMPUS — storefront catalogue + panel behaviour
-   Catalogue transcribed from assets/emporion/EMPORION_STORE_DATA.txt
-   (extracted 2026-08-01). When stock changes in the game, update CATALOGUE.
-   Browse-only: no purchasing, no ownership state.
+
+   TWO KINDS OF STOCK LIVE ON THIS SHELF.
+
+     Game items  — maps, champions, ultimates, Boons. Bought WITH Favour.
+                   The descriptions below are transcribed from
+                   assets/emporion/EMPORION_STORE_DATA.txt so the page reads
+                   correctly with no network, but they are display copy only:
+                   the price that is actually charged is read from
+                   public.shop_items by purchase_shop_item() in the database.
+                   Editing a number here changes what a visitor is shown and
+                   nothing whatsoever about what they are charged.
+
+     Favour      — bundles of Favour bought with REAL MONEY through Stripe.
+                   Same rule: the amount, the currency and the quantity of
+                   Favour all come from public.favour_bundles server-side. The
+                   browser sends a bundle id and an idempotency key, and can
+                   name no price at all.
+
+   Nothing in this file is a security control. Ownership, balance, prices and
+   entitlements are all decided by the database; this is the part that draws
+   the answer.
    ========================================================================== */
 (function () {
   "use strict";
@@ -11,8 +29,11 @@
   var FAVOUR_ICON = UI + "favour-placeholder.png";
   var PLACEHOLDER = UI + "shop-item-placeholder.png";
 
-  /* Category display order and filter-card icons (from src/types/shop.ts). */
+  /* Category display order and filter-card icons (from src/types/shop.ts).
+     `favour` is first deliberately: whenever more than one category is on
+     screen, the Favour bundles lead. */
   var CATEGORIES = [
+    { id: "favour",    label: "Favour",    icon: UI + "favour-placeholder.png" },
     { id: "maps",      label: "Maps",      icon: UI + "shop-cat-maps.png" },
     { id: "heroes",    label: "Heroes",    icon: UI + "shop-cat-heroes.png" },
     { id: "items",     label: "Items",     icon: UI + "shop-cat-items.png" },
@@ -249,14 +270,88 @@
     }
   ];
 
+  /* ---------------- Favour bundles (real money, via Stripe) ----------------
+     Display copy only. The authority is public.favour_bundles: the Edge
+     Function reads the price, the currency, the Favour quantity and the Stripe
+     Price ID from there, and the webhook checks Stripe's account of the sale
+     against the same row before a single unit of Favour is credited.
+
+     The three icons are separate copies of the placeholder so each can be
+     replaced with its own artwork later without touching the other two.      */
+
+  var BUNDLES = [
+    {
+      id: "favour_50",
+      category: "favour",
+      kind: "bundle",
+      name: "50 Favour",
+      sort: 10,
+      priceMinor: 300,
+      favourAmount: 50,
+      icon: UI + "favour-bundle-50.png",
+      accent: "#ffd769",
+      desc: "A small offering of Favour, spendable anywhere in the Emporion.",
+      effects: ["Credited to your account as soon as your payment clears."]
+    },
+    {
+      id: "favour_200",
+      category: "favour",
+      kind: "bundle",
+      name: "200 Favour",
+      sort: 20,
+      priceMinor: 900,
+      favourAmount: 200,
+      icon: UI + "favour-bundle-200.png",
+      accent: "#ffd769",
+      desc: "A generous purse of Favour — enough for a champion, with change.",
+      effects: [
+        "Credited to your account as soon as your payment clears.",
+        "Enough for either sellable champion outright."
+      ]
+    },
+    {
+      id: "favour_400",
+      category: "favour",
+      kind: "bundle",
+      name: "400 Favour",
+      sort: 30,
+      priceMinor: 1500,
+      favourAmount: 400,
+      icon: UI + "favour-bundle-400.png",
+      accent: "#ffd769",
+      desc: "A patron's tribute of Favour, the best value the Emporion offers.",
+      effects: [
+        "Credited to your account as soon as your payment clears.",
+        "The most Favour per dollar of the three bundles."
+      ]
+    }
+  ];
+
   /* ---------------------------------------------------------------- */
 
+  var cfg = window.TRIARCHS_CONFIG || {};
+  var auth = window.TriarchsAuth || null;
+
   var money = new Intl.NumberFormat("en-US");
+
+  // Deliberately en-US, not en-AU. An Australian locale renders AUD as a bare
+  // "$3.00", which is exactly the ambiguity to avoid when the buyer could be
+  // anywhere; en-US renders the same amount as "A$3.00". The currency the
+  // customer is actually charged is set by the Stripe Price, and both it and
+  // public.favour_bundles.currency are `aud` — this only decides how it reads.
+  var cash = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: (cfg.currency || "aud").toUpperCase(),
+    currencyDisplay: "symbol"
+  });
+
   var catOrder = {};
   var catLabel = {};
   CATEGORIES.forEach(function (c, i) { catOrder[c.id] = i; catLabel[c.id] = c.label; });
 
-  var items = CATALOGUE.slice().sort(function (a, b) {
+  // Favour bundles are prepended, then everything sorts by category order —
+  // and `favour` is category 0, so it leads whenever it is on screen.
+  var items = BUNDLES.concat(CATALOGUE).sort(function (a, b) {
     return (catOrder[a.category] - catOrder[b.category]) || (a.sort - b.sort);
   });
 
@@ -264,10 +359,32 @@
   var shelf = document.getElementById("shop-shelf");
   var detail = document.getElementById("shop-detail");
   var clearBtn = document.getElementById("filter-clear");
+  var balanceValue = document.getElementById("emporion-balance-value");
+  var balanceRefresh = document.getElementById("emporion-balance-refresh");
+  var noticeBar = document.getElementById("emporion-notice");
   if (!filterGrid || !shelf || !detail) return;
+
+  /* ---------------- state ----------------
+
+     `identity` is the signed-in user's id, or null. Everything derived from
+     the account — the balance, what is owned — is stamped with the identity it
+     was loaded for, and cleared the moment that changes. A balance belonging to
+     whoever was signed in a second ago must never be shown to the next person,
+     not even for one frame.                                                  */
 
   var selectedCats = [];
   var selectedId = null;
+
+  var identity = null;
+  var balance = 0;
+  var balanceKnown = false;
+  var owned = Object.create(null);
+  var pendingAction = false;
+  var paymentReturnHandled = false;
+
+  // Set once the visitor touches a filter. Until then the Favour default is
+  // reapplied on identity changes; afterwards their choice is left alone.
+  var filterTouched = false;
 
   function el(tag, cls, text) {
     var n = document.createElement(tag);
@@ -276,15 +393,24 @@
     return n;
   }
 
-  function favour(cost, cls) {
+  function favour(amount, cls) {
     var wrap = el("span", cls);
     var img = el("img");
     img.src = FAVOUR_ICON;
     img.alt = "";
     img.loading = "lazy";
     wrap.appendChild(img);
-    wrap.appendChild(document.createTextNode(money.format(cost) + " Favour"));
+    wrap.appendChild(document.createTextNode(money.format(amount) + " Favour"));
     return wrap;
+  }
+
+  function priceTag(item, cls) {
+    if (item.kind === "bundle") {
+      var wrap = el("span", cls);
+      wrap.appendChild(document.createTextNode(cash.format(item.priceMinor / 100)));
+      return wrap;
+    }
+    return favour(item.cost, cls);
   }
 
   function itemIcon(item, alt) {
@@ -298,7 +424,85 @@
     return img;
   }
 
+  function notice(kind, message) {
+    if (!noticeBar) return;
+    if (!message) { noticeBar.hidden = true; noticeBar.textContent = ""; return; }
+    noticeBar.className = "emporion-notice is-" + kind;
+    noticeBar.textContent = message;
+    noticeBar.hidden = false;
+  }
+
+  /* ---------------- balance ----------------
+
+     Logged out shows a plain 0 — not a dash, not a spinner, and never a
+     remembered figure. Logged in, the number comes from player_accounts under
+     RLS, which restricts the row to auth.uid(). There is no user id in the
+     query because there is nowhere to put one: the policy reads it from the
+     JWT. A tampered URL or a doctored localStorage entry changes nothing.   */
+
+  function renderBalance() {
+    if (!balanceValue) return;
+    if (!identity) { balanceValue.textContent = "0"; return; }
+    balanceValue.textContent = balanceKnown ? money.format(balance) : "…";
+  }
+
+  function loadAccountData(forIdentity) {
+    if (!forIdentity || !auth) { renderBalance(); return Promise.resolve(); }
+
+    return Promise.all([
+      auth.client.from("player_accounts").select("favour").single(),
+      auth.client.from("player_purchases").select("item_id")
+    ]).then(function (results) {
+      // Session changed underneath us: throw the answer away rather than
+      // painting one account's data over another's.
+      if (identity !== forIdentity) return;
+
+      var account = results[0];
+      var purchases = results[1];
+
+      if (account.error || !account.data) {
+        balanceKnown = false;
+        renderBalance();
+      } else {
+        balance = Number(account.data.favour) || 0;
+        balanceKnown = true;
+        renderBalance();
+      }
+
+      owned = Object.create(null);
+      if (!purchases.error && purchases.data) {
+        purchases.data.forEach(function (row) { owned[row.item_id] = true; });
+      }
+      renderShelf();
+      if (selectedId) renderDetail(findItem(selectedId));
+    }).catch(function () {
+      if (identity !== forIdentity) return;
+      balanceKnown = false;
+      renderBalance();
+    });
+  }
+
+  function refreshBalance() {
+    return loadAccountData(identity);
+  }
+
+  if (balanceRefresh) {
+    balanceRefresh.addEventListener("click", function () {
+      if (!identity) return;
+      balanceRefresh.disabled = true;
+      balanceKnown = false;
+      renderBalance();
+      refreshBalance().then(function () { balanceRefresh.disabled = false; });
+    });
+  }
+
+  function findItem(id) {
+    for (var i = 0; i < items.length; i++) if (items[i].id === id) return items[i];
+    return null;
+  }
+
   /* ---------------- filters ---------------- */
+
   function buildFilters() {
     CATEGORIES.forEach(function (cat) {
       var stocked = items.some(function (it) { return it.category === cat.id; });
@@ -312,9 +516,22 @@
       btn.appendChild(img);
       btn.appendChild(el("span", null, cat.label));
       if (!stocked) btn.title = "No offerings in this category yet.";
-      btn.addEventListener("click", function () { toggleCat(cat.id, btn); });
+      btn.addEventListener("click", function () {
+        filterTouched = true;
+        toggleCat(cat.id, btn);
+      });
       filterGrid.appendChild(btn);
     });
+  }
+
+  function syncFilterButtons() {
+    filterGrid.querySelectorAll(".filter-card").forEach(function (b) {
+      b.setAttribute(
+        "aria-pressed",
+        selectedCats.indexOf(b.dataset.cat) !== -1 ? "true" : "false"
+      );
+    });
+    if (clearBtn) clearBtn.hidden = selectedCats.length === 0;
   }
 
   function toggleCat(id, btn) {
@@ -326,15 +543,24 @@
   }
 
   function clearCats() {
+    filterTouched = true;
     selectedCats = [];
-    filterGrid.querySelectorAll(".filter-card").forEach(function (b) {
-      b.setAttribute("aria-pressed", "false");
-    });
-    if (clearBtn) clearBtn.hidden = true;
+    syncFilterButtons();
     renderShelf();
   }
 
+  /* Signed in, Favour is preselected; signed out it is not. Applied when the
+     page first opens and when the identity genuinely changes — never after the
+     visitor has picked their own filters, because silently undoing someone's
+     choice while they are reading is worse than any default. */
+  function applyAuthDefaultFilter() {
+    if (filterTouched) return;
+    selectedCats = identity ? ["favour"] : [];
+    syncFilterButtons();
+  }
+
   /* ---------------- shelf ---------------- */
+
   function visibleItems() {
     if (!selectedCats.length) return items;
     return items.filter(function (it) { return selectedCats.indexOf(it.category) !== -1; });
@@ -344,7 +570,6 @@
     var list = visibleItems();
     shelf.textContent = "";
 
-    // Selecting away from the shown item clears the detail pane, as in game.
     if (selectedId && !list.some(function (it) { return it.id === selectedId; })) {
       selectedId = null;
       renderDetail(null);
@@ -371,14 +596,26 @@
   }
 
   function buildTile(item) {
-    var tile = el("button", "shop-tile" + (item.category === "abilities" ? " has-accent" : ""));
+    var isOwned = !!owned[item.id];
+    var classes = "shop-tile";
+    if (item.category === "abilities") classes += " has-accent";
+    if (item.kind === "bundle") classes += " is-bundle";
+    if (isOwned) classes += " is-owned";
+
+    var tile = el("button", classes);
     tile.type = "button";
     tile.dataset.id = item.id;
     tile.setAttribute("aria-pressed", item.id === selectedId ? "true" : "false");
     if (item.accent) tile.style.setProperty("--tile-accent", item.accent);
+
     tile.appendChild(itemIcon(item, false));
     tile.appendChild(el("span", "tile-name", item.name));
-    tile.appendChild(favour(item.cost, "tile-cost"));
+
+    // Owned stock stays on the shelf, greyed, price hidden, still readable —
+    // exactly as the in-game panel behaves.
+    if (isOwned) tile.appendChild(el("span", "tile-owned", "OWNED"));
+    else tile.appendChild(priceTag(item, "tile-cost"));
+
     tile.addEventListener("click", function () { select(item.id); });
     return tile;
   }
@@ -388,10 +625,11 @@
     shelf.querySelectorAll(".shop-tile").forEach(function (t) {
       t.setAttribute("aria-pressed", t.dataset.id === selectedId ? "true" : "false");
     });
-    renderDetail(items.filter(function (it) { return it.id === selectedId; })[0] || null);
+    renderDetail(findItem(selectedId));
   }
 
   /* ---------------- detail pane ---------------- */
+
   function renderDetail(item) {
     detail.textContent = "";
     if (!item) {
@@ -410,10 +648,12 @@
     card.appendChild(el("h3", "detail-name", item.name));
 
     var prefix = item.prefix || (item.hero ? item.hero + "'s level 20 ability." : null);
+    if (item.kind === "bundle") {
+      prefix = money.format(item.favourAmount) + " Favour, added to your account.";
+    }
     if (prefix) card.appendChild(el("p", "detail-prefix", prefix));
 
     card.appendChild(el("p", "detail-desc", item.desc));
-
     if (item.lore) card.appendChild(el("p", "detail-lore", item.lore));
 
     if (item.effects && item.effects.length) {
@@ -423,15 +663,306 @@
       card.appendChild(ul);
     }
 
-    card.appendChild(favour(item.cost, "detail-price"));
-    card.appendChild(el("div", "detail-buy", "Sign in to purchase — coming soon"));
+    card.appendChild(priceTag(item, "detail-price"));
 
+    card.appendChild(buildAction(item));
     detail.appendChild(card);
   }
 
+  /* The action area is the only part of the pane that depends on who is
+     looking. The item's own description is identical either way. */
+  function buildAction(item) {
+    if (owned[item.id]) {
+      return el("div", "detail-owned", "Already yours");
+    }
+
+    if (!identity) {
+      var wrap = el("div", "detail-signin");
+      if (item.kind === "bundle") {
+        wrap.appendChild(el("p", "detail-signin-text",
+          "Buying Favour needs an account. Sign in — or create one — and this bundle " +
+          "can be bought straight from this page."));
+      } else {
+        wrap.appendChild(el("p", "detail-signin-text", "Sign in to Purchase"));
+      }
+      var link = el("a", "btn btn-ghost btn-block", item.kind === "bundle" ? "Sign in or sign up" : "Sign in");
+      link.setAttribute("href", "login.html?next=emporion.html");
+      wrap.appendChild(link);
+      return wrap;
+    }
+
+    var button = el("button", "btn btn-primary btn-block detail-purchase",
+      item.kind === "bundle" ? "Buy with card" : "Purchase");
+    button.type = "button";
+    button.dataset.id = item.id;
+
+    if (item.kind !== "bundle" && balanceKnown && balance < item.cost) {
+      button.disabled = true;
+      button.textContent = "Not enough Favour";
+    }
+
+    button.addEventListener("click", function () {
+      if (item.kind === "bundle") startCheckout(item, button);
+      else confirmItemPurchase(item, button);
+    });
+
+    var holder = el("div", "detail-action");
+    holder.appendChild(button);
+    return holder;
+  }
+
+  /* ---------------- buying a game item with Favour ----------------
+
+     The website never decides the price, never touches player_accounts.favour
+     and never inserts an entitlement. It calls one RPC. Inside a single
+     transaction the database re-reads the cost from shop_items, locks the
+     balance row, refuses a duplicate or an overdraw, debits, grants and
+     ledgers — or rolls the whole lot back.
+
+     The request id makes a retry safe: the same id always replays its original
+     outcome instead of buying again. The disabled button below is a courtesy
+     to the visitor, not the thing that prevents a double purchase.           */
+
+  function confirmItemPurchase(item, button) {
+    if (pendingAction) return;
+
+    var message = "Are you sure you wish to purchase " + item.name +
+                  " for " + money.format(item.cost) + " Favour?";
+    if (!window.confirm(message)) return;
+
+    pendingAction = true;
+    button.disabled = true;
+    button.textContent = "Purchasing…";
+    notice("info", "Completing your purchase…");
+
+    var requestId = auth.newRequestId();
+
+    auth.client.rpc("purchase_shop_item", {
+      p_item_id: item.id,
+      p_request_id: requestId
+    }).then(function (res) {
+      pendingAction = false;
+
+      if (res.error) {
+        // A 401/PGRST301 here means the JWT expired between page load and now.
+        var expired = res.error.code === "PGRST301" ||
+                      (res.error.message || "").toLowerCase().indexOf("jwt") !== -1;
+        notice("error", expired
+          ? "Your session has expired. Sign in again and retry — nothing was charged."
+          : "We could not complete that purchase. Nothing was charged. Please try again.");
+        renderDetail(item);
+        return;
+      }
+
+      var result = res.data || {};
+
+      if (result.ok) {
+        // Trust the server's figure for the immediate repaint, then reload the
+        // authoritative record anyway.
+        if (typeof result.favour === "number") { balance = result.favour; balanceKnown = true; }
+        owned[item.id] = true;
+        renderBalance();
+        renderShelf();
+        renderDetail(item);
+        notice("success", result.duplicate
+          ? item.name + " is yours — that request had already gone through."
+          : item.name + " is yours.");
+        refreshBalance();
+        return;
+      }
+
+      var messages = {
+        insufficient_favour: "You do not have enough Favour for that yet.",
+        already_owned: "You already own that offering.",
+        item_unavailable: "That offering is no longer available.",
+        no_account: "We could not find your player account. Try signing out and back in.",
+        not_authenticated: "Your session has expired. Sign in again and retry.",
+        request_id_reused: "That looked like a repeated request. Refresh the page and try again."
+      };
+      if (typeof result.favour === "number") { balance = result.favour; balanceKnown = true; }
+      if (result.error === "already_owned") owned[item.id] = true;
+
+      renderBalance();
+      renderShelf();
+      renderDetail(item);
+      notice("error", messages[result.error] || "That purchase could not be completed.");
+      refreshBalance();
+    }).catch(function () {
+      pendingAction = false;
+      notice("error", "We could not reach the Emporion. Nothing was charged. Check your connection and try again.");
+      renderDetail(item);
+    });
+  }
+
+  /* ---------------- buying Favour with money ----------------
+
+     The browser sends a bundle id and a request id. It does not send a price,
+     a quantity, a currency or a user id — the Edge Function reads all of those
+     from the database and from the verified access token.                    */
+
+  function startCheckout(item, button) {
+    if (pendingAction) return;
+    pendingAction = true;
+    button.disabled = true;
+    button.textContent = "Opening checkout…";
+    notice("info", "Taking you to our payment provider…");
+
+    auth.callFunction("stripe-checkout", {
+      authenticated: true,
+      body: { bundleId: item.id, requestId: auth.newRequestId() }
+    }).then(function (res) {
+      pendingAction = false;
+      var body = res.body || {};
+
+      if (!res.ok || !body.ok || !body.url) {
+        notice("error", body.message || "We could not start that purchase. Nothing has been charged.");
+        renderDetail(item);
+        return;
+      }
+
+      // Same-tab navigation, so there is no popup to be blocked. If the
+      // browser refuses even this, the link below is the way through.
+      notice("info", "Redirecting to the payment page…");
+      window.location.assign(body.url);
+
+      // If we are still here a moment later, the navigation did not happen.
+      window.setTimeout(function () {
+        notice("info", "");
+        var wrap = el("div", "detail-action");
+        var link = el("a", "btn btn-primary btn-block", "Continue to payment");
+        link.setAttribute("href", body.url);
+        link.setAttribute("rel", "noopener");
+        wrap.appendChild(link);
+        wrap.appendChild(el("p", "detail-signin-text",
+          "If nothing happened, use the button above to continue to the payment page."));
+        detail.querySelectorAll(".detail-action").forEach(function (n) { n.remove(); });
+        var card = detail.querySelector(".detail-card");
+        if (card) card.appendChild(wrap);
+      }, 1500);
+    }).catch(function (error) {
+      pendingAction = false;
+      notice("error", String(error && error.message) === "not_authenticated"
+        ? "Your session has expired. Sign in again to buy Favour."
+        : "We could not reach the payment service. Nothing has been charged.");
+      renderDetail(item);
+    });
+  }
+
+  /* ---------------- returning from Stripe ----------------
+
+     `?payment=success` is a URL, not a receipt. It awards nothing. All it does
+     is tell this page to watch the balance for a moment, because the webhook —
+     which is the only thing that can award Favour — usually lands within a
+     second or two of the redirect.                                           */
+
+  function handlePaymentReturn() {
+    var params = new URLSearchParams(window.location.search);
+    var payment = params.get("payment");
+    if (!payment) return;
+
+    if (window.history && window.history.replaceState) {
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+
+    if (payment === "cancelled") {
+      notice("info", "Payment cancelled. Nothing has been charged.");
+      return;
+    }
+
+    if (payment !== "success") return;
+
+    notice("info",
+      "Thank you. Your Favour is being added — this usually takes a moment. " +
+      "The balance above will update on its own.");
+
+    // Bounded: eight tries over about twenty seconds, then stop and let the
+    // visitor press Refresh. An unbounded poll would hammer the database
+    // forever on any tab someone left open.
+    var attempts = 0;
+    var startingBalance = balance;
+
+    (function poll() {
+      if (attempts >= 8 || !identity) {
+        if (identity && balance === startingBalance) {
+          notice("info",
+            "Your payment went through. If the balance has not moved yet, give it " +
+            "another moment and press Refresh — nothing is lost.");
+        }
+        return;
+      }
+      attempts += 1;
+      window.setTimeout(function () {
+        refreshBalance().then(function () {
+          if (balance !== startingBalance) {
+            notice("success", "Favour added. Your new balance is above.");
+            return;
+          }
+          poll();
+        });
+      }, attempts === 1 ? 1200 : 2500);
+    })();
+  }
+
+  /* ---------------- auth wiring ---------------- */
+
+  function onAuthChange(state) {
+    if (!state.ready) return;
+
+    if (state.identity === identity) {
+      renderBalance();
+      return;
+    }
+
+    // Identity genuinely changed (including sign-out). Drop everything
+    // account-shaped before anything can be drawn with it.
+    identity = state.identity;
+    balance = 0;
+    balanceKnown = false;
+    owned = Object.create(null);
+
+    if (balanceRefresh) balanceRefresh.hidden = !identity;
+
+    applyAuthDefaultFilter();
+    renderBalance();
+    renderShelf();
+    renderDetail(findItem(selectedId));
+
+    if (identity) {
+      loadAccountData(identity).then(function () {
+        // Once per page load, whichever auth event happens to arrive first.
+        // Gating on a particular event name is fragile: whether the first
+        // callback is INITIAL_SESSION or the immediate SUBSCRIBE replay
+        // depends on whether the session had already been restored before
+        // this module subscribed.
+        if (!paymentReturnHandled) {
+          paymentReturnHandled = true;
+          handlePaymentReturn();
+        }
+      });
+    } else {
+      notice("");
+    }
+  }
+
   /* ---------------- go ---------------- */
+
   buildFilters();
   if (clearBtn) clearBtn.addEventListener("click", clearCats);
+  renderBalance();
   renderShelf();
   renderDetail(null);
+
+  if (auth) {
+    auth.onChange(onAuthChange);
+  } else {
+    // No auth stack (script blocked, offline): the shelf still browses, the
+    // balance stays at zero, and every action falls back to "sign in".
+    renderShelf();
+  }
+
+  // Coming back to the tab after paying in another one, or after a long
+  // absence, should not show a stale figure.
+  document.addEventListener("visibilitychange", function () {
+    if (document.visibilityState === "visible" && identity) refreshBalance();
+  });
 })();

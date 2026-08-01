@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Triarchs of Olympus — Create an Account</title>
+<meta name="description" content="Create a Triarchs of Olympus account to buy and spend Favour in the Emporion. The game itself is free to play as a guest.">
+<meta name="theme-color" content="#0d0e14">
+<meta name="robots" content="noindex">
+<link rel="icon" href="./assets/decorative/emblem.png" type="image/svg+xml">
+<link rel="stylesheet" href="./css/site.css">
+<link rel="stylesheet" href="./css/responsive.css">
+<link rel="stylesheet" href="./css/account.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to main content</a>
+
+<header class="site-header">
+  <nav class="nav-bar" aria-label="Primary">
+    <a href="home.html" class="brand">
+      <img src="./assets/decorative/emblem.png" alt="" class="brand-mark">
+      TRIARCHS<small>OF OLYMPUS</small>
+    </a>
+    <button class="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-links">
+      <svg class="icon" aria-hidden="true"><use href="./assets/icons/icons.svg#ic-menu"></use></svg>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="home.html">Home</a>
+      <a href="characters.html">Characters</a>
+      <a href="world.html">World</a>
+      <a href="emporion.html">Emporion</a>
+      <a href="about.html">About</a>
+      <a href="news.html">Patch Notes</a>
+
+      <a class="nav-link" href="https://github.com/AlucaSol/triarchs-of-olympus/releases/latest/download/Triarchs-of-Olympus-setup.exe">
+          <svg class="icon" aria-hidden="true"><use href="./assets/icons/icons.svg#ic-download"></use></svg> Download
+      </a>
+      <a href="login.html" class="nav-link nav-account" data-nav-account>Account</a>
+      <a href="https://triarchsofolympus.jj-games.org" class="nav-cta">Play Now</a>
+    </div>
+  </nav>
+</header>
+
+<main id="main">
+  <div class="page-header">
+    <p class="eyebrow">Your account</p>
+    <h1>Create an Account</h1>
+    <p>You only need one to buy and spend Favour. Registering earns you nothing on its own — and the game is free to play without it.</p>
+  </div>
+
+  <div class="auth-shell">
+    <div class="auth-card">
+      <h2>Sign up</h2>
+
+      <p id="signup-status" class="auth-message is-info" role="status" hidden></p>
+
+      <form class="auth-form" id="signup-form" novalidate>
+        <div class="field">
+          <label for="signup-username">Username</label>
+          <input type="text" id="signup-username" name="username"
+                 autocomplete="username" required minlength="3" maxlength="24"
+                 autocapitalize="none" spellcheck="false">
+          <p class="field-hint">3-24 characters. Letters, numbers and underscores only. This is the name other players see, and it cannot be changed later.</p>
+        </div>
+
+        <div class="field">
+          <label for="signup-email">Email</label>
+          <input type="email" id="signup-email" name="email"
+                 autocomplete="email" required autocapitalize="none" spellcheck="false">
+          <p class="field-hint">Used to confirm the account and to sign in. Nothing else.</p>
+        </div>
+
+        <div class="field">
+          <label for="signup-password">Password</label>
+          <input type="password" id="signup-password" name="password"
+                 autocomplete="new-password" required minlength="8">
+          <p class="field-hint">At least 8 characters.</p>
+        </div>
+
+        <div class="field">
+          <label for="signup-password-confirm">Confirm password</label>
+          <input type="password" id="signup-password-confirm" name="passwordConfirm"
+                 autocomplete="new-password" required minlength="8">
+        </div>
+
+        <div class="field" id="signup-invite-field" hidden>
+          <label for="signup-invite">Invitation code</label>
+          <input type="text" id="signup-invite" name="inviteCode"
+                 autocapitalize="characters" spellcheck="false"
+                 placeholder="XXXXX-XXXXX-XXXXX-XXXXX">
+          <p class="field-hint">Registration is invitation-only at the moment.</p>
+        </div>
+
+        <div class="turnstile-holder" id="signup-turnstile"></div>
+
+        <button type="submit" class="btn btn-primary" id="signup-submit">Sign up</button>
+      </form>
+
+      <div class="auth-alt">
+        <p>Already have an account?</p>
+        <a class="btn btn-ghost" href="login.html">Login</a>
+      </div>
+
+      <p class="auth-guest">
+        You do not need an account to play.
+        <a href="https://triarchsofolympus.jj-games.org">Play as a guest</a>.
+      </p>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-bottom">
+      <span>Triarchs of Olympus — created by Aluca Sol.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="./js/config.js"></script>
+<script src="./js/vendor/supabase-js-2.111.0.umd.js"></script>
+<script src="./js/auth.js"></script>
+<script src="./js/site.js"></script>
+<script src="./js/turnstile.js"></script>
+<script src="./js/signup.js"></script>
+</body>
+</html>

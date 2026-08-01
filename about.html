@@ -36,10 +36,7 @@
       <a class="nav-link" href="https://github.com/AlucaSol/triarchs-of-olympus/releases/latest/download/Triarchs-of-Olympus-setup.exe">
           <svg class="icon" aria-hidden="true"><use href="./assets/icons/icons.svg#ic-download"></use></svg> Download
       </a>
-	  <span class="nav-login">
-	    <button type="button" class="nav-link nav-login-btn" aria-describedby="nav-login-note">Login</button>
-	    <span class="nav-popunder" id="nav-login-note" role="tooltip">Coming soon</span>
-	  </span>
+      <a href="login.html" class="nav-link nav-account" data-nav-account>Account</a>
 	  <a href="https://triarchsofolympus.jj-games.org" class="nav-cta">Play Now</a>
     </div>
   </nav>
@@ -118,6 +115,9 @@
   </div>
 </footer>
 
+<script src="./js/config.js"></script>
+<script src="./js/vendor/supabase-js-2.111.0.umd.js"></script>
+<script src="./js/auth.js"></script>
 <script src="./js/site.js"></script>
 </body>
 </html>

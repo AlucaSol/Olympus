@@ -327,19 +327,23 @@ section + section { border-top: 1px solid rgba(138, 106, 46, 0.14); }
 .brand .brand-mark { width: 34px; height: 34px; flex: none; }
 .brand small { display: block; font-family: var(--font-ui); font-size: 0.6rem; letter-spacing: 0.3em; color: var(--marble-500); font-weight: 400; }
 
+/* Nine items — Home, Characters, World, Emporion, About, Patch Notes,
+   Download, Account, Play Now — have to share 1144px once the bar hits its
+   max-width, so the spacing is tight by default rather than tightened by a
+   media query. Below 1040px it collapses to the hamburger instead. */
 .nav-links {
   display: flex;
   align-items: center;
-  gap: var(--space-1);
+  gap: 0.2rem;
   flex-wrap: wrap;
 }
 .nav-links a, .nav-links button.nav-link {
   font-family: var(--font-ui);
-  font-size: 0.85rem;
-  letter-spacing: 0.08em;
+  font-size: 0.8rem;
+  letter-spacing: 0.07em;
   text-transform: uppercase;
   color: var(--marble-300);
-  padding: 0.6em 0.9em;
+  padding: 0.6em 0.5em;
   border-radius: var(--radius-sm);
   border: 1px solid transparent;
   position: relative;
@@ -367,49 +371,20 @@ section + section { border-top: 1px solid rgba(138, 106, 46, 0.14); }
   color: #1a1206;
 }
 
-/* Login — not live yet. Hovering (or focusing) the button reveals a small
-   "coming soon" popunder hung beneath it. */
-.nav-login { position: relative; display: inline-flex; }
-.nav-links .nav-login-btn { cursor: help; white-space: nowrap; }
-.nav-popunder {
-  position: absolute;
-  top: calc(100% + 9px);
-  left: 50%;
-  z-index: 10;
-  padding: 0.45em 0.9em;
-  font-family: var(--font-ui);
-  font-size: 0.72rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  white-space: nowrap;
-  color: var(--gold-300);
-  background: linear-gradient(180deg, rgba(32, 26, 15, 0.98), rgba(18, 14, 8, 0.98));
-  border: 1px solid var(--bronze-500);
-  border-radius: var(--radius-sm);
-  box-shadow: var(--shadow-lift);
-  opacity: 0;
-  visibility: hidden;
-  transform: translate(-50%, -4px);
-  transition: opacity var(--t-fast), transform var(--t-fast), visibility var(--t-fast);
-}
-.nav-popunder::before {
+/* Account — one destination when signed in, another when signed out. The label
+   never changes, so it does not flicker while the session is being restored;
+   only the small lit dot appears once a real Supabase session exists. */
+.nav-links a.nav-account { white-space: nowrap; }
+.nav-links a.nav-account.is-signed-in::before {
   content: "";
-  position: absolute;
-  top: -5px;
-  left: 50%;
-  width: 8px;
-  height: 8px;
-  margin-left: -4px;
-  background: rgba(32, 26, 15, 0.98);
-  border-left: 1px solid var(--bronze-500);
-  border-top: 1px solid var(--bronze-500);
-  transform: rotate(45deg);
-}
-.nav-login:hover .nav-popunder,
-.nav-login:focus-within .nav-popunder {
-  opacity: 1;
-  visibility: visible;
-  transform: translate(-50%, 0);
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin-right: 0.55em;
+  vertical-align: 0.08em;
+  border-radius: 50%;
+  background: var(--gold-400);
+  box-shadow: 0 0 6px var(--gold-glow);
 }
 
 .nav-toggle {

@@ -2,9 +2,17 @@
 
 This site (everything inside `SITE/`) is a fully static site: plain HTML,
 CSS, vanilla JavaScript and SVG. It needs no build step, no server-side
-language, no database, and no environment variables. It can be served by
+language and no environment variables. It can be served by
 literally any static file host — this guide focuses on GitHub Pages since
 that's this repository's target, but the same folder works anywhere.
+
+> **Accounts, Favour and payments are the exception.** The pages that sign
+> players in and sell Favour talk to Supabase and Stripe, and those need
+> migrations applied, Edge Functions deployed and several dashboard settings
+> turned on. None of that changes how the site is *served* — it is still a
+> folder of static files, and `js/config.js` holds only public keys — but the
+> features stay inert until the backend is configured. See
+> [backend-setup.md](backend-setup.md).
 
 ## 1. Previewing it locally
 

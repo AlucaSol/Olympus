@@ -3,15 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Path Not Found — Triarchs of Olympus</title>
-<meta name="description" content="This page does not exist on the Triarchs of Olympus site.">
+<title>Triarchs of Olympus — Confirming Your Account</title>
+<meta name="description" content="Confirming your Triarchs of Olympus account.">
 <meta name="theme-color" content="#0d0e14">
 <meta name="robots" content="noindex">
 <link rel="icon" href="./assets/decorative/emblem.png" type="image/svg+xml">
 <link rel="stylesheet" href="./css/site.css">
 <link rel="stylesheet" href="./css/responsive.css">
+<link rel="stylesheet" href="./css/account.css">
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to main content</a>
 
 <header class="site-header">
   <nav class="nav-bar" aria-label="Primary">
@@ -23,7 +25,7 @@
       <svg class="icon" aria-hidden="true"><use href="./assets/icons/icons.svg#ic-menu"></use></svg>
     </button>
     <div class="nav-links" id="nav-links">
-      <a href="home.html" aria-current="page">Home</a>
+      <a href="home.html">Home</a>
       <a href="characters.html">Characters</a>
       <a href="world.html">World</a>
       <a href="emporion.html">Emporion</a>
@@ -34,21 +36,30 @@
           <svg class="icon" aria-hidden="true"><use href="./assets/icons/icons.svg#ic-download"></use></svg> Download
       </a>
       <a href="login.html" class="nav-link nav-account" data-nav-account>Account</a>
-	  <a href="https://triarchsofolympus.jj-games.org" class="nav-cta">Play Now</a>
+      <a href="https://triarchsofolympus.jj-games.org" class="nav-cta">Play Now</a>
     </div>
   </nav>
 </header>
 
-<main>
-  <div class="error-shell">
-    <div>
-      <p class="eyebrow">The Path Is Lost</p>
-      <div class="error-code" aria-hidden="true">404</div>
-      <h1>This Road Doesn't Lead to Olympus</h1>
-<br>
-      <div class="cta-row" style="justify-content: center;">
-        <a class="btn btn-primary"  href="https://triarchsofolympus.jj-games.org">Trying to play?</a>
+<main id="main">
+  <div class="page-header">
+    <p class="eyebrow">Your account</p>
+    <h1>Email Confirmation</h1>
+  </div>
+
+  <div class="auth-shell">
+    <div class="auth-card">
+      <p id="confirm-status" class="auth-message is-info" role="status">Confirming your account…</p>
+
+      <div class="account-actions" id="confirm-actions" hidden>
+        <a class="btn btn-primary" href="emporion.html" id="confirm-primary">Go to the Emporion</a>
+        <a class="btn btn-ghost" href="login.html" id="confirm-secondary">Sign in</a>
       </div>
+
+      <p class="auth-guest">
+        You do not need an account to play.
+        <a href="https://triarchsofolympus.jj-games.org">Play as a guest</a>.
+      </p>
     </div>
   </div>
 </main>
@@ -56,7 +67,7 @@
 <footer class="site-footer">
   <div class="wrap">
     <div class="footer-bottom">
-      <span>Triarchs of Olympus — created by Aluca Sol.</span>n>
+      <span>Triarchs of Olympus — created by Aluca Sol.</span>
     </div>
   </div>
 </footer>
@@ -65,5 +76,6 @@
 <script src="./js/vendor/supabase-js-2.111.0.umd.js"></script>
 <script src="./js/auth.js"></script>
 <script src="./js/site.js"></script>
+<script src="./js/confirm.js"></script>
 </body>
 </html>

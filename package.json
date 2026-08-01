@@ -1,0 +1,17 @@
+{
+  "name": "triarchs-of-olympus-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Static promotional site for Triarchs of Olympus. The site itself needs no build step; this file exists only for the verification harness and the Supabase Edge Functions tooling.",
+  "type": "module",
+  "scripts": {
+    "test": "node tests/ui/run.mjs",
+    "test:ui": "node tests/ui/run.mjs",
+    "lint:js": "node tests/lint.mjs",
+    "serve": "node tests/serve.mjs"
+  },
+  "devDependencies": {
+    "playwright-core": "^1.49.0",
+    "supabase": "^2.111.0"
+  }
+}
