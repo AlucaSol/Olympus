@@ -26,16 +26,43 @@
     </button>
     <div class="nav-links" id="nav-links">
       <a href="home.html">Home</a>
-      <a href="characters.html">Characters</a>
-      <a href="world.html">World</a>
-      <a href="emporion.html">Emporion</a>
-      <a href="about.html">About</a>
-      <a href="news.html">Patch Notes</a>
 
-      <a class="nav-link" href="https://github.com/AlucaSol/triarchs-of-olympus/releases/latest/download/Triarchs-of-Olympus-setup.exe">
-          <svg class="icon" aria-hidden="true"><use href="./assets/icons/icons.svg#ic-download"></use></svg> Download
-      </a>
-      <a href="account.html" class="nav-link nav-account" data-nav-account aria-current="page">Account</a>
+      <div class="nav-drop">
+        <button type="button" class="nav-drop-toggle" aria-expanded="false" aria-haspopup="true">
+          World
+          <svg class="nav-caret" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="nav-drop-menu">
+          <a href="world.html">Labyrinth</a>
+          <a href="characters.html">Champions</a>
+          <a href="about.html">About</a>
+        </div>
+      </div>
+
+      <div class="nav-drop has-current">
+        <button type="button" class="nav-drop-toggle" aria-expanded="false" aria-haspopup="true">
+          Account
+          <svg class="nav-caret" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="nav-drop-menu">
+          <a href="account.html" class="nav-link nav-account" data-nav-account aria-current="page">Account</a>
+          <a href="emporion.html">Emporion</a>
+        </div>
+      </div>
+
+      <div class="nav-drop">
+        <button type="button" class="nav-drop-toggle" aria-expanded="false" aria-haspopup="true">
+          Download
+          <svg class="nav-caret" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="nav-drop-menu">
+          <a class="nav-link" href="https://github.com/AlucaSol/triarchs-of-olympus/releases/latest/download/Triarchs-of-Olympus-setup.exe">
+            <svg class="icon" aria-hidden="true"><use href="./assets/icons/icons.svg#ic-download"></use></svg> Download
+          </a>
+          <a href="news.html">Patch Notes</a>
+        </div>
+      </div>
+
       <a href="https://triarchsofolympus.jj-games.org" class="nav-cta">Play Now</a>
     </div>
   </nav>
@@ -59,10 +86,6 @@
 
       <div class="account-meta">
         <div class="account-stat">
-          <span class="label">Username</span>
-          <span class="value is-plain" id="account-username">—</span>
-        </div>
-        <div class="account-stat">
           <span class="label">Favour</span>
           <span class="value" id="account-favour">
             <img src="./assets/emporion/ui/favour-placeholder.png" alt="">
@@ -70,6 +93,33 @@
           </span>
         </div>
       </div>
+
+      <hr class="divider">
+
+      <h2>Change username</h2>
+      <p>This is the name other players see in the lobby and on the scoreboard.</p>
+
+      <p id="username-status" class="auth-message is-info" role="status" hidden></p>
+
+      <form class="auth-form" id="username-form" novalidate autocomplete="off">
+        <div class="field">
+          <label for="account-username">Username</label>
+          <input type="text" id="account-username" name="username"
+                 autocomplete="off" autocapitalize="off" spellcheck="false"
+                 required minlength="5" maxlength="20">
+          <p class="field-hint">
+            5–20 characters, using letters, numbers, dashes and underscores only.
+            Capitals are kept exactly as you type them, but two names that differ
+            only in capitals count as the same name.
+          </p>
+        </div>
+
+        <button type="submit" class="btn btn-primary" id="username-submit">Change username</button>
+
+        <p class="field-hint" id="username-limit" role="status">
+          You can change your username once every 24 hours.
+        </p>
+      </form>
 
       <hr class="divider">
 
@@ -102,6 +152,23 @@
         <button type="submit" class="btn btn-primary" id="password-submit">Change password</button>
       </form>
 
+      <!-- ONE check, BOTH buttons. Deliberately given its own bordered panel
+           and placed below the two forms rather than inside either of them, so
+           it cannot read as belonging to just the nearest one. The copy says
+           which buttons it covers, and both of those buttons refuse to submit
+           without it and point back down here — the arrangement and the
+           behaviour say the same thing. -->
+      <section class="verify-panel" aria-labelledby="verify-heading">
+        <h3 id="verify-heading">Verification</h3>
+        <p class="verify-note">
+          Required for both <strong>Change username</strong> and
+          <strong>Change password</strong> above. Each check is good for one
+          submission and refreshes itself afterwards.
+        </p>
+        <div class="turnstile-holder" id="account-turnstile"></div>
+        <p class="field-hint" id="verify-hint" role="status"></p>
+      </section>
+
       <div class="account-actions">
         <a class="btn btn-ghost" href="emporion.html">Go to the Emporion</a>
         <button type="button" class="btn" id="logout-button">Log out</button>
@@ -126,6 +193,8 @@
 <script src="./js/vendor/supabase-js-2.111.0.umd.js"></script>
 <script src="./js/auth.js"></script>
 <script src="./js/site.js"></script>
+<script src="./js/turnstile.js"></script>
+<script src="./js/username.js"></script>
 <script src="./js/account.js"></script>
 </body>
 </html>

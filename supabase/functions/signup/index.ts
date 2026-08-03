@@ -34,7 +34,10 @@
 import { preflight, json, clientIp, hashIp, logEvent } from "../_shared/http.ts";
 import { serviceClient, anonClient } from "../_shared/supabase.ts";
 
-const USERNAME_RE = /^[A-Za-z0-9_]{3,24}$/;
+// Mirrors migration 015. The database applies the full rules — the blocklist
+// and the reserved words — inside handle_new_auth_user(); this is only the
+// cheap shape check that saves a doomed round trip.
+const USERNAME_RE = /^[A-Za-z0-9_-]{5,20}$/;
 
 // Supabase's own minimum is configured in the dashboard; this mirrors the
 // default so the visitor is told before a round trip rather than after.
@@ -118,7 +121,7 @@ async function register(request: Request): Promise<Response> {
     return json(request, {
       ok: false,
       error: "invalid_username",
-      message: "Choose a username of 3-24 characters, using letters, numbers and underscores only."
+      message: "Choose a username of 5-20 characters, using letters, numbers, dashes and underscores only."
     }, 400);
   }
 

@@ -147,6 +147,48 @@
 .turnstile-holder { min-height: 65px; display: flex; justify-content: center; }
 .turnstile-holder:empty { min-height: 0; }
 
+/* One check serving two forms. The panel is bordered and inset so it reads as
+   a thing in its own right rather than the tail of whichever form happens to
+   sit above it — on the account page that distinction is the whole point. */
+.verify-panel {
+  margin-top: var(--space-4);
+  padding: var(--space-3);
+  background: rgba(0, 0, 0, 0.22);
+  border: 1px dashed #7a6230;
+  border-radius: var(--radius-sm);
+}
+.verify-panel h3 {
+  margin: 0 0 0.4em;
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--marble-500);
+}
+.verify-note {
+  margin: 0 0 var(--space-2);
+  font-family: var(--font-ui);
+  font-size: 0.8rem;
+  line-height: 1.55;
+  color: var(--marble-300);
+  max-width: none;
+}
+.verify-note strong { color: var(--gold-300); font-weight: 600; }
+.verify-panel .field-hint { margin-top: var(--space-2); text-align: center; }
+
+/* A rate-limited or cooling-down action. Deliberately distinct from the
+   `:disabled` styling the forms already use for "busy": that one means wait a
+   moment, this one means come back later, and the cursor is the cheapest way
+   to say which is which. */
+.auth-form .btn.is-locked,
+.auth-form .btn.is-locked:hover {
+  opacity: 0.45;
+  cursor: not-allowed;
+  box-shadow: none;
+  background: linear-gradient(180deg, #453619, #241c0e 55%, #1a1408);
+  color: var(--marble-500);
+}
+
 /* ---------- profile extras ---------- */
 .account-meta {
   display: flex;

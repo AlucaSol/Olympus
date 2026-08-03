@@ -228,18 +228,101 @@ console.log("\nMigrations");
 {
   const migrations = listing("migrations", ".sql");
   const added = ["010_website_signup_controls.sql", "011_favour_bundles_stripe.sql",
-                 "012_website_item_purchase.sql", "013_signup_claim_enforcement.sql"];
+                 "012_website_item_purchase.sql", "013_signup_claim_enforcement.sql",
+                 "015_username_changes.sql", "016_username_claim_merge.sql"];
   check("every new migration is present", added.every((m) => migrations.includes(m)));
   check("every new migration has a rollback",
     added.every((m) => fs.existsSync(path.join(
       ROOT, "migrations/rollback", m.replace(/\.sql$/, "_down.sql")))));
 
+  // The invariant is "no SECURITY DEFINER function is left without a pinned
+  // search_path", so pins must not be OUTNUMBERED by definers. It is not an
+  // equality: pinning an ordinary function too is free hygiene, and 015 does
+  // exactly that for the two helpers its definers call.
   for (const m of added) {
     const sql = code(`migrations/${m}`);
     const definers = sql.match(/security definer/gi)?.length ?? 0;
     const paths = sql.match(/set search_path = ''/g)?.length ?? 0;
     check(`${m}: every security-definer function pins search_path`,
-      definers === paths, `${definers} definer vs ${paths} search_path`);
+      paths >= definers, `${definers} definer vs ${paths} search_path`);
+  }
+
+  /* ---- functions that more than one migration replaces ----
+     `create or replace function` REPLACES; it does not merge. When two
+     migrations own different halves of one function, the later one has to
+     carry the earlier one's body forward or it deletes it — silently, with no
+     error at apply time and no symptom until somebody exercises the half that
+     vanished.
+
+     This is not hypothetical. 013 put the signup-claim enforcement inside
+     handle_new_auth_user() rather than in a trigger of its own; the first cut
+     of 015 replaced that function to change how usernames are derived and
+     dropped the gate with it, leaving the kill switch, the account ceiling and
+     the per-IP limits unenforced on a live project. 016 is the hotfix.
+
+     So: for every function defined by more than one migration, the LAST
+     definition must still contain the sentinel behaviours of the earlier ones. */
+  const SENTINELS = {
+    // "name/arity" -> strings its final definition must still contain
+    "handle_new_auth_user/0": [
+      "signup_not_authorised",   // 013's enforcement
+      "signup_claims",           // 013's claim settlement
+      "username_rejection"       // 015's naming rules
+    ],
+    // 013 widened 010's version; the diff is additions only, but the fields
+    // 010 promised still have to be in the payload.
+    "signup_status/0": ["signup_mode", "maximum_accounts"]
+  };
+
+  /* Overloads are NOT replacements — public.f(text) and public.f(text, uuid)
+     are two different functions to Postgres, and 002/012's purchase_shop_item
+     is exactly that pair. Keying by name alone would flag them and train
+     everyone to ignore this check, so the arity is part of the key. */
+  function arityAt(sql, openParen) {
+    let depth = 0, commas = 0, seen = false;
+    for (let i = openParen; i < sql.length; i++) {
+      const ch = sql[i];
+      if (ch === "(") depth++;
+      else if (ch === ")") { depth--; if (depth === 0) return seen ? commas + 1 : 0; }
+      else if (depth === 1) {
+        if (ch === ",") commas++;
+        if (!/\s/.test(ch)) seen = true;
+      }
+    }
+    return seen ? commas + 1 : 0;
+  }
+
+  const allMigrations = listing("migrations", ".sql").sort();
+  const definedIn = new Map();
+  for (const m of allMigrations) {
+    const sql = code(`migrations/${m}`);
+    for (const match of sql.matchAll(
+      /create\s+or\s+replace\s+function\s+public\.(\w+)\s*\(/gi)) {
+      const key = `${match[1]}/${arityAt(sql, sql.indexOf("(", match.index + match[0].length - 1))}`;
+      if (!definedIn.has(key)) definedIn.set(key, []);
+      definedIn.get(key).push(m);
+    }
+  }
+
+  for (const [key, files] of definedIn) {
+    if (files.length < 2) continue;
+    const name = key.split("/")[0];
+    const last = files[files.length - 1];
+    const body = code(`migrations/${last}`);
+    const sentinels = SENTINELS[key];
+
+    // A function replaced by several migrations and NOT listed above is not
+    // necessarily wrong, but nobody has said what it must keep — which is
+    // exactly the state 015 shipped in. Make that visible rather than silent.
+    check(`${name}: redefined by ${files.length} migrations, and the last one is accounted for`,
+      Array.isArray(sentinels),
+      `defined in ${files.join(", ")} — add its must-keep behaviours to SENTINELS in tests/lint.mjs`);
+
+    for (const token of sentinels ?? []) {
+      check(`${name}: ${last} still carries "${token}" from an earlier migration`,
+        body.includes(token),
+        `${last} replaces public.${name}() but drops "${token}" — see 016`);
+    }
   }
 
   const stripeSql = code("migrations/011_favour_bundles_stripe.sql");

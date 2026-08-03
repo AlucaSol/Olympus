@@ -184,7 +184,11 @@ migrations/010_website_signup_controls.sql
 migrations/011_favour_bundles_stripe.sql
 migrations/012_website_item_purchase.sql
 migrations/013_signup_claim_enforcement.sql
+migrations/015_username_changes.sql
 ```
+
+> **014 is not missing.** The numbering is shared with the game repository, and
+> 014 is a map migration that lives only there. The website's copy skips it.
 
 Or with the CLI:
 
@@ -519,6 +523,86 @@ npx supabase secrets set STRIPE_WEBHOOK_SECRET="whsec_..." \
 This secret belongs to *this one endpoint*. Delete and recreate the endpoint
 and you get a new one, which must be set again. Live mode has its own, separate
 one (step 15).
+
+---
+
+## 9b. Deploy the username-change function
+
+Migration 015 lets a player rename themselves from the account page. The rename
+itself is done by `change_username()`, which is service-role only, so the
+browser reaches it exclusively through this function — and this function
+verifies a Turnstile token first.
+
+**The Turnstile secret needs a second home.** Supabase Auth already holds it
+under *Authentication → Attack Protection*, and that copy verifies the CAPTCHA
+on sign-up, sign-in and recovery. An Edge Function cannot read it, and Auth
+will not verify a token on anything else's behalf, so `change-username` must
+carry its own copy and ask Cloudflare directly. Set it in both places, and
+rotate it in both places.
+
+```bash
+npx supabase secrets set \
+  TURNSTILE_SECRET_KEY="0x4AAA..." \
+  --project-ref xwtsqssaahubalgztoby
+
+npx supabase functions deploy change-username \
+  --no-verify-jwt --use-api --project-ref xwtsqssaahubalgztoby
+```
+
+PowerShell equivalent:
+
+```powershell
+npx supabase secrets set `
+  TURNSTILE_SECRET_KEY="0x4AAA..." `
+  --project-ref xwtsqssaahubalgztoby
+
+npx supabase functions deploy change-username `
+  --no-verify-jwt --use-api --project-ref xwtsqssaahubalgztoby
+```
+
+Run it from the **website** repository root — the one holding
+`supabase/functions/` — and keep the `npx`. The CLI is a dev dependency here,
+not a global install, so a bare `supabase ...` gives you *"the term 'supabase'
+is not recognized"*.
+
+**`--no-verify-jwt` is required, not optional.** With gateway JWT verification
+on, the browser's CORS **preflight** — an `OPTIONS` request, which by
+specification carries no `Authorization` header — is rejected at the edge
+before the function runs, and the real request is never sent. Every existing
+function on this project is deployed the same way for the same reason. It does
+not weaken anything: `change-username` verifies the caller's token itself with
+`userFromRequest()`, which is strictly stronger than the gateway check because
+it also resolves *which* user is calling, and that is the id the rename is
+applied to.
+
+**`--use-api`** bundles server-side. Without it the CLI wants Docker locally.
+
+If `TURNSTILE_SECRET_KEY` is unset the function refuses **every** request rather
+than failing open, so a forgotten secret shows up immediately as "the
+verification check did not pass" instead of as a silently disabled protection.
+
+**Switching renaming off**, if it is ever abused. One statement, no deploy:
+
+```sql
+update public.username_config set changes_enabled = false where id;
+```
+
+Existing names are untouched and new accounts still get the email-prefix
+default; only the rename stops. Reverse it by setting the flag back to `true`.
+The other knobs on that table are `cooldown_hours` (24), `min_length` (5) and
+`max_length` (20).
+
+**Adding a blocked word** — also no deploy. Always insert through
+`fold_username`, which puts the term in the form the matcher expects:
+
+```sql
+insert into public.username_blocklist (term, kind, note)
+values (public.fold_username('whatever'), 'substring', 'why');
+```
+
+Use `'exact'` for anything short enough to appear inside an innocent name, and
+`'allow'` to exempt a whole name that a substring rule catches unfairly — the
+seed already carries Scunthorpe, Cockburn and Cumbria for that reason.
 
 ---
 

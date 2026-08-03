@@ -31,7 +31,10 @@
     { action: "signup" }
   );
 
-  var USERNAME_RE = /^[A-Za-z0-9_]{3,24}$/;
+  // Username rules come from js/username.js so this form and the account
+  // page's rename cannot drift apart — a name accepted at signup that the
+  // rename screen would refuse (or the reverse) is the confusing kind of bug.
+  var names = window.TriarchsUsername;
   var MIN_PASSWORD = 8;
 
   function show(kind, message) {
@@ -98,8 +101,9 @@
     var secretAgain = passwordConfirm.value;
     var code = invite && !inviteField.hidden ? invite.value.trim() : null;
 
-    if (!USERNAME_RE.test(name)) {
-      show("error", "Choose a username of 3-24 characters, using letters, numbers and underscores only.");
+    var nameProblem = names.reject(name);
+    if (nameProblem) {
+      show("error", names.describe(nameProblem));
       username.focus();
       return;
     }

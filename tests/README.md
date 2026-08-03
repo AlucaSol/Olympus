@@ -1,12 +1,14 @@
 # Verification
 
-Four layers, because no single one of them can prove what the others do.
+Five layers, because no single one of them can prove what the others do.
 
 | What | How | Proves |
 | --- | --- | --- |
 | `node tests/lint.mjs` | static scan | no secret in client code, no dead script reference, no `*` CORS, no unpinned `search_path` |
+| `node tests/username.mjs` | pure logic, no browser | the username rules catch the evasions and spare innocent names |
 | `node tests/ui/run.mjs` | real browser, mocked Supabase | what a signed-out and a signed-in visitor actually see and send |
 | `tests/sql/verify.sql` | real database, one rolled-back transaction | the money, the ceiling, the rate limits, idempotency |
+| `tests/sql/username.sql` | real database, one rolled-back transaction | the rename rules, the cooldown, case-insensitive uniqueness |
 | `tests/sql/concurrency.md` | two SQL sessions, by hand | the locks are in the right places |
 | `tests/stripe/README.md` | Stripe test mode | signatures, duplicates, refunds, real fulfilment |
 
@@ -27,8 +29,9 @@ this harness.
 ## The quick pass
 
 ```bash
-node tests/lint.mjs      # ~1s
-node tests/ui/run.mjs    # ~30s, launches headless Chromium
+node tests/lint.mjs        # ~1s
+node tests/username.mjs    # ~0.1s, no browser
+node tests/ui/run.mjs      # ~30s, launches headless Chromium
 ```
 
 Both exit non-zero on failure, so they drop straight into CI if you ever want
@@ -36,7 +39,7 @@ them there.
 
 ### What the UI run covers
 
-72 checks, in eight groups:
+89 checks, in nine groups:
 
 - **Signed out** — balance is exactly `0`; Favour category exists and leads;
   Favour is *not* preselected; an ordinary item says exactly
@@ -58,6 +61,12 @@ them there.
 - **Identity changes** — a failed balance read shows no number rather than a
   stale one; signing out returns the display to `0`; a forged
   `localStorage.loggedIn` signs nobody in.
+- **Username form** — the account page's name is an editable field with a
+  Change button; one Turnstile panel names both actions it covers; a name that
+  is too short, out of charset, blocked, or simply unchanged is refused with
+  **zero** Supabase requests; a local cooldown the server does not confirm is
+  cleared on load, and a server-reported recent rename locks the button with a
+  countdown even after `localStorage.clear()`.
 - **Forms** — password fields are `type="password"`, mismatches and short
   passwords are refused before any request, nothing is written to
   localStorage; the signup form shows the invite field only in `invite_only`
@@ -95,6 +104,27 @@ per IP; aborted claims returning the slot; single-use, expired and disabled
 invitations; an unclaimed signup being refused at the database; cleanup
 selecting only unconfirmed accounts older than 48 hours and cascading to the
 profile; and the retention and log-growth caps.
+
+Then run `tests/sql/username.sql` the same way, for migrations 015 and 016.
+Unlike `verify.sql` it ends in a `SELECT`, so a pass is a **table of 19 rows**,
+one per check — not "Success. No rows returned", which the SQL Editor also
+prints for a script that verified nothing. The first row confirms
+`plpgsql.check_asserts` is on; with it off, every `ASSERT` in either SQL file
+is a silent no-op. It covers:
+folding through separators, homoglyphs and case; the 5-20 length rule and the
+character set; the screen catching padded, separated and leetspoken profanity
+while leaving Cassandra, Cockatrice, Analyst, Scunthorpe and Cockburn alone;
+the allow-list refusing to act as a prefix or substring shield; a valid rename
+applying; the 24-hour cooldown enforced in the database rather than only in the
+browser; uniqueness refusing `HERAKLION` and `hErAkLiOn` against `Heraklion`
+while preserving the capitals actually typed; recasing your own name allowed
+but an identical resubmission costing nothing; a refused rename leaving the
+cooldown untouched; the kill switch stopping renames without disturbing
+existing names; the email-prefix default surviving a dotted address, a
+too-long prefix, a too-short prefix and a collision; `player_accounts` still
+having no UPDATE policy for the browser; and — the regression that actually
+happened — that `handle_new_auth_user()` still refuses an unclaimed signup,
+since 013 keeps that enforcement inside the same function 015 replaced.
 
 Then run `tests/sql/rls.sql` and read its output against the expectations
 printed alongside each query. It is read-only.

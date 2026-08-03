@@ -327,17 +327,17 @@ section + section { border-top: 1px solid rgba(138, 106, 46, 0.14); }
 .brand .brand-mark { width: 34px; height: 34px; flex: none; }
 .brand small { display: block; font-family: var(--font-ui); font-size: 0.6rem; letter-spacing: 0.3em; color: var(--marble-500); font-weight: 400; }
 
-/* Nine items — Home, Characters, World, Emporion, About, Patch Notes,
-   Download, Account, Play Now — have to share 1144px once the bar hits its
-   max-width, so the spacing is tight by default rather than tightened by a
-   media query. Below 1040px it collapses to the hamburger instead. */
+/* Five top-level items — Home, World, Account, Download, Play Now — with
+   World/Account/Download each nesting their related pages in a dropdown.
+   That keeps the bar short enough to stay on one row well past the point
+   the old nine-item layout needed the hamburger. */
 .nav-links {
   display: flex;
   align-items: center;
   gap: 0.2rem;
   flex-wrap: wrap;
 }
-.nav-links a, .nav-links button.nav-link {
+.nav-links a, .nav-links button.nav-link, .nav-links .nav-drop-toggle {
   font-family: var(--font-ui);
   font-size: 0.8rem;
   letter-spacing: 0.07em;
@@ -350,15 +350,73 @@ section + section { border-top: 1px solid rgba(138, 106, 46, 0.14); }
   transition: color var(--t-fast), border-color var(--t-fast), background var(--t-fast);
 }
 .nav-links a:hover, .nav-links a:focus-visible,
-.nav-links button.nav-link:hover, .nav-links button.nav-link:focus-visible {
+.nav-links button.nav-link:hover, .nav-links button.nav-link:focus-visible,
+.nav-links .nav-drop-toggle:hover, .nav-links .nav-drop-toggle:focus-visible {
   color: var(--gold-300);
   border-color: rgba(201, 164, 76, 0.35);
   background: rgba(201, 164, 76, 0.06);
 }
-.nav-links a[aria-current="page"] {
+.nav-links a[aria-current="page"],
+.nav-links .nav-drop.has-current > .nav-drop-toggle {
   color: var(--gold-400);
   border-color: var(--bronze-500);
   background: rgba(201, 164, 76, 0.1);
+}
+
+/* ---- dropdown menus (World / Account / Download) ---- */
+.nav-drop { position: relative; }
+.nav-drop-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.4em;
+  font: inherit;
+  background: none;
+  cursor: pointer;
+}
+.nav-caret {
+  width: 8px;
+  height: 8px;
+  flex: none;
+  transition: transform var(--t-fast);
+}
+.nav-drop.open .nav-caret { transform: rotate(180deg); }
+.nav-drop-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 0.35rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  min-width: 190px;
+  padding: 0.4rem;
+  background: linear-gradient(180deg, rgba(20, 18, 14, 0.98), rgba(10, 9, 6, 0.98));
+  border: 1px solid var(--bronze-500);
+  border-radius: var(--radius-sm);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-6px);
+  transition: opacity var(--t-fast), transform var(--t-fast), visibility var(--t-fast);
+  z-index: 10;
+}
+.nav-drop-menu a { white-space: nowrap; }
+.nav-drop.open .nav-drop-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+@media (hover: hover) and (pointer: fine) {
+  .nav-drop:hover .nav-drop-menu,
+  .nav-drop:focus-within .nav-drop-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+  .nav-drop:hover .nav-caret,
+  .nav-drop:focus-within .nav-caret {
+    transform: rotate(180deg);
+  }
 }
 .nav-links a.nav-cta {
   color: var(--ink);

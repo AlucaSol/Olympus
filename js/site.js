@@ -31,6 +31,44 @@
     }
   }
 
+  /* ---------------- nav dropdowns (World / Account / Download) ---------------- */
+  var navDrops = document.querySelectorAll(".nav-drop");
+  function closeNavDrops(except) {
+    navDrops.forEach(function (drop) {
+      if (drop === except) return;
+      drop.classList.remove("open");
+      var t = drop.querySelector(".nav-drop-toggle");
+      if (t) t.setAttribute("aria-expanded", "false");
+    });
+  }
+  if (navDrops.length) {
+    navDrops.forEach(function (drop) {
+      var dropToggle = drop.querySelector(".nav-drop-toggle");
+      if (!dropToggle) return;
+      dropToggle.addEventListener("click", function () {
+        var isOpen = drop.classList.contains("open");
+        closeNavDrops(drop);
+        drop.classList.toggle("open", !isOpen);
+        dropToggle.setAttribute("aria-expanded", String(!isOpen));
+      });
+      drop.addEventListener("focusout", function (e) {
+        if (!drop.contains(e.relatedTarget)) {
+          drop.classList.remove("open");
+          dropToggle.setAttribute("aria-expanded", "false");
+        }
+      });
+    });
+    document.addEventListener("click", function (e) {
+      navDrops.forEach(function (drop) {
+        if (!drop.contains(e.target)) {
+          drop.classList.remove("open");
+          var t = drop.querySelector(".nav-drop-toggle");
+          if (t) t.setAttribute("aria-expanded", "false");
+        }
+      });
+    });
+  }
+
   /* ---------------- mobile nav toggle ---------------- */
   var toggle = document.querySelector(".nav-toggle");
   var links = document.querySelector(".nav-links");
@@ -38,15 +76,23 @@
     toggle.addEventListener("click", function () {
       var open = links.classList.toggle("open");
       toggle.setAttribute("aria-expanded", open ? "true" : "false");
+      if (!open) closeNavDrops(null);
     });
     links.querySelectorAll("a").forEach(function (a) {
       a.addEventListener("click", function () {
         links.classList.remove("open");
         toggle.setAttribute("aria-expanded", "false");
+        closeNavDrops(null);
       });
     });
     document.addEventListener("keydown", function (e) {
-      if (e.key === "Escape" && links.classList.contains("open")) {
+      if (e.key !== "Escape") return;
+      var openDrop = document.querySelector(".nav-drop.open");
+      if (openDrop) {
+        closeNavDrops(null);
+        var t = openDrop.querySelector(".nav-drop-toggle");
+        if (t) t.focus();
+      } else if (links.classList.contains("open")) {
         links.classList.remove("open");
         toggle.setAttribute("aria-expanded", "false");
         toggle.focus();

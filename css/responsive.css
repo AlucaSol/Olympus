@@ -599,9 +599,9 @@
 }
 
 /* The primary nav collapses to the hamburger earlier than the rest of the
-   layout: nine items stop fitting on one line well before the 860px content
-   breakpoint. (The tight spacing that gets them that far is in site.css, and
-   applies at every width.) */
+   layout, well before the 860px content breakpoint. (The tight spacing that
+   gets the five top-level items past this point is in site.css, and applies
+   at every width.) */
 @media (max-width: 1080px) {
   .nav-links {
     position: fixed;
@@ -625,9 +625,29 @@
     opacity: 1;
     visibility: visible;
   }
-  .nav-links a, .nav-links button.nav-link { padding: 0.9em 0.4em; font-size: 1rem; border-bottom: 1px solid rgba(138,106,46,0.15); border-radius: 0; }
+  .nav-links a, .nav-links button.nav-link, .nav-links .nav-drop-toggle { padding: 0.9em 0.4em; font-size: 1rem; border-bottom: 1px solid rgba(138,106,46,0.15); border-radius: 0; }
   .nav-links a.nav-cta { border-radius: var(--radius-sm); text-align: center; margin-top: 0.6em; }
   .nav-toggle { display: flex; }
+
+  /* Dropdowns become inline accordions instead of floating panels. */
+  .nav-drop { display: flex; flex-direction: column; }
+  .nav-drop-toggle { width: 100%; justify-content: space-between; border-bottom: 1px solid rgba(138,106,46,0.15); }
+  .nav-drop-menu {
+    position: static;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    box-shadow: none;
+    border: none;
+    background: none;
+    margin-top: 0;
+    padding: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height var(--t-med);
+  }
+  .nav-drop.open .nav-drop-menu { max-height: 240px; }
+  .nav-drop-menu a { padding: 0.8em 0.4em 0.8em 1.1em; border-bottom: 1px solid rgba(138,106,46,0.1); }
 }
 
 @media (max-width: 860px) {

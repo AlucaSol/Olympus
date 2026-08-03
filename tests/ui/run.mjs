@@ -130,7 +130,14 @@ function makeMock(state) {
     if (p.endsWith("/rest/v1/player_accounts")) {
       state.calls.push({ kind: "account" });
       if (state.accountError) return respond({ message: "boom" }, 500);
-      return respond({ username: state.username, favour: state.favour });
+      // username_changed_at rides along on this query so the account page can
+      // seed its cooldown from the server's clock. Null means never renamed,
+      // which is the default and clears any local cooldown.
+      return respond({
+        username: state.username,
+        favour: state.favour,
+        username_changed_at: state.usernameChangedAt ?? null
+      });
     }
 
     if (p.endsWith("/rest/v1/player_purchases")) {
@@ -523,6 +530,97 @@ try {
   }
 
   /* ---------------------------------------------------------------- */
+  group("Username form");
+  {
+    const state = baseState();
+    const { ctx, pg } = await openPage(browser, "account.html", {
+      session: fakeSession("77777777-7777-4777-8777-777777777777", "name@example.com"),
+      state
+    });
+
+    // The label became a field, which is the visible half of the change.
+    check("username is an editable field",
+      (await pg.$$("input#account-username")).length === 1);
+    check("the field is prefilled with the current name",
+      (await pg.inputValue("#account-username")) === "lykaon");
+    check("the change button exists", (await pg.$$("#username-submit")).length === 1);
+
+    // One Turnstile, visibly serving both actions.
+    check("a verification panel is present", (await pg.$$(".verify-panel")).length === 1);
+    const verifyText = (await pg.textContent(".verify-panel")).toLowerCase();
+    check("the panel names both actions it covers",
+      verifyText.includes("change username") && verifyText.includes("change password"));
+
+    /* The core promise of the local mirror: a name that breaks a rule costs
+       NO Supabase traffic. Count the requests before and after. */
+    const before = state.calls.length;
+
+    await pg.fill("#account-username", "no");
+    await pg.click("#username-submit");
+    await pg.waitForTimeout(200);
+    check("a too-short name is refused locally",
+      /at least 5 characters/i.test(await pg.textContent("#username-status")));
+
+    await pg.fill("#account-username", "dots.here");
+    await pg.click("#username-submit");
+    await pg.waitForTimeout(200);
+    check("an out-of-charset name is refused locally",
+      /letters, numbers, dashes and underscores/i
+        .test(await pg.textContent("#username-status")));
+
+    await pg.fill("#account-username", "fuckface");
+    await pg.click("#username-submit");
+    await pg.waitForTimeout(200);
+    check("a blocked name is refused locally",
+      /not available/i.test(await pg.textContent("#username-status")));
+
+    await pg.fill("#account-username", "lykaon");
+    await pg.click("#username-submit");
+    await pg.waitForTimeout(200);
+    check("submitting the name you already have is refused locally",
+      /already your username/i.test(await pg.textContent("#username-status")));
+
+    check("none of the four refusals contacted Supabase",
+      state.calls.length === before,
+      `${state.calls.length - before} request(s) were made`);
+
+    /* A localStorage cooldown that the SERVER contradicts must lose. The mock
+       reports username_changed_at = null (never renamed), so a planted local
+       lock has to be cleared on load — otherwise clearing site data would be
+       the only way out of a lock the server does not believe in. */
+    const uid = "77777777-7777-4777-8777-777777777777";
+    await pg.evaluate((id) => {
+      window.localStorage.setItem(
+        "triarchs.username.cooldownUntil." + id,
+        String(Date.now() + 6 * 3600 * 1000)
+      );
+    }, uid);
+    await pg.reload({ waitUntil: "domcontentloaded" });
+    await pg.waitForTimeout(900);
+    check("a local cooldown the server does not confirm is cleared",
+      !(await pg.isDisabled("#username-submit")));
+
+    /* And the reverse, which is the one that matters: the server says this
+       account renamed an hour ago, so the button locks even though
+       localStorage knows nothing about it. This is what makes clearing site
+       data useless as a bypass. */
+    state.usernameChangedAt = new Date(Date.now() - 3600 * 1000).toISOString();
+    await pg.evaluate(() => window.localStorage.clear());
+    await pg.reload({ waitUntil: "domcontentloaded" });
+    await pg.waitForTimeout(900);
+
+    check("a server-reported recent rename locks the button",
+      await pg.isDisabled("#username-submit"));
+    check("the button is visibly locked rather than merely busy",
+      (await pg.getAttribute("#username-submit", "class")).includes("is-locked"));
+    check("the countdown says how long is left",
+      /again in \d+ hours?/i.test(await pg.textContent("#username-limit")),
+      await pg.textContent("#username-limit"));
+
+    await ctx.close();
+  }
+
+  /* ---------------------------------------------------------------- */
   group("Signup form");
   {
     const { ctx, pg } = await openPage(browser, "signup.html", {
@@ -545,8 +643,33 @@ try {
     await pg.fill("#signup-password-confirm", "longenough1");
     await pg.click("#signup-submit");
     await pg.waitForTimeout(250);
-    check("a bad username is refused",
-      /3-24 characters/i.test(await pg.textContent("#signup-status")));
+    check("a too-short username is refused",
+      /at least 5 characters/i.test(await pg.textContent("#signup-status")));
+
+    // The signup form and the account page share js/username.js, so the rules
+    // that page enforces have to bite here too — including the screen, which
+    // is what stops a rude name being created and then needing a rename.
+    await pg.fill("#signup-username", "fuckface");
+    await pg.click("#signup-submit");
+    await pg.waitForTimeout(250);
+    check("a blocked username is refused before any request",
+      /not available/i.test(await pg.textContent("#signup-status")));
+
+    await pg.fill("#signup-username", "dots.here");
+    await pg.click("#signup-submit");
+    await pg.waitForTimeout(250);
+    check("an out-of-charset username is refused",
+      /letters, numbers, dashes and underscores/i
+        .test(await pg.textContent("#signup-status")));
+
+    // Dashes are new in 015 and must actually be accepted, or the rule change
+    // is only half done.
+    await pg.fill("#signup-username", "Jonny-Bravo");
+    await pg.click("#signup-submit");
+    await pg.waitForTimeout(250);
+    check("a dashed username is accepted by the form",
+      !/letters, numbers, dashes|at least 5|not available/i
+        .test(await pg.textContent("#signup-status")));
     await ctx.close();
   }
 

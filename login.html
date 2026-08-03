@@ -26,16 +26,43 @@
     </button>
     <div class="nav-links" id="nav-links">
       <a href="home.html">Home</a>
-      <a href="characters.html">Characters</a>
-      <a href="world.html">World</a>
-      <a href="emporion.html">Emporion</a>
-      <a href="about.html">About</a>
-      <a href="news.html">Patch Notes</a>
 
-      <a class="nav-link" href="https://github.com/AlucaSol/triarchs-of-olympus/releases/latest/download/Triarchs-of-Olympus-setup.exe">
-          <svg class="icon" aria-hidden="true"><use href="./assets/icons/icons.svg#ic-download"></use></svg> Download
-      </a>
-      <a href="login.html" class="nav-link nav-account" data-nav-account aria-current="page">Account</a>
+      <div class="nav-drop">
+        <button type="button" class="nav-drop-toggle" aria-expanded="false" aria-haspopup="true">
+          World
+          <svg class="nav-caret" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="nav-drop-menu">
+          <a href="world.html">Labyrinth</a>
+          <a href="characters.html">Champions</a>
+          <a href="about.html">About</a>
+        </div>
+      </div>
+
+      <div class="nav-drop has-current">
+        <button type="button" class="nav-drop-toggle" aria-expanded="false" aria-haspopup="true">
+          Account
+          <svg class="nav-caret" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="nav-drop-menu">
+          <a href="login.html" class="nav-link nav-account" data-nav-account aria-current="page">Account</a>
+          <a href="emporion.html">Emporion</a>
+        </div>
+      </div>
+
+      <div class="nav-drop">
+        <button type="button" class="nav-drop-toggle" aria-expanded="false" aria-haspopup="true">
+          Download
+          <svg class="nav-caret" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="nav-drop-menu">
+          <a class="nav-link" href="https://github.com/AlucaSol/triarchs-of-olympus/releases/latest/download/Triarchs-of-Olympus-setup.exe">
+            <svg class="icon" aria-hidden="true"><use href="./assets/icons/icons.svg#ic-download"></use></svg> Download
+          </a>
+          <a href="news.html">Patch Notes</a>
+        </div>
+      </div>
+
       <a href="https://triarchsofolympus.jj-games.org" class="nav-cta">Play Now</a>
     </div>
   </nav>
