@@ -362,6 +362,7 @@
   var balanceValue = document.getElementById("emporion-balance-value");
   var balanceRefresh = document.getElementById("emporion-balance-refresh");
   var noticeBar = document.getElementById("emporion-notice");
+  var introBar = document.getElementById("emporion-intro");
   if (!filterGrid || !shelf || !detail) return;
 
   /* ---------------- state ----------------
@@ -920,6 +921,7 @@
     owned = Object.create(null);
 
     if (balanceRefresh) balanceRefresh.hidden = !identity;
+    if (introBar) introBar.hidden = !!identity;
 
     applyAuthDefaultFilter();
     renderBalance();
