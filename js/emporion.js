@@ -59,6 +59,21 @@
         "The Labyrinth remains free to everyone, guests included."
       ]
     },
+    {
+      id: "map_nemeton",
+      category: "maps",
+      name: "Nemeton, the Sunken Grove",
+      cost: 350,
+      sort: 20,
+      icon: "./assets/emporion/maps/nemeton.png",
+      accent: "#6a9c4c",
+      prefix: "Own it to host matches on this battlefield.",
+      desc: "The battlefield turned inside out. Conquer broad forest avenues, and fight for the one great ring of standing stones at the heart of the wood. The wildwood is pushed out into tangled groves between the avenues, with canopies dark enough to vanish under.",
+      effects: [
+        "Only the host needs to own it — every peer plays on whatever map the host picks.",
+        "The Labyrinth remains free to everyone, guests included."
+      ]
+    },
 
     /* ---------------- champions ---------------- */
     {
